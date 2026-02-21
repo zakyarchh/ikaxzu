@@ -3,999 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Room - IKAZZ - 48</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Live Room | ikazz - 48</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'jakarta': ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0B1220;
-            --bg-secondary: #111827;
-            --bg-card: #1F2937;
-            --bg-light: #FFFFFF;
-            --text-primary: #FFFFFF;
-            --text-secondary: #94A3B8;
-            --text-dark: #1A1A2E;
-            --accent-red: #E11D48;
-            --accent-green: #22C55E;
-            --accent-gold: #FACC15;
-            --accent-blue: #3B82F6;
-            --gradient-dark: linear-gradient(135deg, #0B1220 0%, #1F2937 100%);
-            --gradient-red: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
-            --shadow-glow: 0 0 40px rgba(225, 29, 72, 0.3);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 20px;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Header */
-        .room-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: rgba(11, 18, 32, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 1000;
-        }
-
-        .back-btn {
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-        }
-
-        .room-header-title {
-            flex: 1;
-            text-align: center;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .header-live-badge {
-            background: var(--accent-red);
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.5); }
-            50% { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
-        }
-
-        .header-live-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Main Container */
-        .room-container {
-            padding-top: 60px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Desktop Layout */
-        @media (min-width: 1024px) {
-            .room-container {
-                flex-direction: row;
-                padding: 80px 24px 24px;
-                gap: 24px;
-                max-width: 1600px;
-                margin: 0 auto;
-            }
-        }
-
-        /* Video Section */
-        .video-section {
-            flex: 1;
-        }
-
-        @media (min-width: 1024px) {
-            .video-section {
-                flex: 0 0 70%;
-            }
-        }
-
-        .video-container {
-            position: relative;
-            background: var(--bg-secondary);
-            border-radius: 0;
-            overflow: hidden;
-            aspect-ratio: 16/9;
-            box-shadow: var(--shadow-glow);
-        }
-
-        @media (min-width: 1024px) {
-            .video-container {
-                border-radius: var(--radius-lg);
-            }
-        }
-
-        .video-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.5) 100%);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        #remoteVideo, #localVideo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background: #000;
-        }
-
-        .video-live-badge {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: var(--accent-red);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.5);
-        }
-
-        .video-live-badge i {
-            font-size: 10px;
-            animation: blink 1s infinite;
-        }
-
-        .video-viewers {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 10;
-        }
-
-        .video-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .video-container:hover .video-controls {
-            opacity: 1;
-        }
-
-        .video-controls-inner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .control-btn.active {
-            background: var(--accent-red);
-        }
-
-        /* Server Selector */
-        .server-selector {
-            display: flex;
-            gap: 10px;
-            padding: 16px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        @media (min-width: 1024px) {
-            .server-selector {
-                padding: 20px 0;
-            }
-        }
-
-        .server-btn {
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: transparent;
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .server-btn.active {
-            background: var(--accent-green);
-            border-color: var(--accent-green);
-            color: white;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
-        }
-
-        .server-btn:hover:not(.active) {
-            border-color: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .server-status {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        /* Event Info */
-        .event-info {
-            padding: 0 16px 16px;
-        }
-
-        @media (min-width: 1024px) {
-            .event-info {
-                padding: 0 0 20px;
-            }
-        }
-
-        .event-info-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .event-info-card:hover {
-            transform: scale(1.01);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .event-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .event-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .event-meta {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .meta-item i {
-            color: var(--accent-red);
-        }
-
-        /* Side Panel */
-        .side-panel {
-            background: var(--bg-secondary);
-            border-radius: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px);
-        }
-
-        @media (min-width: 1024px) {
-            .side-panel {
-                flex: 0 0 30%;
-                height: calc(100vh - 104px);
-                border-radius: var(--radius-lg);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            background: var(--bg-card);
-            padding: 8px;
-            gap: 8px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px 16px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .tab-btn.active {
-            background: var(--accent-red);
-            color: white;
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
-        }
-
-        .tab-btn:hover:not(.active) {
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .tab-pane {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .tab-pane.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Chat */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .chat-message {
-            display: flex;
-            gap: 12px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--gradient-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .chat-bubble {
-            background: var(--bg-card);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            border-top-left-radius: 4px;
-            max-width: 85%;
-        }
-
-        .chat-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent-red);
-            margin-bottom: 4px;
-        }
-
-        .chat-text {
-            font-size: 14px;
-            color: var(--text-primary);
-            line-height: 1.5;
-        }
-
-        .chat-time {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .chat-input-container {
-            padding: 16px;
-            background: var(--bg-card);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .chat-input-wrapper {
-            display: flex;
-            gap: 12px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            padding: 8px;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 10px 12px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 14px;
-        }
-
-        .chat-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .chat-input:focus {
-            outline: none;
-        }
-
-        .chat-send-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-sm);
-            border: none;
-            background: var(--gradient-red);
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chat-send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4);
-        }
-
-        /* Lineup */
-        .lineup-container {
-            padding: 16px;
-        }
-
-        .lineup-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .lineup-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .lineup-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .lineup-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-
-        .lineup-photo {
-            aspect-ratio: 3/4;
-            background: var(--bg-secondary);
-            overflow: hidden;
-        }
-
-        .lineup-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .lineup-card:hover .lineup-photo img {
-            transform: scale(1.1);
-        }
-
-        .lineup-name {
-            padding: 12px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Mobile Tab Navigation */
-        .mobile-tabs {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: rgba(11, 18, 32, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 1000;
-        }
-
-        @media (max-width: 1023px) {
-            .mobile-tabs {
-                display: flex;
-            }
-            
-            .side-panel {
-                display: none;
-                position: fixed;
-                top: 60px;
-                left: 0;
-                right: 0;
-                bottom: 60px;
-                z-index: 100;
-            }
-            
-            .side-panel.active {
-                display: flex;
-            }
-            
-            .room-container {
-                padding-bottom: 60px;
-            }
-        }
-
-        .mobile-tab-btn {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-tab-btn.active {
-            color: var(--accent-red);
-        }
-
-        .mobile-tab-btn i {
-            font-size: 20px;
-        }
-
-        /* Exit Button */
-        .exit-btn {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--gradient-red);
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4);
-            z-index: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        @media (min-width: 1024px) {
-            .exit-btn {
-                display: none;
-            }
-        }
-
-        .exit-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /* Loading */
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader {
-            text-align: center;
-        }
-
-        .loader-icon {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(225, 29, 72, 0.2);
-            border-top-color: var(--accent-red);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loader-text {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* Connection Status */
-        .connection-status {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .connection-status.show {
-            opacity: 1;
-        }
-
-        .connection-status.connecting {
-            color: var(--accent-gold);
-        }
-
-        .connection-status.connected {
-            color: var(--accent-green);
-        }
-
-        .connection-status.error {
-            color: var(--accent-red);
-        }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 3000;
-        }
-
-        .toast {
-            background: var(--bg-card);
-            padding: 16px 20px;
-            border-radius: var(--radius-md);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 4px solid var(--accent-green);
-            margin-bottom: 12px;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            border-left-color: var(--accent-red);
-        }
-
-        .empty-lineup {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
-        }
-
-        .empty-lineup i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        .slide-up { animation: slideUp 0.4s ease-out; }
+        .slide-left { animation: slideLeft 0.3s ease-out; }
+        .scale-in { animation: scaleIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pulse-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .pulse-live { animation: pulse-live 1.5s infinite; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); }
+        .chat-bubble { animation: slideUp 0.2s ease-out; }
+        .connection-connected { border-color: #22c55e !important; }
+        .connection-connecting { border-color: #eab308 !important; }
+        .connection-failed { border-color: #ef4444 !important; }
+        .video-glow-connected { box-shadow: 0 0 30px rgba(34, 197, 94, 0.15); }
+        .video-glow-connecting { box-shadow: 0 0 30px rgba(234, 179, 8, 0.15); }
+        .video-glow-failed { box-shadow: 0 0 30px rgba(239, 68, 68, 0.15); }
     </style>
 </head>
-<body>
-    <!-- Loading -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader">
-            <div class="loader-icon"></div>
-            <div class="loader-text">Menghubungkan ke Live...</div>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header class="room-header">
-        <button class="back-btn" onclick="exitRoom()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="room-header-title" id="roomTitle">Loading...</div>
-        <div class="header-live-badge">
-            <span>LIVE</span>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 glass z-50 border-b border-gray-100">
+        <div class="flex items-center justify-between px-4 py-3">
+            <button onclick="exitRoom()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-white rounded-full pulse-live"></span>
+                    LIVE
+                </span>
+                <div class="flex items-center gap-1.5 bg-gray-100 px-2.5 py-1 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
+                    </svg>
+                    <span id="mobileViewerCount" class="text-sm font-semibold text-gray-700">0</span>
+                </div>
+            </div>
+            <button onclick="toggleMobilePanel()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-colors">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+            </button>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <div class="room-container">
-        <!-- Video Section -->
-        <div class="video-section">
-            <div class="video-container" id="videoContainer">
-                <video id="remoteVideo" autoplay playsinline></video>
-                <video id="localVideo" autoplay playsinline muted style="display: none;"></video>
-                
-                <div class="video-live-badge">
-                    <i class="fas fa-circle"></i>
-                    LIVE
-                </div>
-                
-                <div class="video-viewers" id="viewerCount">
-                    <i class="fas fa-eye"></i>
-                    <span>0</span>
-                </div>
-
-                <div class="connection-status" id="connectionStatus">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    Menghubungkan...
-                </div>
-
-                <div class="video-controls">
-                    <div class="video-controls-inner">
-                        <button class="control-btn" id="muteBtn" onclick="toggleMute()">
-                            <i class="fas fa-volume-up"></i>
-                        </button>
-                        <button class="control-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
-                            <i class="fas fa-expand"></i>
-                        </button>
+    <!-- Main Layout -->
+    <div class="lg:flex min-h-screen">
+        <!-- Sidebar Desktop -->
+        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-40">
+            <div class="p-5 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200/50">
+                        <span class="text-white font-extrabold">48</span>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-gray-800">ikazz - 48</h1>
+                        <p class="text-xs text-gray-400">Live Stage</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Server Selector -->
-            <div class="server-selector">
-                <button class="server-btn active" data-server="1">
-                    <span class="server-status"></span>
-                    Server 1 (Utama)
-                </button>
-                <button class="server-btn" data-server="2">
-                    <span class="server-status"></span>
-                    Server 2 (Backup)
-                </button>
-                <button class="server-btn" data-server="3">
-                    <span class="server-status"></span>
-                    Server 3 (Backup)
-                </button>
-            </div>
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span class="font-medium">Home</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="font-medium">Jadwal</span>
+                </a>
+                <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-100">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <span class="font-semibold">Live Stage</span>
+                </div>
+                <a href="#" onclick="showLineupSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span class="font-medium">Lineup</span>
+                </a>
+            </nav>
 
-            <!-- Event Info -->
-            <div class="event-info">
-                <div class="event-info-card">
-                    <h1 class="event-title" id="eventTitle">Loading...</h1>
-                    <p class="event-subtitle" id="eventSubtitle">JKT48 Live Streaming</p>
-                    <div class="event-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-eye"></i>
-                            <span id="metaViewers">0 penonton</span>
+            <!-- Connection Status -->
+            <div class="p-4 border-t border-gray-100">
+                <div class="bg-gray-50 rounded-xl p-3 mb-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div id="connectionDot" class="w-2.5 h-2.5 bg-gray-400 rounded-full"></div>
+                        <span id="connectionText" class="text-sm text-gray-500 font-medium">Menghubungkan...</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-white rounded-lg p-2 text-center">
+                            <p class="text-gray-400">Latency</p>
+                            <p id="latencyText" class="font-mono font-semibold text-gray-700">--ms</p>
                         </div>
-                        <div class="meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span id="metaDuration">00:00:00</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-signal"></i>
-                            <span id="metaQuality">HD</span>
+                        <div class="bg-white rounded-lg p-2 text-center">
+                            <p class="text-gray-400">Quality</p>
+                            <p id="qualityText" class="font-mono font-semibold text-gray-700">--p</p>
                         </div>
                     </div>
                 </div>
+                <button onclick="exitRoom()" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 border border-red-100 rounded-xl text-red-600 font-semibold transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    Keluar
+                </button>
             </div>
-        </div>
+        </aside>
 
-        <!-- Side Panel -->
-        <div class="side-panel" id="sidePanel">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="chat">
-                    <i class="fas fa-comments"></i> Live Chat
-                </button>
-                <button class="tab-btn" data-tab="lineup">
-                    <i class="fas fa-users"></i> Lineup
-                </button>
-            </div>
-            
-            <div class="tab-content">
-                <!-- Chat Tab -->
-                <div class="tab-pane active" id="chatPane">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages">
-                            <!-- Messages will be loaded here -->
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 lg:mr-96 pt-16 lg:pt-0">
+            <div class="p-4 lg:p-6">
+                <!-- Video Container -->
+                <div id="videoContainer" class="relative bg-gray-900 rounded-2xl lg:rounded-3xl overflow-hidden border-4 border-gray-200 transition-all duration-500 aspect-video video-glow-connecting">
+                    <video id="remoteVideo" autoplay playsinline class="w-full h-full object-contain bg-black"></video>
+                    
+                    <!-- Loading Overlay -->
+                    <div id="loadingOverlay" class="absolute inset-0 bg-gray-900/95 flex flex-col items-center justify-center">
+                        <div class="relative mb-6">
+                            <div class="w-20 h-20 border-4 border-emerald-500/20 rounded-full"></div>
+                            <div class="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-emerald-500 rounded-full animate-spin"></div>
                         </div>
-                        <div class="chat-input-container">
-                            <div class="chat-input-wrapper">
-                                <input type="text" class="chat-input" id="chatInput" placeholder="Tulis pesan...">
-                                <button class="chat-send-btn" onclick="sendChat()">
-                                    <i class="fas fa-paper-plane"></i>
+                        <p class="text-white font-semibold text-lg mb-1">Menghubungkan ke Stream</p>
+                        <p class="text-gray-400 text-sm" id="loadingStatus">Menyiapkan koneksi...</p>
+                    </div>
+
+                    <!-- Reconnect Overlay -->
+                    <div id="reconnectOverlay" class="absolute inset-0 bg-gray-900/95 hidden flex-col items-center justify-center">
+                        <div class="text-center max-w-sm mx-auto px-6">
+                            <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-white text-xl font-bold mb-2">Koneksi Terputus</h3>
+                            <p class="text-gray-400 mb-6">Mencoba menghubungkan kembali dalam</p>
+                            <p class="text-emerald-400 font-mono text-4xl font-bold mb-6" id="reconnectCountdown">5</p>
+                            <button onclick="manualReconnect()" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                                Hubungkan Sekarang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video Overlay Controls -->
+                    <div class="absolute top-4 left-4 flex items-center gap-2">
+                        <span class="px-3 py-1.5 bg-red-500 text-white text-sm font-bold rounded-lg flex items-center gap-2 shadow-lg">
+                            <span class="w-2 h-2 bg-white rounded-full pulse-live"></span>
+                            LIVE
+                        </span>
+                        <span id="streamDurationBadge" class="px-3 py-1.5 bg-black/60 text-white text-sm font-mono rounded-lg">00:00:00</span>
+                    </div>
+
+                    <div class="absolute top-4 right-4 flex items-center gap-2">
+                        <div class="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-lg">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
+                            </svg>
+                            <span id="viewerCount" class="text-white font-semibold">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Controls -->
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-12">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleMute()" id="muteBtn" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                                    <svg id="volumeIcon" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                    </svg>
+                                </button>
+                                <div class="hidden md:flex items-center gap-2 text-white/80 text-sm">
+                                    <span id="bitrateValue" class="font-mono">-- kbps</span>
+                                    <span class="text-white/40">•</span>
+                                    <span id="fpsValue" class="font-mono">-- fps</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="togglePiP()" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                    </svg>
+                                </button>
+                                <button onclick="toggleFullscreen()" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Lineup Tab -->
-                <div class="tab-pane" id="lineupPane">
-                    <div class="lineup-container">
-                        <div class="lineup-grid" id="lineupGrid">
-                            <!-- Lineup will be loaded here -->
+
+                <!-- Server Switch -->
+                <div class="mt-4 flex items-center justify-center gap-3">
+                    <span class="text-sm text-gray-500 font-medium">Server:</span>
+                    <div class="flex bg-gray-100 rounded-full p-1">
+                        <button onclick="switchServer(1)" id="server1Btn" class="px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all">
+                            Server 1
+                        </button>
+                        <button onclick="switchServer(2)" id="server2Btn" class="px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all">
+                            Server 2
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stream Info Card -->
+                <div class="mt-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200/50 flex-shrink-0">
+                            <span class="text-white font-extrabold text-2xl">48</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1 flex-wrap">
+                                <h2 id="streamTitle" class="font-bold text-gray-800 text-xl">Loading...</h2>
+                                <span class="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded">LIVE</span>
+                            </div>
+                            <p id="streamSubtitle" class="text-gray-500 mb-3">-</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-400 flex-wrap">
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
+                                    </svg>
+                                    <span id="viewerCount2">0 penonton</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span id="streamDuration">00:00:00</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <p id="streamDescription" class="text-gray-600 text-sm leading-relaxed">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Connection Stats (Collapsible) -->
+                <div class="mt-4">
+                    <button onclick="toggleStats()" class="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                        <span class="text-sm font-semibold text-gray-600 flex items-center gap-2">
+                            <span>📊</span>
+                            Connection Stats
+                        </span>
+                        <svg id="statsArrow" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="statsPanel" class="hidden mt-2 bg-white rounded-xl p-4 border border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="bg-gray-50 rounded-xl p-3 text-center">
+                            <p class="text-xs text-gray-400 mb-1">Connection</p>
+                            <p id="statConnection" class="font-mono text-sm font-semibold text-gray-700">-</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 text-center">
+                            <p class="text-xs text-gray-400 mb-1">ICE State</p>
+                            <p id="statIce" class="font-mono text-sm font-semibold text-gray-700">-</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 text-center">
+                            <p class="text-xs text-gray-400 mb-1">Bitrate</p>
+                            <p id="statBitrate" class="font-mono text-sm font-semibold text-gray-700">-</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 text-center">
+                            <p class="text-xs text-gray-400 mb-1">Packet Loss</p>
+                            <p id="statPacketLoss" class="font-mono text-sm font-semibold text-gray-700">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel Desktop -->
+        <aside id="rightPanel" class="fixed right-0 top-0 bottom-0 w-96 bg-white border-l border-gray-100 hidden lg:flex flex-col z-30">
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-100">
+                <button onclick="switchRightTab('chat')" id="chatTab" class="flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2">
+                    💬 Live Chat
+                </button>
+                <button onclick="switchRightTab('lineup')" id="lineupTab" class="flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2">
+                    👥 Lineup
+                </button>
+            </div>
+
+            <!-- Chat Panel -->
+            <div id="chatPanel" class="flex-1 flex flex-col">
+                <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
+                    <div class="text-center py-8">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-2xl">💬</span>
+                        </div>
+                        <p class="text-gray-400 text-sm">Mulai percakapan!</p>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="p-4 border-t border-gray-100 bg-gray-50">
+                    <div id="slowModeIndicator" class="hidden mb-3 px-4 py-2 bg-amber-50 text-amber-700 text-sm rounded-xl flex items-center gap-2">
+                        <span>⏱</span>
+                        <span>Slow mode aktif</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleEmoji()" class="w-11 h-11 flex items-center justify-center hover:bg-gray-200 rounded-xl transition-colors">
+                            <span class="text-xl">😊</span>
+                        </button>
+                        <input type="text" id="chatInput" placeholder="Tulis pesan..." 
+                            class="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all"
+                            onkeypress="if(event.key==='Enter')sendMessage()">
+                        <button onclick="sendMessage()" class="w-11 h-11 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl flex items-center justify-center hover:shadow-lg hover:shadow-emerald-200/50 transition-all hover:scale-105">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Emoji Picker -->
+                    <div id="emojiPicker" class="hidden mt-3 p-3 bg-white border border-gray-200 rounded-xl grid grid-cols-8 gap-1">
+                        <button onclick="addEmoji('😊')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">😊</button>
+                        <button onclick="addEmoji('❤️')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">❤️</button>
+                        <button onclick="addEmoji('🔥')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🔥</button>
+                        <button onclick="addEmoji('👏')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">👏</button>
+                        <button onclick="addEmoji('💯')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💯</button>
+                        <button onclick="addEmoji('🎉')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🎉</button>
+                        <button onclick="addEmoji('😂')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">😂</button>
+                        <button onclick="addEmoji('🥰')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🥰</button>
+                        <button onclick="addEmoji('✨')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">✨</button>
+                        <button onclick="addEmoji('💕')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💕</button>
+                        <button onclick="addEmoji('👍')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">👍</button>
+                        <button onclick="addEmoji('🙏')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🙏</button>
+                        <button onclick="addEmoji('💪')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💪</button>
+                        <button onclick="addEmoji('🌟')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🌟</button>
+                        <button onclick="addEmoji('💖')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💖</button>
+                        <button onclick="addEmoji('🤩')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🤩</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lineup Panel -->
+            <div id="lineupPanel" class="hidden flex-1 overflow-y-auto p-4 scrollbar-thin">
+                <div id="lineupGrid" class="grid grid-cols-2 gap-3">
+                    <!-- Members loaded here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Panel -->
+        <div id="mobilePanel" class="fixed inset-0 bg-black/50 z-50 hidden lg:hidden" onclick="closeMobilePanel(event)">
+            <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[75vh] flex flex-col slide-up" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-center py-3">
+                    <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+                </div>
+                <div class="flex border-b border-gray-100">
+                    <button onclick="switchMobileTab('chat')" id="mChatTab" class="flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500">💬 Chat</button>
+                    <button onclick="switchMobileTab('lineup')" id="mLineupTab" class="flex-1 py-3 text-sm font-semibold text-gray-400">👥 Lineup</button>
+                </div>
+                
+                <div id="mChatContent" class="flex-1 flex flex-col overflow-hidden">
+                    <div id="mobileChatMessages" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+                    <div class="p-4 border-t border-gray-100 bg-gray-50">
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="mobileChatInput" placeholder="Tulis pesan..." 
+                                class="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
+                                onkeypress="if(event.key==='Enter')sendMessage()">
+                            <button onclick="sendMessage()" class="w-11 h-11 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="mLineupContent" class="hidden flex-1 overflow-y-auto p-4">
+                    <div id="mobileLineupGrid" class="grid grid-cols-3 gap-3"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Tabs -->
-    <div class="mobile-tabs">
-        <button class="mobile-tab-btn active" data-mobile-tab="video" onclick="showMobileTab('video')">
-            <i class="fas fa-play"></i>
-            <span>Video</span>
-        </button>
-        <button class="mobile-tab-btn" data-mobile-tab="chat" onclick="showMobileTab('chat')">
-            <i class="fas fa-comments"></i>
-            <span>Chat</span>
-        </button>
-        <button class="mobile-tab-btn" data-mobile-tab="lineup" onclick="showMobileTab('lineup')">
-            <i class="fas fa-users"></i>
-            <span>Lineup</span>
-        </button>
+    <!-- Member Modal -->
+    <div id="memberModal" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center p-4" onclick="closeMemberModal()">
+        <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden scale-in" onclick="event.stopPropagation()">
+            <div class="h-24 bg-gradient-to-br from-emerald-400 to-teal-500 relative">
+                <button onclick="closeMemberModal()" class="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="px-6 pb-6 -mt-12 text-center">
+                <img id="modalMemberPhoto" src="" alt="" class="w-24 h-24 rounded-full object-cover mx-auto border-4 border-white shadow-xl mb-3">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                    <h3 id="modalMemberName" class="text-xl font-bold text-gray-800"></h3>
+                    <span id="modalMemberStatus" class="w-3 h-3 rounded-full"></span>
+                </div>
+                <p id="modalMemberInfo" class="text-gray-500 text-sm mb-4"></p>
+                <button onclick="closeMemberModal()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold">❤️ Follow</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Exit Button (Mobile) -->
-    <button class="exit-btn" onclick="exitRoom()" title="Keluar">
-        <i class="fas fa-sign-out-alt"></i>
-    </button>
+    <!-- Toast -->
+    <div id="toast" class="fixed top-20 lg:top-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 z-[70] transform -translate-y-full opacity-0 transition-all duration-300">
+        <div id="toastIcon" class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"></div>
+        <div class="flex-1 min-w-0">
+            <p id="toastTitle" class="font-bold text-gray-800"></p>
+            <p id="toastMessage" class="text-sm text-gray-500"></p>
+        </div>
+    </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
     <script>
         // Firebase Configuration
@@ -1011,486 +458,588 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // State
-        let roomId = null;
-        let roomData = null;
-        let peerConnection = null;
-        let remoteStream = null;
-        let startTime = null;
-        let durationInterval = null;
-        let currentUser = null;
-        let isMuted = false;
-        let unsubscribeRoom = null;
-        let unsubscribeChat = null;
-        let unsubscribeSignaling = null;
-
-        // ICE Servers
-        const iceServers = {
+        // WebRTC Config
+        const servers = {
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
                 { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' },
-                { urls: 'stun:stun4.l.google.com:19302' }
-            ]
+                { urls: 'stun:stun3.l.google.com:19302' }
+            ],
+            iceCandidatePoolSize: 10
         };
+
+        // State
+        let pc = null;
+        let roomId = null;
+        let viewerId = null;
+        let reconnectAttempts = 0;
+        let reconnectInterval = null;
+        let statsInterval = null;
+        let durationInterval = null;
+        let streamStartTime = null;
+        let currentServer = 1;
+        let isMuted = false;
+        let lastBytesReceived = 0;
+        let unsubscribers = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             roomId = urlParams.get('id');
-            
+
             if (!roomId) {
                 showToast('error', 'Error', 'Room tidak ditemukan');
                 setTimeout(() => window.location.href = 'index.html', 2000);
                 return;
             }
 
-            await checkUserSession();
-            await loadRoom();
-            initTabs();
-            initChatInput();
-            
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').classList.add('hidden');
-            }, 1500);
+            viewerId = getDeviceId();
+            await loadRoomInfo();
+            await initializeViewer();
+            loadMembers();
+            loadChat();
+            startDurationCounter();
         });
 
-        // Check user session
-        async function checkUserSession() {
-            const session = localStorage.getItem('ikazz_session');
-            if (session) {
-                try {
-                    const sessionData = JSON.parse(session);
-                    const memberDoc = await db.collection('members').doc(sessionData.memberId).get();
-                    if (memberDoc.exists) {
-                        currentUser = { id: memberDoc.id, ...memberDoc.data() };
-                    }
-                } catch (error) {
-                    console.error('Session error:', error);
-                }
-            }
-        }
-
-        // Load room
-        async function loadRoom() {
-            try {
-                unsubscribeRoom = db.collection('rooms').doc(roomId).onSnapshot(async (doc) => {
-                    if (!doc.exists) {
-                        showToast('error', 'Error', 'Room tidak ditemukan');
-                        setTimeout(() => window.location.href = 'index.html', 2000);
-                        return;
-                    }
-
-                    roomData = { id: doc.id, ...doc.data() };
-                    updateRoomUI();
-                    
-                    if (!roomData.isLive) {
-                        showConnectionStatus('error', 'Live streaming telah berakhir');
-                        setTimeout(() => window.location.href = 'index.html', 3000);
-                        return;
-                    }
-
-                    // Connect to stream
-                    if (!peerConnection) {
-                        await connectToStream();
-                    }
-                });
-
-                // Load chat
-                loadChat();
-                
-                // Increment viewer count
-                incrementViewers();
-
-            } catch (error) {
-                console.error('Error loading room:', error);
-                showToast('error', 'Error', 'Gagal memuat room');
-            }
-        }
-
-        // Update room UI
-        function updateRoomUI() {
-            document.getElementById('roomTitle').textContent = roomData.title;
-            document.getElementById('eventTitle').textContent = roomData.title;
-            document.getElementById('eventSubtitle').textContent = roomData.subtitle || 'JKT48 Live Streaming';
-            document.getElementById('viewerCount').querySelector('span').textContent = roomData.viewers || 0;
-            document.getElementById('metaViewers').textContent = `${roomData.viewers || 0} penonton`;
-
-            // Load lineup
-            loadLineup();
-            
-            // Start duration counter
-            if (roomData.startedAt && !durationInterval) {
-                startTime = roomData.startedAt.toDate();
-                updateDuration();
-                durationInterval = setInterval(updateDuration, 1000);
-            }
-        }
-
-        // Connect to stream
-        async function connectToStream() {
-            showConnectionStatus('connecting', 'Menghubungkan ke stream...');
-
-            try {
-                peerConnection = new RTCPeerConnection(iceServers);
-
-                peerConnection.ontrack = (event) => {
-                    console.log('Track received:', event.track.kind);
-                    const remoteVideo = document.getElementById('remoteVideo');
-                    if (event.streams && event.streams[0]) {
-                        remoteVideo.srcObject = event.streams[0];
-                        remoteStream = event.streams[0];
-                        showConnectionStatus('connected', 'Terhubung');
-                        setTimeout(() => hideConnectionStatus(), 2000);
-                    }
-                };
-
-                peerConnection.onicecandidate = async (event) => {
-                    if (event.candidate) {
-                        const viewerId = getDeviceId();
-                        await db.collection('rooms').doc(roomId)
-                            .collection('viewerCandidates')
-                            .doc(viewerId)
-                            .collection('candidates')
-                            .add(event.candidate.toJSON());
-                    }
-                };
-
-                peerConnection.onconnectionstatechange = () => {
-                    console.log('Connection state:', peerConnection.connectionState);
-                    if (peerConnection.connectionState === 'connected') {
-                        showConnectionStatus('connected', 'Terhubung');
-                        setTimeout(() => hideConnectionStatus(), 2000);
-                    } else if (peerConnection.connectionState === 'failed') {
-                        showConnectionStatus('error', 'Koneksi gagal, mencoba ulang...');
-                        reconnect();
-                    }
-                };
-
-                peerConnection.oniceconnectionstatechange = () => {
-                    console.log('ICE state:', peerConnection.iceConnectionState);
-                };
-
-                // Add transceivers for receiving
-                peerConnection.addTransceiver('video', { direction: 'recvonly' });
-                peerConnection.addTransceiver('audio', { direction: 'recvonly' });
-
-                // Create and send offer
-                const offer = await peerConnection.createOffer();
-                await peerConnection.setLocalDescription(offer);
-
-                const viewerId = getDeviceId();
-                
-                // Save viewer's offer
-                await db.collection('rooms').doc(roomId)
-                    .collection('viewers')
-                    .doc(viewerId)
-                    .set({
-                        offer: {
-                            type: offer.type,
-                            sdp: offer.sdp
-                        },
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                // Listen for answer from broadcaster
-                unsubscribeSignaling = db.collection('rooms').doc(roomId)
-                    .collection('viewers')
-                    .doc(viewerId)
-                    .onSnapshot(async (doc) => {
-                        const data = doc.data();
-                        if (data && data.answer && !peerConnection.currentRemoteDescription) {
-                            console.log('Answer received');
-                            const answer = new RTCSessionDescription(data.answer);
-                            await peerConnection.setRemoteDescription(answer);
-                        }
-                    });
-
-                // Listen for broadcaster's ICE candidates
-                db.collection('rooms').doc(roomId)
-                    .collection('broadcasterCandidates')
-                    .doc(viewerId)
-                    .collection('candidates')
-                    .onSnapshot((snapshot) => {
-                        snapshot.docChanges().forEach(async (change) => {
-                            if (change.type === 'added') {
-                                const candidate = new RTCIceCandidate(change.doc.data());
-                                await peerConnection.addIceCandidate(candidate);
-                            }
-                        });
-                    });
-
-            } catch (error) {
-                console.error('Connection error:', error);
-                showConnectionStatus('error', 'Gagal terhubung');
-            }
-        }
-
-        // Reconnect
-        async function reconnect() {
-            if (peerConnection) {
-                peerConnection.close();
-                peerConnection = null;
-            }
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            await connectToStream();
-        }
-
-        // Get device ID
         function getDeviceId() {
-            let deviceId = localStorage.getItem('device_id');
+            let deviceId = localStorage.getItem('deviceId');
             if (!deviceId) {
                 deviceId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('device_id', deviceId);
+                localStorage.setItem('deviceId', deviceId);
             }
             return deviceId;
         }
 
-        // Increment viewers
-        async function incrementViewers() {
+        // Room Info
+        async function loadRoomInfo() {
+            const unsub = db.collection('rooms').doc(roomId).onSnapshot(doc => {
+                if (doc.exists) {
+                    const room = doc.data();
+                    document.getElementById('streamTitle').textContent = room.title || 'Live Stream';
+                    document.getElementById('streamSubtitle').textContent = room.subtitle || '';
+                    document.getElementById('streamDescription').textContent = room.description || 'Tidak ada deskripsi';
+                    
+                    const count = room.viewerCount || 0;
+                    document.getElementById('viewerCount').textContent = count;
+                    document.getElementById('viewerCount2').textContent = count + ' penonton';
+                    document.getElementById('mobileViewerCount').textContent = count;
+
+                    streamStartTime = room.startedAt?.toDate() || new Date();
+
+                    if (!room.isLive) {
+                        showReconnectOverlay();
+                        document.getElementById('reconnectCountdown').textContent = 'Offline';
+                    }
+                }
+            });
+            unsubscribers.push(unsub);
+        }
+
+        // WebRTC Viewer
+        async function initializeViewer() {
             try {
-                await db.collection('rooms').doc(roomId).update({
-                    viewers: firebase.firestore.FieldValue.increment(1)
-                });
-            } catch (error) {
-                console.error('Error incrementing viewers:', error);
-            }
-        }
+                updateConnectionUI('connecting');
+                updateLoadingStatus('Membuat koneksi peer...');
 
-        // Decrement viewers
-        async function decrementViewers() {
-            try {
-                await db.collection('rooms').doc(roomId).update({
-                    viewers: firebase.firestore.FieldValue.increment(-1)
-                });
-            } catch (error) {
-                console.error('Error decrementing viewers:', error);
-            }
-        }
+                pc = new RTCPeerConnection(servers);
 
-        // Load lineup
-        function loadLineup() {
-            const lineupGrid = document.getElementById('lineupGrid');
-            const lineup = roomData.lineup || [];
+                pc.ontrack = (event) => {
+                    const video = document.getElementById('remoteVideo');
+                    if (event.streams && event.streams[0]) {
+                        video.srcObject = event.streams[0];
+                    }
+                };
 
-            if (lineup.length === 0) {
-                lineupGrid.innerHTML = `
-                    <div class="empty-lineup" style="grid-column: 1/-1;">
-                        <i class="fas fa-users"></i>
-                        <p>Belum ada lineup</p>
-                    </div>
-                `;
-                return;
-            }
+                pc.onconnectionstatechange = () => {
+                    updateConnectionUI(pc.connectionState);
+                    if (pc.connectionState === 'connected') {
+                        hideLoadingOverlay();
+                        startStatsMonitoring();
+                        incrementViewerCount();
+                        showToast('success', 'Terhubung', 'Stream berhasil dimuat');
+                    } else if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+                        showReconnectOverlay();
+                        startReconnect();
+                    }
+                };
 
-            lineupGrid.innerHTML = lineup.map(member => `
-                <div class="lineup-card">
-                    <div class="lineup-photo">
-                        <img src="${member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=E11D48&color=fff'}" alt="${member.name}">
-                    </div>
-                    <div class="lineup-name">${member.name}</div>
-                </div>
-            `).join('');
-        }
+                pc.oniceconnectionstatechange = () => {
+                    document.getElementById('statIce').textContent = pc.iceConnectionState;
+                };
 
-        // Load chat
-        function loadChat() {
-            const chatMessages = document.getElementById('chatMessages');
-            
-            unsubscribeChat = db.collection('rooms').doc(roomId)
-                .collection('messages')
-                .orderBy('timestamp', 'asc')
-                .limitToLast(100)
-                .onSnapshot((snapshot) => {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === 'added') {
-                            const message = change.doc.data();
-                            appendChatMessage(message);
+                updateLoadingStatus('Mengambil stream...');
+                const roomDoc = await db.collection('rooms').doc(roomId).get();
+                
+                if (!roomDoc.exists) {
+                    showToast('error', 'Error', 'Room tidak ditemukan');
+                    return;
+                }
+
+                const roomData = roomDoc.data();
+                
+                if (!roomData.offer) {
+                    updateLoadingStatus('Menunggu broadcaster...');
+                    const unsub = db.collection('rooms').doc(roomId).onSnapshot(async (snapshot) => {
+                        const data = snapshot.data();
+                        if (data?.offer && pc.signalingState === 'stable') {
+                            await processOffer(data.offer);
+                            unsub();
                         }
                     });
-                });
+                    unsubscribers.push(unsub);
+                    return;
+                }
+
+                await processOffer(roomData.offer);
+            } catch (error) {
+                console.error('Viewer initialization error:', error);
+                showToast('error', 'Error', 'Gagal menghubungkan ke stream');
+            }
         }
 
-        // Append chat message
-        function appendChatMessage(message) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageEl = document.createElement('div');
-            messageEl.className = 'chat-message';
-            
-            const time = message.timestamp ? new Date(message.timestamp.toDate()).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
-            
-            messageEl.innerHTML = `
-                <div class="chat-avatar">${message.name.charAt(0).toUpperCase()}</div>
-                <div class="chat-bubble">
-                    <div class="chat-name">${message.name}</div>
-                    <div class="chat-text">${message.text}</div>
-                    <div class="chat-time">${time}</div>
+        async function processOffer(offer) {
+            try {
+                updateLoadingStatus('Memproses koneksi...');
+                await pc.setRemoteDescription(new RTCSessionDescription(offer));
+
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+
+                const viewerRef = db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId);
+                await viewerRef.set({
+                    answer: { type: answer.type, sdp: answer.sdp },
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                pc.onicecandidate = async (event) => {
+                    if (event.candidate) {
+                        await db.collection('rooms').doc(roomId)
+                            .collection('viewerCandidates').doc(viewerId)
+                            .collection('candidates').add(event.candidate.toJSON());
+                    }
+                };
+
+                const unsub = db.collection('rooms').doc(roomId)
+                    .collection('broadcasterCandidates').doc(viewerId)
+                    .collection('candidates').onSnapshot(snapshot => {
+                        snapshot.docChanges().forEach(async change => {
+                            if (change.type === 'added') {
+                                try {
+                                    await pc.addIceCandidate(new RTCIceCandidate(change.doc.data()));
+                                } catch (e) {}
+                            }
+                        });
+                    });
+                unsubscribers.push(unsub);
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // Connection UI
+        function updateConnectionUI(state) {
+            const container = document.getElementById('videoContainer');
+            const dot = document.getElementById('connectionDot');
+            const text = document.getElementById('connectionText');
+            document.getElementById('statConnection').textContent = state;
+
+            container.classList.remove('connection-connected', 'connection-connecting', 'connection-failed', 'video-glow-connected', 'video-glow-connecting', 'video-glow-failed');
+
+            switch(state) {
+                case 'connected':
+                    container.classList.add('connection-connected', 'video-glow-connected');
+                    dot.className = 'w-2.5 h-2.5 bg-emerald-500 rounded-full';
+                    text.textContent = 'Terhubung';
+                    text.className = 'text-sm text-emerald-600 font-medium';
+                    break;
+                case 'connecting':
+                case 'new':
+                    container.classList.add('connection-connecting', 'video-glow-connecting');
+                    dot.className = 'w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse';
+                    text.textContent = 'Menghubungkan...';
+                    text.className = 'text-sm text-yellow-600 font-medium';
+                    break;
+                default:
+                    container.classList.add('connection-failed', 'video-glow-failed');
+                    dot.className = 'w-2.5 h-2.5 bg-red-500 rounded-full';
+                    text.textContent = 'Terputus';
+                    text.className = 'text-sm text-red-600 font-medium';
+            }
+        }
+
+        function updateLoadingStatus(status) {
+            document.getElementById('loadingStatus').textContent = status;
+        }
+
+        function hideLoadingOverlay() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showReconnectOverlay() {
+            document.getElementById('reconnectOverlay').classList.remove('hidden');
+            document.getElementById('reconnectOverlay').classList.add('flex');
+        }
+
+        function hideReconnectOverlay() {
+            document.getElementById('reconnectOverlay').classList.add('hidden');
+        }
+
+        // Reconnection
+        function startReconnect() {
+            if (reconnectInterval) return;
+            let countdown = 5;
+            document.getElementById('reconnectCountdown').textContent = countdown;
+            reconnectInterval = setInterval(() => {
+                countdown--;
+                document.getElementById('reconnectCountdown').textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(reconnectInterval);
+                    reconnectInterval = null;
+                    manualReconnect();
+                }
+            }, 1000);
+        }
+
+        async function manualReconnect() {
+            if (reconnectInterval) {
+                clearInterval(reconnectInterval);
+                reconnectInterval = null;
+            }
+            hideReconnectOverlay();
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            if (pc) { pc.close(); pc = null; }
+            try { await db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId).delete(); } catch (e) {}
+            reconnectAttempts++;
+            if (reconnectAttempts > 5) {
+                showToast('error', 'Error', 'Gagal menghubungkan');
+                return;
+            }
+            await initializeViewer();
+        }
+
+        // Viewer Count
+        async function incrementViewerCount() {
+            try { await db.collection('rooms').doc(roomId).update({ viewerCount: firebase.firestore.FieldValue.increment(1) }); } catch (e) {}
+        }
+
+        async function decrementViewerCount() {
+            try { await db.collection('rooms').doc(roomId).update({ viewerCount: firebase.firestore.FieldValue.increment(-1) }); } catch (e) {}
+        }
+
+        // Stats Monitoring
+        function startStatsMonitoring() {
+            if (statsInterval) clearInterval(statsInterval);
+            statsInterval = setInterval(async () => {
+                if (!pc) return;
+                try {
+                    const stats = await pc.getStats();
+                    stats.forEach(report => {
+                        if (report.type === 'inbound-rtp' && report.kind === 'video') {
+                            const bytes = report.bytesReceived;
+                            const bitrate = Math.round((bytes - lastBytesReceived) * 8 / 1000);
+                            lastBytesReceived = bytes;
+                            document.getElementById('bitrateValue').textContent = bitrate + ' kbps';
+                            document.getElementById('statBitrate').textContent = bitrate + ' kbps';
+                            if (report.framesPerSecond) {
+                                document.getElementById('fpsValue').textContent = Math.round(report.framesPerSecond) + ' fps';
+                            }
+                            if (report.frameHeight) {
+                                document.getElementById('qualityText').textContent = report.frameHeight + 'p';
+                            }
+                            if (report.packetsLost !== undefined && report.packetsReceived) {
+                                const lossPercent = ((report.packetsLost / (report.packetsLost + report.packetsReceived)) * 100).toFixed(2);
+                                document.getElementById('statPacketLoss').textContent = lossPercent + '%';
+                            }
+                        }
+                        if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+                            if (report.currentRoundTripTime) {
+                                const latency = Math.round(report.currentRoundTripTime * 1000);
+                                document.getElementById('latencyText').textContent = latency + 'ms';
+                            }
+                        }
+                    });
+                } catch (e) {}
+            }, 1000);
+        }
+
+        // Duration Counter
+        function startDurationCounter() {
+            if (durationInterval) clearInterval(durationInterval);
+            durationInterval = setInterval(() => {
+                if (!streamStartTime) return;
+                const elapsed = Math.floor((Date.now() - streamStartTime.getTime()) / 1000);
+                const h = Math.floor(elapsed / 3600);
+                const m = Math.floor((elapsed % 3600) / 60);
+                const s = elapsed % 60;
+                const str = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                document.getElementById('streamDuration').textContent = str;
+                document.getElementById('streamDurationBadge').textContent = str;
+            }, 1000);
+        }
+
+        // Video Controls
+        function toggleMute() {
+            const video = document.getElementById('remoteVideo');
+            isMuted = !isMuted;
+            video.muted = isMuted;
+            const icon = document.getElementById('volumeIcon');
+            icon.innerHTML = isMuted 
+                ? '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>'
+                : '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+        }
+
+        function toggleFullscreen() {
+            const container = document.getElementById('videoContainer');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                container.requestFullscreen();
+            }
+        }
+
+        function togglePiP() {
+            const video = document.getElementById('remoteVideo');
+            if (document.pictureInPictureElement) {
+                document.exitPictureInPicture();
+            } else if (video.requestPictureInPicture) {
+                video.requestPictureInPicture();
+            }
+        }
+
+        // Server Switch
+        function switchServer(server) {
+            if (server === currentServer) return;
+            currentServer = server;
+            document.getElementById('server1Btn').className = server === 1 
+                ? 'px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all'
+                : 'px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all';
+            document.getElementById('server2Btn').className = server === 2
+                ? 'px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all'
+                : 'px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all';
+            showToast('info', 'Server', 'Berpindah ke Server ' + server);
+            manualReconnect();
+        }
+
+        // Stats Toggle
+        function toggleStats() {
+            const panel = document.getElementById('statsPanel');
+            const arrow = document.getElementById('statsArrow');
+            panel.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        // Chat
+        function loadChat() {
+            const unsub = db.collection('rooms').doc(roomId).collection('messages')
+                .orderBy('timestamp', 'asc').limitToLast(100)
+                .onSnapshot(snapshot => {
+                    const chatContainer = document.getElementById('chatMessages');
+                    const mobileChatContainer = document.getElementById('mobileChatMessages');
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            const msg = change.doc.data();
+                            const bubble = createChatBubble(msg);
+                            chatContainer.appendChild(bubble.cloneNode(true));
+                            mobileChatContainer.appendChild(bubble);
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                            mobileChatContainer.scrollTop = mobileChatContainer.scrollHeight;
+                        }
+                    });
+                    if (snapshot.size > 0) {
+                        const empty = chatContainer.querySelector('.text-center');
+                        if (empty) empty.remove();
+                    }
+                });
+            unsubscribers.push(unsub);
+        }
+
+        function createChatBubble(msg) {
+            const div = document.createElement('div');
+            div.className = 'chat-bubble';
+            const isAdmin = msg.isAdmin;
+            const time = msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
+            div.innerHTML = `
+                <div class="flex items-start gap-2.5 ${isAdmin ? 'bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-xl border border-emerald-100' : ''}">
+                    <div class="w-8 h-8 rounded-full ${isAdmin ? 'bg-gradient-to-br from-emerald-500 to-teal-500' : 'bg-gray-200'} flex items-center justify-center flex-shrink-0">
+                        <span class="text-xs ${isAdmin ? 'text-white' : 'text-gray-500'} font-bold">${(msg.sender || 'A')[0].toUpperCase()}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-semibold text-sm ${isAdmin ? 'text-emerald-700' : 'text-gray-700'}">${msg.sender || 'Anonymous'}</span>
+                            ${isAdmin ? '<span class="px-1.5 py-0.5 bg-emerald-500 text-white text-xs rounded font-medium">Admin</span>' : ''}
+                            <span class="text-xs text-gray-400">${time}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 break-words mt-0.5">${escapeHtml(msg.text)}</p>
+                    </div>
                 </div>
             `;
-            
-            chatMessages.appendChild(messageEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
         }
 
-        // Send chat
-        async function sendChat() {
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            
+            const mobileInput = document.getElementById('mobileChatInput');
+            const text = (input.value || mobileInput.value).trim();
             if (!text) return;
-            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
             try {
-                const userName = currentUser ? currentUser.name : 'Penonton';
-                
                 await db.collection('rooms').doc(roomId).collection('messages').add({
-                    name: userName,
-                    text: text,
+                    text,
+                    sender: currentUser.name || 'Anonymous',
+                    isAdmin: false,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
                 input.value = '';
+                mobileInput.value = '';
             } catch (error) {
-                console.error('Error sending message:', error);
                 showToast('error', 'Error', 'Gagal mengirim pesan');
             }
         }
 
-        // Init chat input
-        function initChatInput() {
-            document.getElementById('chatInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendChat();
-                }
-            });
+        function toggleEmoji() {
+            document.getElementById('emojiPicker').classList.toggle('hidden');
         }
 
-        // Update duration
-        function updateDuration() {
-            if (!startTime) return;
-            const now = new Date();
-            const diff = Math.floor((now - startTime) / 1000);
-            const hours = Math.floor(diff / 3600).toString().padStart(2, '0');
-            const minutes = Math.floor((diff % 3600) / 60).toString().padStart(2, '0');
-            const seconds = (diff % 60).toString().padStart(2, '0');
-            document.getElementById('metaDuration').textContent = `${hours}:${minutes}:${seconds}`;
+        function addEmoji(emoji) {
+            const input = document.getElementById('chatInput');
+            input.value += emoji;
+            input.focus();
         }
 
-        // Toggle mute
-        function toggleMute() {
-            const video = document.getElementById('remoteVideo');
-            const btn = document.getElementById('muteBtn');
-            
-            isMuted = !isMuted;
-            video.muted = isMuted;
-            
-            btn.innerHTML = `<i class="fas fa-volume-${isMuted ? 'mute' : 'up'}"></i>`;
-            btn.classList.toggle('active', isMuted);
-        }
-
-        // Toggle fullscreen
-        function toggleFullscreen() {
-            const container = document.getElementById('videoContainer');
-            
-            if (!document.fullscreenElement) {
-                container.requestFullscreen().catch(err => {
-                    console.error('Fullscreen error:', err);
-                });
+        // Tabs
+        function switchRightTab(tab) {
+            const chatTab = document.getElementById('chatTab');
+            const lineupTab = document.getElementById('lineupTab');
+            const chatPanel = document.getElementById('chatPanel');
+            const lineupPanel = document.getElementById('lineupPanel');
+            if (tab === 'chat') {
+                chatTab.className = 'flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2';
+                lineupTab.className = 'flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2';
+                chatPanel.classList.remove('hidden');
+                lineupPanel.classList.add('hidden');
             } else {
-                document.exitFullscreen();
+                lineupTab.className = 'flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2';
+                chatTab.className = 'flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2';
+                lineupPanel.classList.remove('hidden');
+                chatPanel.classList.add('hidden');
             }
         }
 
-        // Init tabs
-        function initTabs() {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tab = btn.dataset.tab;
-                    
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-                    
-                    btn.classList.add('active');
-                    document.getElementById(tab + 'Pane').classList.add('active');
+        // Members
+        function loadMembers() {
+            const unsub = db.collection('members').orderBy('order', 'asc').onSnapshot(snapshot => {
+                const grid = document.getElementById('lineupGrid');
+                const mobileGrid = document.getElementById('mobileLineupGrid');
+                grid.innerHTML = '';
+                mobileGrid.innerHTML = '';
+                snapshot.forEach((doc, index) => {
+                    const member = { id: doc.id, ...doc.data() };
+                    const card = createMemberCard(member, index);
+                    grid.appendChild(card.cloneNode(true));
+                    mobileGrid.appendChild(card);
                 });
             });
+            unsubscribers.push(unsub);
         }
 
-        // Show mobile tab
-        function showMobileTab(tab) {
-            document.querySelectorAll('.mobile-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`[data-mobile-tab="${tab}"]`).classList.add('active');
-            
-            const sidePanel = document.getElementById('sidePanel');
-            
-            if (tab === 'video') {
-                sidePanel.classList.remove('active');
-            } else {
-                sidePanel.classList.add('active');
-                
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-                
-                document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-                document.getElementById(tab + 'Pane').classList.add('active');
-            }
-        }
-
-        // Connection status
-        function showConnectionStatus(type, message) {
-            const status = document.getElementById('connectionStatus');
-            status.className = `connection-status show ${type}`;
-            status.innerHTML = `
-                <i class="fas fa-${type === 'connecting' ? 'spinner fa-spin' : type === 'connected' ? 'check-circle' : 'exclamation-circle'}"></i>
-                ${message}
+        function createMemberCard(member, index) {
+            const div = document.createElement('div');
+            div.className = 'bg-gray-50 rounded-xl p-3 text-center cursor-pointer hover:bg-gray-100 transition-all hover:scale-105 slide-up';
+            div.style.animationDelay = `${index * 0.05}s`;
+            div.onclick = () => openMemberModal(member);
+            div.innerHTML = `
+                <div class="relative inline-block mb-2">
+                    <img src="${member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=10b981&color=fff'}" 
+                        alt="${member.name}" class="w-14 h-14 rounded-full object-cover mx-auto border-2 border-white shadow">
+                    <span class="absolute bottom-0 right-0 w-3.5 h-3.5 ${member.isOnline ? 'bg-emerald-500' : 'bg-gray-400'} rounded-full border-2 border-white"></span>
+                </div>
+                <p class="text-sm font-medium text-gray-700 truncate">${member.name}</p>
             `;
+            return div;
         }
 
-        function hideConnectionStatus() {
-            document.getElementById('connectionStatus').classList.remove('show');
+        function openMemberModal(member) {
+            document.getElementById('modalMemberPhoto').src = member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=10b981&color=fff&size=200';
+            document.getElementById('modalMemberName').textContent = member.name;
+            document.getElementById('modalMemberStatus').className = `w-3 h-3 rounded-full ${member.isOnline ? 'bg-emerald-500' : 'bg-gray-400'}`;
+            document.getElementById('modalMemberInfo').textContent = member.info || 'Member';
+            document.getElementById('memberModal').classList.remove('hidden');
+            document.getElementById('memberModal').classList.add('flex');
         }
 
-        // Exit room
-        async function exitRoom() {
-            // Cleanup
-            if (peerConnection) {
-                peerConnection.close();
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.add('hidden');
+        }
+
+        // Mobile Panel
+        function toggleMobilePanel() {
+            document.getElementById('mobilePanel').classList.remove('hidden');
+        }
+
+        function closeMobilePanel(e) {
+            if (e.target.id === 'mobilePanel') {
+                document.getElementById('mobilePanel').classList.add('hidden');
             }
-            if (unsubscribeRoom) unsubscribeRoom();
-            if (unsubscribeChat) unsubscribeChat();
-            if (unsubscribeSignaling) unsubscribeSignaling();
+        }
+
+        function switchMobileTab(tab) {
+            const chatTab = document.getElementById('mChatTab');
+            const lineupTab = document.getElementById('mLineupTab');
+            const chatContent = document.getElementById('mChatContent');
+            const lineupContent = document.getElementById('mLineupContent');
+            if (tab === 'chat') {
+                chatTab.className = 'flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500';
+                lineupTab.className = 'flex-1 py-3 text-sm font-semibold text-gray-400';
+                chatContent.classList.remove('hidden');
+                lineupContent.classList.add('hidden');
+            } else {
+                lineupTab.className = 'flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500';
+                chatTab.className = 'flex-1 py-3 text-sm font-semibold text-gray-400';
+                lineupContent.classList.remove('hidden');
+                chatContent.classList.add('hidden');
+            }
+        }
+
+        // Exit
+        async function exitRoom() {
+            if (statsInterval) clearInterval(statsInterval);
             if (durationInterval) clearInterval(durationInterval);
-            
-            await decrementViewers();
-            
+            if (reconnectInterval) clearInterval(reconnectInterval);
+            unsubscribers.forEach(u => u());
+            if (pc) {
+                pc.close();
+                await decrementViewerCount();
+                try { await db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId).delete(); } catch (e) {}
+            }
             window.location.href = 'index.html';
         }
 
-        // Handle page unload
-        window.addEventListener('beforeunload', async () => {
-            await decrementViewers();
-        });
-
-        // Show toast
+        // Toast
         function showToast(type, title, message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <div>
-                    <strong>${title}</strong>
-                    <p style="font-size: 13px; opacity: 0.8;">${message}</p>
-                </div>
-            `;
-            
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 4000);
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const icons = {
+                success: { bg: 'bg-emerald-100', emoji: '✅' },
+                error: { bg: 'bg-red-100', emoji: '❌' },
+                info: { bg: 'bg-blue-100', emoji: 'ℹ️' }
+            };
+            const icon = icons[type] || icons.info;
+            toastIcon.className = `w-12 h-12 rounded-xl flex items-center justify-center ${icon.bg}`;
+            toastIcon.innerHTML = `<span class="text-2xl">${icon.emoji}</span>`;
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('-translate-y-full', 'opacity-0');
+            setTimeout(() => toast.classList.add('-translate-y-full', 'opacity-0'), 4000);
         }
+
+        window.addEventListener('beforeunload', async () => { if (pc) await decrementViewerCount(); });
     </script>
 </body>
 </html>

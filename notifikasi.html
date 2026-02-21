@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi | ikazz - 48</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { 'jakarta': ['Plus Jakarta Sans', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        .slide-up { animation: slideUp 0.4s ease-out; }
+        .scale-in { animation: scaleIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .pulse { animation: pulse 1.5s infinite; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+        
+        /* Pull to refresh */
+        .ptr-element {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: #aaa;
+            font-size: 14px;
+            text-align: center;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    
+    <!-- Navbar -->
+    <nav class="bg-white/95 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200/50">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Back Button -->
+                <button onclick="goBack()" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <!-- Title -->
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🔔</span>
+                    <h1 class="font-bold text-gray-800">Notifikasi</h1>
+                </div>
+                
+                <!-- Settings / Filter -->
+                <div class="relative">
+                    <button onclick="toggleFilterMenu()" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Filter Menu -->
+                    <div id="filterMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <button onclick="filterNotifications('all')" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>📋</span>
+                            <span class="text-sm font-medium text-gray-700">Semua</span>
+                        </button>
+                        <button onclick="filterNotifications('info')" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>📢</span>
+                            <span class="text-sm font-medium text-gray-700">Info Umum</span>
+                        </button>
+                        <button onclick="filterNotifications('schedule')" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>📅</span>
+                            <span class="text-sm font-medium text-gray-700">Jadwal</span>
+                        </button>
+                        <button onclick="filterNotifications('live')" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>🔴</span>
+                            <span class="text-sm font-medium text-gray-700">Live</span>
+                        </button>
+                        <button onclick="filterNotifications('announcement')" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>📣</span>
+                            <span class="text-sm font-medium text-gray-700">Pengumuman</span>
+                        </button>
+                        <div class="border-t border-gray-100 my-2"></div>
+                        <button onclick="markAllAsRead()" class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2">
+                            <span>✅</span>
+                            <span class="text-sm font-medium text-gray-700">Tandai semua dibaca</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-4 py-6">
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                <span class="text-2xl block mb-1">📋</span>
+                <span class="text-lg font-bold text-gray-800" id="totalNotifCount">0</span>
+                <p class="text-xs text-gray-400">Total</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                <span class="text-2xl block mb-1">🆕</span>
+                <span class="text-lg font-bold text-emerald-600" id="unreadCount">0</span>
+                <p class="text-xs text-gray-400">Belum dibaca</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 text-center border border-gray-100 shadow-sm">
+                <span class="text-2xl block mb-1">📅</span>
+                <span class="text-lg font-bold text-blue-600" id="todayCount">0</span>
+                <p class="text-xs text-gray-400">Hari ini</p>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+            <button onclick="filterNotifications('all')" id="filterAll" class="px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-500 text-white shadow-md shadow-emerald-200/50 whitespace-nowrap transition-all">
+                📋 Semua
+            </button>
+            <button onclick="filterNotifications('info')" id="filterInfo" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 whitespace-nowrap transition-all">
+                📢 Info
+            </button>
+            <button onclick="filterNotifications('schedule')" id="filterSchedule" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 whitespace-nowrap transition-all">
+                📅 Jadwal
+            </button>
+            <button onclick="filterNotifications('live')" id="filterLive" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 whitespace-nowrap transition-all">
+                🔴 Live
+            </button>
+            <button onclick="filterNotifications('announcement')" id="filterAnnouncement" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 whitespace-nowrap transition-all">
+                📣 Pengumuman
+            </button>
+        </div>
+
+        <!-- Notifications List -->
+        <div id="notificationsList" class="space-y-3">
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-12">
+                <div class="inline-block w-16 h-16 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+                <p class="text-gray-400">Memuat notifikasi...</p>
+            </div>
+
+            <!-- Empty State (will be shown via JS) -->
+            <div id="emptyState" class="hidden text-center py-16">
+                <span class="text-7xl mb-4 block">🔔</span>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Belum ada notifikasi</h3>
+                <p class="text-gray-400">Notifikasi dari admin akan muncul di sini</p>
+            </div>
+
+            <!-- No Results State (for filter) -->
+            <div id="noResultsState" class="hidden text-center py-16">
+                <span class="text-7xl mb-4 block">🔍</span>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Tidak ditemukan</h3>
+                <p class="text-gray-400">Tidak ada notifikasi dengan filter ini</p>
+                <button onclick="filterNotifications('all')" class="mt-4 px-6 py-2 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition-colors">
+                    Lihat Semua
+                </button>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div id="loadMoreContainer" class="hidden text-center mt-6">
+            <button onclick="loadMoreNotifications()" class="px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-600 font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+                Muat Lebih Banyak
+            </button>
+        </div>
+    </main>
+
+    <!-- Notification Detail Modal -->
+    <div id="notificationModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-hidden scale-in">
+            <!-- Modal Header -->
+            <div class="p-6 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span id="modalIcon" class="text-3xl">📢</span>
+                        <div>
+                            <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Judul Notifikasi</h3>
+                            <p id="modalTime" class="text-xs text-gray-400">2 jam yang lalu</p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <p id="modalMessage" class="text-gray-600 whitespace-pre-line leading-relaxed"></p>
+                </div>
+                
+                <!-- Additional Info -->
+                <div id="modalExtraInfo" class="mt-4 hidden">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span>🆔</span>
+                        <span id="modalId" class="font-mono text-xs"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-6 pt-4 border-t border-gray-100">
+                <div class="flex gap-3">
+                    <button onclick="markAsRead(currentNotificationId)" class="flex-1 py-2.5 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition-colors">
+                        ✅ Tandai Dibaca
+                    </button>
+                    <button onclick="closeModal()" class="flex-1 py-2.5 border border-gray-200 rounded-xl font-semibold text-gray-600 hover:bg-gray-50 transition-colors">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 z-[60] transform translate-x-full transition-all duration-300 max-w-sm border border-gray-100">
+        <div id="toastIcon" class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"></div>
+        <div class="flex-1 min-w-0">
+            <p id="toastTitle" class="font-bold text-gray-800"></p>
+            <p id="toastMessage" class="text-sm text-gray-500 truncate"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // ==================== FIREBASE CONFIG ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMQ961-vifb3R-Gurla3LbLM_489aHkHs-g",
+            authDomain: "live2ke2.firebaseapp.com",
+            projectId: "live2ke2",
+            storageBucket: "live2ke2.firebasestorage.app",
+            messagingSenderId: "861176752510",
+            appId: "1:861176752510:web:0e1ee4e2d7f96c0b5dab2f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ==================== STATE ====================
+        let allNotifications = [];
+        let filteredNotifications = [];
+        let displayedNotifications = [];
+        let currentFilter = 'all';
+        let currentPage = 1;
+        const NOTIFICATIONS_PER_PAGE = 15;
+        let currentNotificationId = null;
+        let unreadNotifications = new Set();
+        let lastVisible = null;
+        let loadingMore = false;
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNotifications();
+            loadUnreadStatus();
+            setupPullToRefresh();
+        });
+
+        // ==================== LOAD NOTIFICATIONS ====================
+        function loadNotifications() {
+            showLoading(true);
+            
+            // Get user ID from localStorage or session
+            const userId = getUserId();
+            
+            db.collection('notifications')
+                .orderBy('createdAt', 'desc')
+                .limit(NOTIFICATIONS_PER_PAGE)
+                .onSnapshot(snapshot => {
+                    if (snapshot.empty) {
+                        showEmptyState(true);
+                        showLoading(false);
+                        return;
+                    }
+
+                    allNotifications = [];
+                    snapshot.forEach(doc => {
+                        const notif = { id: doc.id, ...doc.data() };
+                        allNotifications.push(notif);
+                    });
+
+                    // Update stats
+                    updateStats();
+                    
+                    // Apply current filter
+                    applyFilter(currentFilter);
+                    
+                    showLoading(false);
+                    
+                    // Save last visible for pagination
+                    lastVisible = snapshot.docs[snapshot.docs.length - 1];
+                    
+                    // Show load more if there are more
+                    if (snapshot.docs.length === NOTIFICATIONS_PER_PAGE) {
+                        document.getElementById('loadMoreContainer').classList.remove('hidden');
+                    }
+                }, error => {
+                    console.error('Error loading notifications:', error);
+                    showLoading(false);
+                    showToast('error', 'Error', 'Gagal memuat notifikasi');
+                });
+        }
+
+        // ==================== LOAD MORE NOTIFICATIONS ====================
+        async function loadMoreNotifications() {
+            if (loadingMore || !lastVisible) return;
+            
+            loadingMore = true;
+            const loadMoreBtn = document.querySelector('#loadMoreContainer button');
+            loadMoreBtn.innerHTML = '<div class="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div> Memuat...';
+            
+            try {
+                const nextQuery = db.collection('notifications')
+                    .orderBy('createdAt', 'desc')
+                    .startAfter(lastVisible)
+                    .limit(NOTIFICATIONS_PER_PAGE);
+                
+                const snapshot = await nextQuery.get();
+                
+                if (!snapshot.empty) {
+                    snapshot.forEach(doc => {
+                        const notif = { id: doc.id, ...doc.data() };
+                        allNotifications.push(notif);
+                    });
+                    
+                    lastVisible = snapshot.docs[snapshot.docs.length - 1];
+                    applyFilter(currentFilter);
+                    
+                    if (snapshot.docs.length < NOTIFICATIONS_PER_PAGE) {
+                        document.getElementById('loadMoreContainer').classList.add('hidden');
+                    }
+                } else {
+                    document.getElementById('loadMoreContainer').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading more:', error);
+                showToast('error', 'Error', 'Gagal memuat notifikasi tambahan');
+            } finally {
+                loadingMore = false;
+                loadMoreBtn.innerHTML = 'Muat Lebih Banyak';
+            }
+        }
+
+        // ==================== GET USER ID ====================
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // ==================== LOAD UNREAD STATUS ====================
+        function loadUnreadStatus() {
+            const userId = getUserId();
+            const readKey = `read_notifications_${userId}`;
+            const readList = localStorage.getItem(readKey);
+            
+            if (readList) {
+                try {
+                    const readArray = JSON.parse(readList);
+                    unreadNotifications = new Set(readArray);
+                } catch (e) {
+                    unreadNotifications = new Set();
+                }
+            }
+        }
+
+        // ==================== SAVE UNREAD STATUS ====================
+        function saveUnreadStatus() {
+            const userId = getUserId();
+            const readKey = `read_notifications_${userId}`;
+            localStorage.setItem(readKey, JSON.stringify([...unreadNotifications]));
+        }
+
+        // ==================== MARK AS READ ====================
+        function markAsRead(notificationId) {
+            if (!notificationId) return;
+            
+            unreadNotifications.add(notificationId);
+            saveUnreadStatus();
+            
+            // Update UI
+            const notifElement = document.getElementById(`notif-${notificationId}`);
+            if (notifElement) {
+                notifElement.classList.remove('bg-emerald-50', 'border-emerald-200');
+                notifElement.classList.add('bg-white', 'border-gray-100');
+                
+                const badge = notifElement.querySelector('.unread-badge');
+                if (badge) badge.remove();
+            }
+            
+            updateStats();
+            closeModal();
+            
+            showToast('success', 'Berhasil', 'Notifikasi ditandai telah dibaca');
+        }
+
+        // ==================== MARK ALL AS READ ====================
+        function markAllAsRead() {
+            displayedNotifications.forEach(notif => {
+                unreadNotifications.add(notif.id);
+            });
+            
+            saveUnreadStatus();
+            
+            // Update all displayed notifications
+            displayedNotifications.forEach(notif => {
+                const element = document.getElementById(`notif-${notif.id}`);
+                if (element) {
+                    element.classList.remove('bg-emerald-50', 'border-emerald-200');
+                    element.classList.add('bg-white', 'border-gray-100');
+                    
+                    const badge = element.querySelector('.unread-badge');
+                    if (badge) badge.remove();
+                }
+            });
+            
+            updateStats();
+            toggleFilterMenu();
+            
+            showToast('success', 'Berhasil', 'Semua notifikasi ditandai telah dibaca');
+        }
+
+        // ==================== CHECK IF UNREAD ====================
+        function isUnread(notificationId) {
+            return !unreadNotifications.has(notificationId);
+        }
+
+        // ==================== UPDATE STATS ====================
+        function updateStats() {
+            const total = allNotifications.length;
+            const unread = allNotifications.filter(n => !unreadNotifications.has(n.id)).length;
+            
+            const today = new Date().toDateString();
+            const todayCount = allNotifications.filter(n => {
+                const date = n.createdAt?.toDate();
+                return date && date.toDateString() === today;
+            }).length;
+            
+            document.getElementById('totalNotifCount').textContent = total;
+            document.getElementById('unreadCount').textContent = unread;
+            document.getElementById('todayCount').textContent = todayCount;
+        }
+
+        // ==================== APPLY FILTER ====================
+        function applyFilter(filter) {
+            currentFilter = filter;
+            
+            // Update filter tabs
+            document.querySelectorAll('[id^="filter"]').forEach(btn => {
+                btn.classList.remove('bg-emerald-500', 'text-white', 'shadow-md', 'shadow-emerald-200/50');
+                btn.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+            });
+            
+            const activeFilter = document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`);
+            if (activeFilter) {
+                activeFilter.classList.remove('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+                activeFilter.classList.add('bg-emerald-500', 'text-white', 'shadow-md', 'shadow-emerald-200/50');
+            }
+            
+            // Filter notifications
+            if (filter === 'all') {
+                filteredNotifications = [...allNotifications];
+            } else {
+                filteredNotifications = allNotifications.filter(n => n.type === filter);
+            }
+            
+            // Render
+            renderNotifications();
+        }
+
+        function filterNotifications(filter) {
+            applyFilter(filter);
+            toggleFilterMenu(false);
+        }
+
+        // ==================== RENDER NOTIFICATIONS ====================
+        function renderNotifications() {
+            const container = document.getElementById('notificationsList');
+            const emptyState = document.getElementById('emptyState');
+            const noResultsState = document.getElementById('noResultsState');
+            
+            // Clear existing notifications (keep loading and empty states)
+            const notificationsToRemove = [];
+            container.childNodes.forEach(node => {
+                if (node.id !== 'loadingState' && node.id !== 'emptyState' && node.id !== 'noResultsState') {
+                    notificationsToRemove.push(node);
+                }
+            });
+            notificationsToRemove.forEach(node => node.remove());
+            
+            if (filteredNotifications.length === 0) {
+                if (allNotifications.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    noResultsState.classList.add('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    noResultsState.classList.remove('hidden');
+                }
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            noResultsState.classList.add('hidden');
+            
+            // Sort by date (newest first)
+            filteredNotifications.sort((a, b) => {
+                const dateA = a.createdAt?.toDate() || new Date(0);
+                const dateB = b.createdAt?.toDate() || new Date(0);
+                return dateB - dateA;
+            });
+            
+            // Render each notification
+            filteredNotifications.forEach(notif => {
+                const element = createNotificationElement(notif);
+                container.appendChild(element);
+            });
+            
+            displayedNotifications = filteredNotifications;
+        }
+
+        // ==================== CREATE NOTIFICATION ELEMENT ====================
+        function createNotificationElement(notif) {
+            const div = document.createElement('div');
+            div.id = `notif-${notif.id}`;
+            
+            const date = notif.createdAt?.toDate();
+            const timeAgo = date ? getTimeAgo(date) : '';
+            const isNew = isUnread(notif.id);
+            
+            // Type icons
+            const typeIcons = {
+                info: '📢',
+                schedule: '📅',
+                live: '🔴',
+                announcement: '📣'
+            };
+            
+            // Type colors
+            const typeColors = {
+                info: 'bg-blue-50 border-blue-100',
+                schedule: 'bg-purple-50 border-purple-100',
+                live: 'bg-red-50 border-red-100',
+                announcement: 'bg-amber-50 border-amber-100'
+            };
+            
+            div.className = `relative ${isNew ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-100'} rounded-xl p-4 border cursor-pointer hover:shadow-md transition-all slide-up`;
+            div.onclick = () => showNotificationDetail(notif);
+            
+            div.innerHTML = `
+                ${isNew ? '<span class="unread-badge absolute top-3 right-3 w-2 h-2 bg-emerald-500 rounded-full pulse"></span>' : ''}
+                <div class="flex gap-3">
+                    <div class="w-12 h-12 ${typeColors[notif.type] || 'bg-gray-50'} rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">
+                        ${typeIcons[notif.type] || '📢'}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h3 class="font-bold text-gray-800 truncate">${notif.title || 'Notifikasi'}</h3>
+                            ${notif.type ? `<span class="px-2 py-0.5 ${typeColors[notif.type]} text-xs rounded-full font-medium capitalize">${notif.type}</span>` : ''}
+                        </div>
+                        <p class="text-sm text-gray-500 line-clamp-2 mb-1">${notif.message || ''}</p>
+                        <p class="text-xs text-gray-400">${timeAgo}</p>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // ==================== SHOW NOTIFICATION DETAIL ====================
+        function showNotificationDetail(notif) {
+            currentNotificationId = notif.id;
+            
+            const date = notif.createdAt?.toDate();
+            const formattedDate = date ? date.toLocaleString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : '';
+            
+            const typeIcons = {
+                info: '📢',
+                schedule: '📅',
+                live: '🔴',
+                announcement: '📣'
+            };
+            
+            document.getElementById('modalIcon').textContent = typeIcons[notif.type] || '📢';
+            document.getElementById('modalTitle').textContent = notif.title || 'Notifikasi';
+            document.getElementById('modalTime').textContent = formattedDate;
+            document.getElementById('modalMessage').textContent = notif.message || '';
+            
+            if (notif.scheduleType) {
+                document.getElementById('modalExtraInfo').classList.remove('hidden');
+                document.getElementById('modalId').textContent = `Tipe: ${notif.scheduleType}`;
+            } else {
+                document.getElementById('modalExtraInfo').classList.add('hidden');
+            }
+            
+            document.getElementById('notificationModal').classList.remove('hidden');
+            document.getElementById('notificationModal').classList.add('flex');
+            
+            // Mark as read when viewed
+            if (isUnread(notif.id)) {
+                markAsRead(notif.id);
+            }
+        }
+
+        // ==================== CLOSE MODAL ====================
+        function closeModal() {
+            document.getElementById('notificationModal').classList.add('hidden');
+            document.getElementById('notificationModal').classList.remove('flex');
+            currentNotificationId = null;
+        }
+
+        // ==================== TOGGLE FILTER MENU ====================
+        function toggleFilterMenu(force) {
+            const menu = document.getElementById('filterMenu');
+            if (force !== undefined) {
+                if (force) menu.classList.remove('hidden');
+                else menu.classList.add('hidden');
+            } else {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // ==================== TIME AGO FUNCTION ====================
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            const diffWeek = Math.floor(diffDay / 7);
+            const diffMonth = Math.floor(diffDay / 30);
+            const diffYear = Math.floor(diffDay / 365);
+            
+            if (diffSec < 60) return 'baru saja';
+            if (diffMin < 60) return `${diffMin} menit yang lalu`;
+            if (diffHour < 24) return `${diffHour} jam yang lalu`;
+            if (diffDay < 7) return `${diffDay} hari yang lalu`;
+            if (diffWeek < 4) return `${diffWeek} minggu yang lalu`;
+            if (diffMonth < 12) return `${diffMonth} bulan yang lalu`;
+            return `${diffYear} tahun yang lalu`;
+        }
+
+        // ==================== SHOW/HIDE LOADING ====================
+        function showLoading(show) {
+            document.getElementById('loadingState').style.display = show ? 'block' : 'none';
+        }
+
+        function showEmptyState(show) {
+            document.getElementById('emptyState').style.display = show ? 'block' : 'none';
+            if (show) {
+                document.getElementById('noResultsState').classList.add('hidden');
+            }
+        }
+
+        // ==================== SETUP PULL TO REFRESH ====================
+        function setupPullToRefresh() {
+            let startY = 0;
+            let pulling = false;
+            
+            document.addEventListener('touchstart', e => {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].clientY;
+                    pulling = true;
+                }
+            });
+            
+            document.addEventListener('touchmove', e => {
+                if (!pulling) return;
+                const currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                
+                if (diff > 50 && window.scrollY === 0) {
+                    // Show refresh indicator
+                }
+            });
+            
+            document.addEventListener('touchend', e => {
+                if (!pulling) return;
+                const endY = e.changedTouches[0].clientY;
+                const diff = endY - startY;
+                
+                if (diff > 100 && window.scrollY === 0) {
+                    refreshNotifications();
+                }
+                
+                pulling = false;
+            });
+        }
+
+        // ==================== REFRESH NOTIFICATIONS ====================
+        function refreshNotifications() {
+            showToast('info', 'Memperbarui', 'Mengambil notifikasi terbaru...');
+            
+            // Clear cache and reload
+            allNotifications = [];
+            filteredNotifications = [];
+            lastVisible = null;
+            
+            loadNotifications();
+        }
+
+        // ==================== GO BACK ====================
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // ==================== CLICK OUTSIDE FILTER ====================
+        document.addEventListener('click', (e) => {
+            const filterMenu = document.getElementById('filterMenu');
+            const filterBtn = e.target.closest('button[onclick="toggleFilterMenu()"]');
+            
+            if (!filterBtn && !filterMenu.contains(e.target)) {
+                filterMenu.classList.add('hidden');
+            }
+        });
+
+        // ==================== TOAST ====================
+        function showToast(type, title, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+
+            const icons = {
+                success: { bg: 'bg-emerald-100', emoji: '✅' },
+                error: { bg: 'bg-red-100', emoji: '❌' },
+                info: { bg: 'bg-blue-100', emoji: 'ℹ️' }
+            };
+
+            const icon = icons[type] || icons.info;
+            toastIcon.className = `w-12 h-12 rounded-xl flex items-center justify-center ${icon.bg}`;
+            toastIcon.innerHTML = `<span class="text-2xl">${icon.emoji}</span>`;
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+        }
+
+        // ==================== CLOSE MODAL ON ESC ====================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                toggleFilterMenu(false);
+            }
+        });
+    </script>
+</body>
+</html>
