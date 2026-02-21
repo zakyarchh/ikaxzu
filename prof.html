@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile · ikxzu stream</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: #f4f6fb;
+            color: #1a1e2b;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== SYSTEM GRID YANG SANGAT RAPI ===== */
+        .grid-system {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* header dalam grid */
+        .header-grid {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-square {
+            width: 40px;
+            height: 40px;
+            background: #1a1e2b;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.3px;
+            color: #0f1421;
+        }
+
+        .logo-text span {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .profile-pill {
+            background: white;
+            padding: 8px 18px 8px 12px;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* ===== MAIN CONTENT GRID ===== */
+        .content-grid {
+            grid-column: 4 / 10;
+            display: grid;
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+
+        @media (max-width: 1000px) {
+            .content-grid {
+                grid-column: 3 / 11;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .content-grid {
+                grid-column: 2 / 12;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .content-grid {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* ===== CARD BLOCK ===== */
+        .card-block {
+            background: white;
+            border-radius: 28px;
+            border: 1px solid #eef3f8;
+            overflow: hidden;
+            box-shadow: 0 8px 20px -8px rgba(0,0,0,0.04);
+        }
+
+        /* profile header */
+        .profile-header {
+            background: linear-gradient(145deg, #1a1e2b, #252a38);
+            padding: 36px 28px 28px;
+            color: white;
+            text-align: center;
+        }
+
+        .profile-avatar-block {
+            width: 90px;
+            height: 90px;
+            background: #f1f5f9;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 42px;
+            font-weight: 600;
+            color: #1a1e2b;
+            border: 3px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+
+        .profile-name-block {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .profile-badge-block {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.12);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* info list */
+        .info-list-block {
+            padding: 24px;
+        }
+
+        .info-item-block {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .info-item-block:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon-block {
+            width: 46px;
+            height: 46px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: #4f5b70;
+            font-size: 18px;
+        }
+
+        .info-content-block {
+            flex: 1;
+        }
+
+        .info-label-block {
+            font-size: 12px;
+            color: #68788c;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+        }
+
+        .info-value-block {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1e2b;
+        }
+
+        /* membership card khusus */
+        .membership-special {
+            background: linear-gradient(145deg, #1a1e2b, #252a38);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .membership-special::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .membership-header-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .membership-logo-block {
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .membership-logo-block span {
+            color: #e11d48;
+        }
+
+        .membership-type-block {
+            background: #facc15;
+            color: #1a1e2b;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-block {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 24px;
+        }
+
+        .status-label-block {
+            font-size: 12px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .status-value-block {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+
+        .status-value-block.active {
+            color: #22c55e;
+        }
+
+        .status-value-block.expired {
+            color: #ef4444;
+        }
+
+        .expiry-grid-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .expiry-item-block {
+            text-align: center;
+        }
+
+        .expiry-label-block {
+            font-size: 11px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .expiry-value-block {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* token card */
+        .token-card-block {
+            background: #f8fafd;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .token-label-block {
+            font-size: 12px;
+            color: #68788c;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 10px;
+        }
+
+        .token-display-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .token-display-block code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: #8b5cf6;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn-block {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #8b5cf6;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.1s ease;
+        }
+
+        .copy-btn-block:hover {
+            background: #7c3aed;
+        }
+
+        .info-note {
+            font-size: 13px;
+            color: #6b7a90;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* login card */
+        .login-card-block {
+            padding: 36px 28px;
+            text-align: center;
+        }
+
+        .login-icon-block {
+            width: 80px;
+            height: 80px;
+            background: #f1f5f9;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px;
+            color: #1a1e2b;
+        }
+
+        .login-title-block {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle-block {
+            color: #6b7a90;
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        .form-group-block {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label-block {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .input-block {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            font-size: 15px;
+            outline: none;
+            background: #fafcff;
+        }
+
+        .input-block:focus {
+            border-color: #1a1e2b;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            background: #1a1e2b;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+
+        .btn-block:hover {
+            background: #0f1421;
+        }
+
+        .btn-block.danger {
+            background: #ef4444;
+        }
+
+        .btn-block.danger:hover {
+            background: #dc2626;
+        }
+
+        /* empty state */
+        .empty-state-block {
+            text-align: center;
+            padding: 48px 20px;
+            background: white;
+            border-radius: 28px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .empty-icon-block {
+            font-size: 56px;
+            color: #9aaebf;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state-block h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .empty-state-block p {
+            color: #6b7a90;
+            font-size: 15px;
+        }
+
+        /* ===== BOTTOM NAV KOTAK ===== */
+        .nav-grid-bottom {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 30px;
+        }
+
+        .nav-blocks {
+            display: inline-flex;
+            background: white;
+            padding: 6px;
+            border-radius: 60px;
+            border: 1px solid #eef3f8;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .nav-block-item {
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #4b5a6e;
+            font-weight: 500;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.15s;
+        }
+
+        .nav-block-item.active {
+            background: #f0f4fc;
+            color: #0f172a;
+        }
+
+        /* ===== MODAL KOTAK ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-block {
+            background: white;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 400px;
+            padding: 36px;
+            box-shadow: 0 40px 70px -20px rgba(0,0,0,0.2);
+            border: 1px solid #eef3f8;
+        }
+
+        .modal-icon-block {
+            width: 64px;
+            height: 64px;
+            background: #f1f5f9;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 24px;
+        }
+
+        .modal-title-block {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            color: #5a6b7c;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .modal-btn {
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .modal-btn.primary {
+            background: #0f172a;
+            color: white;
+            border: none;
+        }
+
+        /* toast */
+        .toast-block {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast-block.show {
+            opacity: 1;
+            bottom: 110px;
+        }
+
+        /* loading */
+        .loading-block {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #f4f6fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        .loading-block.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-square {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #0f172a;
+            border-radius: 12px;
+            animation: spin 0.8s infinite linear;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* responsive */
+        @media (max-width: 500px) {
+            .nav-block-item { padding: 10px 20px; }
+            .nav-block-item span { display: none; }
+            .nav-block-item i { font-size: 18px; }
+            .profile-avatar-block { width: 70px; height: 70px; font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- loading (optional) -->
+    <div class="loading-block" id="loading" style="display: none;">
+        <div class="loader-square"></div>
+    </div>
+
+    <!-- GRID UTAMA -->
+    <main class="grid-system">
+        <!-- header -->
+        <div class="header-grid">
+            <a href="index.html" class="logo-block" style="text-decoration: none;">
+
+                <div class="logo-text">ikxzu<span>stream</span></div>
+            </a>
+            <div class="profile-pill">
+                <i class="fa-regular fa-user"></i> Profile
+            </div>
+        </div>
+
+        <!-- CONTENT GRID (posisi tengah) -->
+        <div class="content-grid" id="contentGrid">
+            <!-- Login Section (akan ditampilkan jika belum login) -->
+            <div id="loginSection">
+                <div class="card-block">
+                    <div class="login-card-block">
+
+                        <h2 class="login-title-block">Login Membership</h2>
+                        <p class="login-subtitle-block">Masukkan token untuk mengakses akun</p>
+                        
+                        <form onsubmit="handleLogin(event)">
+                            <div class="form-group-block">
+                                <label class="form-label-block">Token Membership</label>
+                                <input type="text" class="input-block" id="tokenInput" placeholder="jika ga ada ga udah isi" required>
+                            </div>
+                            <button type="submit" class="btn-block" id="loginBtn"> Login
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="empty-state-block" style="margin-top: 24px;">
+                    <h3>Belum punya akun?</h3>
+                    <p>Hubungi admin untuk mendapatkan token</p>
+                </div>
+            </div>
+
+            <!-- Profile Section (akan ditampilkan setelah login) -->
+            <div id="profileSection" style="display: none;">
+                <!-- Profile Card -->
+                <div class="card-block">
+                    <div class="profile-header">
+                        <div class="profile-avatar-block" id="profileAvatar">?</div>
+                        <h3 class="profile-name-block" id="profileName">Loading...</h3>
+                        <div class="profile-badge-block">
+                            <i class="fa-regular fa-crown"></i> membership
+                        </div>
+                    </div>
+                    <div class="info-list-block">
+                        <div class="info-item-block">
+                            <div class="info-icon-block"><i class="fa-regular fa-user"></i></div>
+                            <div class="info-content-block">
+                                <div class="info-label-block">Nama Lengkap</div>
+                                <div class="info-value-block" id="infoName">-</div>
+                            </div>
+                        </div>
+                        <div class="info-item-block">
+                            <div class="info-icon-block"><i class="fa-regular fa-venus-mars"></i></div>
+                            <div class="info-content-block">
+                                <div class="info-label-block">Jenis Kelamin</div>
+                                <div class="info-value-block" id="infoGender">-</div>
+                            </div>
+                        </div>
+                        <div class="info-item-block">
+                            <div class="info-icon-block"><i class="fa-brands fa-whatsapp"></i></div>
+                            <div class="info-content-block">
+                                <div class="info-label-block">WhatsApp</div>
+                                <div class="info-value-block" id="infoPhone">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Membership Card -->
+                <div class="card-block">
+                    <div class="membership-special">
+                        <div class="membership-header-block">
+                            <div class="membership-logo-block">ikxzu<span>stream</span></div>
+                            <div class="membership-type-block">Premium</div>
+                        </div>
+                        <div class="status-block">
+                            <div class="status-label-block">Status Membership</div>
+                            <div class="status-value-block" id="membershipStatus">
+                                <i class="fa-regular fa-spinner fa-spin"></i> Loading...
+                            </div>
+                        </div>
+                        <div class="expiry-grid-block">
+                            <div class="expiry-item-block">
+                                <div class="expiry-label-block">Bergabung</div>
+                                <div class="expiry-value-block" id="joinDate">-</div>
+                            </div>
+                            <div class="expiry-item-block">
+                                <div class="expiry-label-block">Berlaku</div>
+                                <div class="expiry-value-block" id="expiryDate">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Token Card -->
+                <div class="card-block">
+                    <div class="info-list-block">
+                        <div class="token-card-block">
+                            <div class="token-label-block">Token Login Anda</div>
+                            <div class="token-display-block">
+                                <code id="userToken">********</code>
+                                <button class="copy-btn-block" onclick="copyToken()">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="info-note">
+                            <i class="fa-regular fa-circle-info"></i>
+                            Token hanya bisa digunakan di 1 perangkat
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Logout Button -->
+                <button class="btn-block danger" onclick="handleLogout()"> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- bottom navigation -->
+        <div class="nav-grid-bottom">
+            <div class="nav-blocks">
+                <a href="index.html" class="nav-block-item"><i class="fa-regular fa-grid-2"></i> <span>Beranda</span></a>
+                <a href="a.html" class="nav-block-item"><i class="fa-regular fa-compass"></i> <span>about</span></a>
+                <a href="prof.html" class="nav-block-item active"><i class="fa-regular fa-user"></i> <span>Profil</span></a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast-block" id="toastMessage"><i class="fa-regular fa-check-circle"></i> berhasil</div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMQ961-vifb3R-Gurla3LbLM_489aHkHs-g",
+            authDomain: "live2ke2.firebaseapp.com",
+            projectId: "live2ke2",
+            storageBucket: "live2ke2.firebasestorage.app",
+            messagingSenderId: "861176752510",
+            appId: "1:861176752510:web:0e1ee4e2d7f96c0b5dab2f"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // State
+        let currentUser = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+        });
+
+        // Check Session
+        async function checkSession() {
+            const session = localStorage.getItem('ikazz_session');
+            
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    const memberDoc = await db.collection('members').doc(sessionData.memberId).get();
+                    
+                    if (memberDoc.exists) {
+                        const memberData = memberDoc.data();
+                        
+                        // Check device ID
+                        const deviceId = getDeviceId();
+                        if (memberData.deviceId && memberData.deviceId !== deviceId) {
+                            localStorage.removeItem('ikazz_session');
+                            showToast('error', 'Token digunakan di perangkat lain');
+                            showLoginSection();
+                            return;
+                        }
+                        
+                        currentUser = {
+                            id: memberDoc.id,
+                            ...memberData
+                        };
+                        
+                        showProfileSection();
+                        loadProfileData();
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Session check error:', error);
+                }
+            }
+            
+            showLoginSection();
+        }
+
+        // Get device ID
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('device_id');
+            if (!deviceId) {
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        // Show Login Section
+        function showLoginSection() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('profileSection').style.display = 'none';
+        }
+
+        // Show Profile Section
+        function showProfileSection() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'block';
+        }
+
+        // Handle Login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const token = document.getElementById('tokenInput').value.trim().toUpperCase();
+            const btn = document.getElementById('loginBtn');
+
+            if (!token) {
+                showToast('error', 'Masukkan token terlebih dahulu');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-regular fa-spinner fa-spin"></i> Loading...';
+
+            try {
+                // Find member by token
+                const memberQuery = await db.collection('members')
+                    .where('token', '==', token)
+                    .get();
+
+                if (memberQuery.empty) {
+                    showToast('error', 'Token tidak ditemukan');
+                    return;
+                }
+
+                const memberDoc = memberQuery.docs[0];
+                const memberData = memberDoc.data();
+
+                // Check if token is used on another device
+                const deviceId = getDeviceId();
+                if (memberData.deviceId && memberData.deviceId !== deviceId) {
+                    showToast('error', 'Token sudah digunakan di perangkat lain');
+                    return;
+                }
+
+                // Check expiry
+                if (memberData.expiryDate) {
+                    const expiry = memberData.expiryDate.toDate();
+                    if (expiry < new Date()) {
+                        showToast('error', 'Membership telah berakhir');
+                        return;
+                    }
+                }
+
+                // Update device ID
+                await memberDoc.ref.update({
+                    deviceId: deviceId,
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Save session
+                localStorage.setItem('ikazz_session', JSON.stringify({
+                    memberId: memberDoc.id,
+                    token: token
+                }));
+
+                currentUser = {
+                    id: memberDoc.id,
+                    ...memberData
+                };
+
+                showToast('success', 'Login berhasil');
+                showProfileSection();
+                loadProfileData();
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('error', 'Gagal login: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-regular fa-arrow-right-to-bracket"></i> Login';
+            }
+        }
+
+        // Load Profile Data
+        function loadProfileData() {
+            if (!currentUser) return;
+
+            // Avatar
+            const initial = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('profileAvatar').textContent = initial;
+            document.getElementById('profileName').textContent = currentUser.name;
+
+            // Info
+            document.getElementById('infoName').textContent = currentUser.name;
+            document.getElementById('infoGender').textContent = currentUser.gender === 'male' ? 'Laki-laki' : 'Perempuan';
+            document.getElementById('infoPhone').textContent = currentUser.phone || '-';
+
+            // Token
+            document.getElementById('userToken').textContent = currentUser.token;
+
+            // Membership status
+            const expiry = currentUser.expiryDate ? currentUser.expiryDate.toDate() : null;
+            const isExpired = expiry && expiry < new Date();
+            const statusEl = document.getElementById('membershipStatus');
+            
+            if (isExpired) {
+                statusEl.innerHTML = '<i class="fa-regular fa-circle-xmark"></i> Expired';
+                statusEl.className = 'status-value-block expired';
+            } else {
+                statusEl.innerHTML = '<i class="fa-regular fa-circle-check"></i> Aktif';
+                statusEl.className = 'status-value-block active';
+            }
+
+            // Dates
+            const joinDate = currentUser.createdAt ? currentUser.createdAt.toDate() : new Date();
+            document.getElementById('joinDate').textContent = joinDate.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            if (expiry) {
+                document.getElementById('expiryDate').textContent = expiry.toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } else {
+                document.getElementById('expiryDate').textContent = '-';
+            }
+        }
+
+        // Copy Token
+        function copyToken() {
+            if (!currentUser) return;
+            
+            navigator.clipboard.writeText(currentUser.token).then(() => {
+                showToast('success', 'Token disalin');
+            }).catch(() => {
+                showToast('error', 'Gagal menyalin token');
+            });
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            if (!confirm('Yakin ingin logout?')) return;
+
+            localStorage.removeItem('ikazz_session');
+            currentUser = null;
+            
+            showToast('success', 'Logout berhasil');
+            showLoginSection();
+            
+            // Clear form
+            document.getElementById('tokenInput').value = '';
+        }
+
+        // Show Toast
+        function showToast(type, message) {
+            const toast = document.getElementById('toastMessage');
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `<i class="fa-regular ${icon}"></i> ${message}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Expose functions to global
+        window.handleLogin = handleLogin;
+        window.copyToken = copyToken;
+        window.handleLogout = handleLogout;
+    </script>
+</body>
+</html>

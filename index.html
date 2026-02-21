@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ikxzu · grid studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: #f4f6fb;
+            color: #1a1e2b;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== SYSTEM GRID YANG SANGAT RAPI ===== */
+        .grid-system {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* header dalam grid */
+        .header-grid {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-square {
+            width: 40px;
+            height: 40px;
+            background: #1a1e2b;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.3px;
+            color: #0f1421;
+        }
+
+        .logo-text span {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .profile-pill {
+            background: white;
+            padding: 8px 18px 8px 12px;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* ===== HERO BLOCK ===== */
+        .hero-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .hero-main {
+            background: white;
+            border-radius: 32px;
+            padding: 36px 32px;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 8px 20px -8px rgba(0,0,0,0.04);
+        }
+
+        .hero-main h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            color: #0b111e;
+            margin-bottom: 12px;
+        }
+
+        .hero-main p {
+            font-size: 16px;
+            color: #526070;
+            max-width: 360px;
+            margin-bottom: 28px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-block {
+            background: #f8fafd;
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid #e9edf3;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0b111e;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #68788c;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .hero-secondary {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px;
+            border: 1px solid #edf2f7;
+        }
+
+        .info-card .small-title {
+            font-size: 14px;
+            color: #68788c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .info-card .value-large {
+            font-size: 42px;
+            font-weight: 700;
+            color: #0b111e;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header-block {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 24px 0 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title-block {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .badge-live {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-live i {
+            font-size: 8px;
+            color: #dc2626;
+        }
+
+        .link-all {
+            color: #5f6c84;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+        }
+
+        /* ===== GRID KOTAK-KOTAK UNTUK CARD ===== */
+        .cards-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        /* card kotak sempurna */
+        .card-block {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #eef3f8;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .card-block:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+            border-color: #d0dbea;
+        }
+
+        .card-thumb {
+            aspect-ratio: 1 / 1;
+            background: #d9e2ef;
+            position: relative;
+        }
+
+        .card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .live-tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: #b91c1c;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .live-tag i {
+            font-size: 8px;
+        }
+
+        .viewer-tag {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-content {
+            padding: 20px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .card-sub {
+            font-size: 13px;
+            color: #607080;
+            margin-bottom: 18px;
+        }
+
+        .members-block {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .member-square {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #eef3f8;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: #1e293b;
+            margin-left: -8px;
+        }
+
+        .member-square:first-child {
+            margin-left: 0;
+        }
+
+        .member-square img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .more-count {
+            font-size: 13px;
+            color: #607080;
+            margin-left: 12px;
+            font-weight: 500;
+        }
+
+        /* empty state kotak */
+        .empty-block {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 32px;
+            padding: 80px 20px;
+            text-align: center;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: #9aaebf;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-block h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .empty-block p {
+            color: #607080;
+            font-size: 16px;
+        }
+
+        /* ===== BOTTOM NAV KOTAK ===== */
+        .nav-grid-bottom {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 30px;
+        }
+
+        .nav-blocks {
+            display: inline-flex;
+            background: white;
+            padding: 6px;
+            border-radius: 60px;
+            border: 1px solid #eef3f8;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .nav-block-item {
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #4b5a6e;
+            font-weight: 500;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.15s;
+        }
+
+        .nav-block-item.active {
+            background: #f0f4fc;
+            color: #0f172a;
+        }
+
+        /* ===== MODAL KOTAK ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-block {
+            background: white;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 400px;
+            padding: 36px;
+            box-shadow: 0 40px 70px -20px rgba(0,0,0,0.2);
+            border: 1px solid #eef3f8;
+        }
+
+        .modal-icon-block {
+            width: 64px;
+            height: 64px;
+            background: #f1f5f9;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 24px;
+        }
+
+        .modal-title-block {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            color: #5a6b7c;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .input-block {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            font-size: 15px;
+            outline: none;
+            background: #fafcff;
+        }
+
+        .input-block:focus {
+            border-color: #0f172a;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .modal-btn {
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .modal-btn.primary {
+            background: #0f172a;
+            color: white;
+            border: none;
+        }
+
+        /* toast */
+        .toast-block {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast-block.show {
+            opacity: 1;
+            bottom: 110px;
+        }
+
+        /* loading */
+        .loading-block {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #f4f6fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        .loading-block.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-triangle {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #0f172a;
+            border-radius: 8px;
+            animation: spin 2s infinite linear;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* responsive */
+        @media (max-width: 1100px) {
+            .cards-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 800px) {
+            .grid-system { gap: 16px; }
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-main h1 { font-size: 40px; }
+        }
+        @media (max-width: 500px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .nav-block-item { padding: 10px 20px; }
+            .nav-block-item span { display: none; }
+            .nav-block-item i { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- loading -->
+    <div class="loading-block" id="loading">
+        <div class="loader-triangle"></div>
+        
+    </div>
+
+    <!-- GRID UTAMA -->
+    <main class="grid-system">
+        <!-- header -->
+        <div class="header-grid">
+            <div class="logo-block">
+                <div class="logo-text">ikxzu<span>stream</span></div>
+            </div>
+            <a href="prof.html" class="profile-pill" id="profileBtn">
+                <i class="fa-regular fa-user"></i> Profile
+            </a>
+        </div>
+
+        <!-- hero block -->
+        <div class="hero-grid">
+            <div class="hero-main">
+                <h1>Saksikan Live<br>JKT48 Terbaik</h1>
+                <p>Nikmati live streaming eksklusif</p>
+                <div class="stats-grid">
+                    <div class="stat-block">
+                        <div class="stat-number" id="totalViewers">0<span style="font-size:16px; margin-left:2px;">+</span></div>
+                        <div class="stat-label">Penonton</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number" id="totalLives">0</div>
+                        <div class="stat-label">Live</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number" id="totalMembers">0<span style="font-size:16px; margin-left:2px;">+</span></div>
+                        <div class="stat-label">membership</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-secondary">
+                <div class="info-card">
+                    <div class="small-title">Total viewers</div>
+                    <div class="value-large" id="totalViewersLarge">0</div>
+                </div>
+                <div class="info-card">
+                    <div class="small-title">Live sekarang</div>
+                    <div class="value-large" id="totalLivesLarge">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- section header -->
+        <div class="section-header-block">
+            <div class="section-title">
+                <span class="title-block">room live</span>
+            </div>
+            <div class="link-all">
+                kalau kosong tunggu aja
+            </div>
+        </div>
+
+        <!-- grid cards -->
+        <div class="cards-grid" id="roomsGrid"></div>
+
+        <!-- empty state (hidden) -->
+        <div class="empty-block" id="emptyState" style="display: none;">
+            <div class="empty-icon"><i class="fa-regular fa-rectangle-xmark"></i></div>
+            <h3>Belum ada live</h3>
+            <p>mohon sabar jika delay</p>
+        </div>
+
+        <!-- bottom navigation -->
+        <div class="nav-grid-bottom">
+            <div class="nav-blocks">
+                <a href="index.html" class="nav-block-item active"><i class="fa-regular fa-grid-2"></i> <span>Beranda</span></a>
+                <a href="a.html" class="nav-block-item" id="navExplore"><i class="fa-regular fa-compass"></i> <span>about</span></a>
+                <a href="prof.html" class="nav-block-item"><i class="fa-regular fa-user"></i> <span>Profil</span></a>
+            </div>
+        </div>
+    </main>
+
+    <!-- modal token -->
+    <div class="modal-overlay" id="tokenModal">
+        <div class="modal-block">
+            <div class="modal-icon-block"><i class="fa-regular fa-key"></i></div>
+            <h3 class="modal-title-block">Token akses</h3>
+            <p class="modal-sub">masukkan token untuk menonton</p>
+            <input type="text" class="input-block" id="tokenInput" placeholder="cth: JKT48-TOKEN">
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="closeTokenModal()">batal</button>
+                <button class="modal-btn primary" onclick="verifyToken()">masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- toast -->
+    <div class="toast-block" id="toastMessage"><i class="fa-regular fa-check-circle"></i> berhasil</div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMQ961-vifb3R-Gurla3LbLM_489aHkHs-g",
+            authDomain: "live2ke2.firebaseapp.com",
+            projectId: "live2ke2",
+            storageBucket: "live2ke2.firebasestorage.app",
+            messagingSenderId: "861176752510",
+            appId: "1:861176752510:web:0e1ee4e2d7f96c0b5dab2f"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // State
+        let currentRoom = null;
+        let currentUser = null;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkUserSession();
+            await loadRooms();
+            await loadStats();
+            
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 800);
+        });
+
+        // Check user session
+        async function checkUserSession() {
+            const session = localStorage.getItem('ikazz_session');
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    const memberDoc = await db.collection('members').doc(sessionData.memberId).get();
+                    
+                    if (memberDoc.exists) {
+                        const memberData = memberDoc.data();
+                        
+                        // Check device ID
+                        const deviceId = getDeviceId();
+                        if (memberData.deviceId && memberData.deviceId !== deviceId) {
+                            localStorage.removeItem('ikazz_session');
+                            showToast('error', 'Sesi Berakhir', 'Token digunakan di perangkat lain');
+                            return;
+                        }
+                        
+                        // Check expiry
+                        if (memberData.expiryDate && memberData.expiryDate.toDate() < new Date()) {
+                            localStorage.removeItem('ikazz_session');
+                            showToast('error', 'Membership Expired', 'Membership Anda telah berakhir');
+                            return;
+                        }
+                        
+                        currentUser = {
+                            id: memberDoc.id,
+                            ...memberData
+                        };
+                    }
+                } catch (error) {
+                    console.error('Session check error:', error);
+                }
+            }
+        }
+
+        // Get device ID
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('device_id');
+            if (!deviceId) {
+                deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        // Load rooms
+        async function loadRooms() {
+            const roomsGrid = document.getElementById('roomsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            try {
+                db.collection('rooms')
+                    .where('isLive', '==', true)
+                    .onSnapshot(snapshot => {
+                        roomsGrid.innerHTML = '';
+                        
+                        if (snapshot.empty) {
+                            emptyState.style.display = 'block';
+                            document.getElementById('totalLives').textContent = '0';
+                            document.getElementById('totalLivesLarge').textContent = '0';
+                            return;
+                        }
+                        
+                        emptyState.style.display = 'none';
+                        document.getElementById('totalLives').textContent = snapshot.size;
+                        document.getElementById('totalLivesLarge').textContent = snapshot.size;
+                        
+                        snapshot.forEach((doc, index) => {
+                            const room = { id: doc.id, ...doc.data() };
+                            roomsGrid.appendChild(createRoomCard(room, index));
+                        });
+                    });
+            } catch (error) {
+                console.error('Error loading rooms:', error);
+                showToast('error', 'Error', 'Gagal memuat daftar live');
+            }
+        }
+
+        // Create room card
+        function createRoomCard(room, index) {
+            const card = document.createElement('div');
+            card.className = 'card-block';
+            card.style.animation = `fadeIn 0.3s ${index * 0.05}s backwards`;
+            card.onclick = () => openRoom(room);
+            
+            const membersHtml = (room.lineup || []).slice(0, 3).map((member, i) => `
+                <div class="member-square" style="background: hsl(${i * 40}, 70%, 90%);">
+                    ${member.photo ? `<img src="${member.photo}" alt="${member.name}">` : (member.name?.charAt(0) || 'J')}
+                </div>
+            `).join('');
+            
+            card.innerHTML = `
+                <div class="card-thumb">
+                    <img src="${room.thumbnail || 'https://picsum.photos/300/300?random=' + room.id}" alt="${room.title}" loading="lazy">
+                    <span class="live-tag"><i class="fa-solid fa-circle"></i> LIVE</span>
+                    <span class="viewer-tag"><i class="fa-regular fa-eye"></i> ${room.viewers || 0}</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${room.title || 'JKT48 Live'}</h3>
+                    <p class="card-sub">${room.subtitle || 'streaming sekarang'}</p>
+                    <div class="members-block">
+                        ${membersHtml}
+                        ${(room.lineup || []).length > 3 ? `<span class="more-count">+${room.lineup.length - 3}</span>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Open room
+        function openRoom(room) {
+            currentRoom = room;
+            
+            // Check if user is logged in with membership
+            if (currentUser && currentUser.type === 'membership') {
+                // Direct access for members
+                window.location.href = `room.html?id=${room.id}`;
+                return;
+            }
+            
+            // Show token modal for non-members
+            document.getElementById('tokenModal').classList.add('active');
+            document.getElementById('tokenInput').value = '';
+            document.getElementById('tokenInput').focus();
+        }
+
+        // Close token modal
+        function closeTokenModal() {
+            document.getElementById('tokenModal').classList.remove('active');
+            currentRoom = null;
+        }
+
+        // Verify token
+        async function verifyToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            
+            if (!token) {
+                showToast('error', 'Error', 'Masukkan token terlebih dahulu');
+                return;
+            }
+            
+            try {
+                // Check watch token
+                const watchTokenQuery = await db.collection('watchTokens')
+                    .where('token', '==', token)
+                    .where('roomId', '==', currentRoom.id)
+                    .where('used', '==', false)
+                    .get();
+                
+                if (!watchTokenQuery.empty) {
+                    const tokenDoc = watchTokenQuery.docs[0];
+                    const tokenData = tokenDoc.data();
+                    
+                    // Check if token is for single device
+                    const deviceId = getDeviceId();
+                    if (tokenData.deviceId && tokenData.deviceId !== deviceId) {
+                        showToast('error', 'Error', 'Token sudah digunakan di perangkat lain');
+                        return;
+                    }
+                    
+                    // Mark as used and set device
+                    await tokenDoc.ref.update({
+                        used: true,
+                        deviceId: deviceId,
+                        usedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showToast('success', 'Berhasil', 'Token valid, mengarahkan ke live...');
+                    closeTokenModal();
+                    
+                    setTimeout(() => {
+                        window.location.href = `room.html?id=${currentRoom.id}&token=${token}`;
+                    }, 1000);
+                    return;
+                }
+                
+                // Check membership token
+                const memberQuery = await db.collection('members')
+                    .where('token', '==', token)
+                    .get();
+                
+                if (!memberQuery.empty) {
+                    const memberDoc = memberQuery.docs[0];
+                    const memberData = memberDoc.data();
+                    
+                    // Check device
+                    const deviceId = getDeviceId();
+                    if (memberData.deviceId && memberData.deviceId !== deviceId) {
+                        showToast('error', 'Error', 'Token sudah digunakan di perangkat lain');
+                        return;
+                    }
+                    
+                    // Check expiry
+                    if (memberData.expiryDate && memberData.expiryDate.toDate() < new Date()) {
+                        showToast('error', 'Error', 'Membership Anda telah berakhir');
+                        return;
+                    }
+                    
+                    // Update device ID
+                    await memberDoc.ref.update({
+                        deviceId: deviceId,
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Save session
+                    localStorage.setItem('ikazz_session', JSON.stringify({
+                        memberId: memberDoc.id,
+                        token: token
+                    }));
+                    
+                    currentUser = { id: memberDoc.id, ...memberData };
+                    
+                    showToast('success', 'Berhasil', 'Login berhasil, mengarahkan ke live...');
+                    closeTokenModal();
+                    
+                    setTimeout(() => {
+                        window.location.href = `room.html?id=${currentRoom.id}`;
+                    }, 1000);
+                    return;
+                }
+                
+                showToast('error', 'Error', 'Token tidak valid atau sudah digunakan');
+                
+            } catch (error) {
+                console.error('Token verification error:', error);
+                showToast('error', 'Error', 'Gagal memverifikasi token');
+            }
+        }
+
+        // Load stats
+        async function loadStats() {
+            try {
+                // Get total members
+                const membersSnap = await db.collection('members').get();
+                document.getElementById('totalMembers').innerHTML = membersSnap.size + '<span style="font-size:16px;">+</span>';
+                document.getElementById('totalMembersLarge') && (document.getElementById('totalMembersLarge').textContent = membersSnap.size);
+                
+                // Get total viewers (sum from all rooms)
+                const roomsSnap = await db.collection('rooms').get();
+                let totalViewers = 0;
+                roomsSnap.forEach(doc => {
+                    totalViewers += doc.data().totalViewers || 0;
+                });
+                document.getElementById('totalViewers').innerHTML = totalViewers + '<span style="font-size:16px;">+</span>';
+                document.getElementById('totalViewersLarge').textContent = totalViewers;
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Show toast
+        function showToast(type, title, message) {
+            const toast = document.getElementById('toastMessage');
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `<i class="fa-regular ${icon}"></i> ${message}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Enter key for token input
+        document.getElementById('tokenInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verifyToken();
+            }
+        });
+
+        // Expose functions to global
+        window.closeTokenModal = closeTokenModal;
+        window.verifyToken = verifyToken;
+    </script>
+</body>
+</html>
