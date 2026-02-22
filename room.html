@@ -2,450 +2,449 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Room | ikazz - 48</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Room | Ikazz - 48</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 'jakarta': ['Plus Jakarta Sans', 'sans-serif'] }
+                    colors: {
+                        sage: '#E3F0E9',
+                        blush: '#FFE5E5',
+                        peach: '#FFE8D9',
+                        dark: '#1C1C1E',
+                        darkNavy: '#0f172a',
+                        secondary: '#8E8E93',
+                        divider: '#E5E5E7'
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        .slide-up { animation: slideUp 0.4s ease-out; }
-        .slide-left { animation: slideLeft 0.3s ease-out; }
-        .scale-in { animation: scaleIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes pulse-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .pulse-live { animation: pulse-live 1.5s infinite; }
-        .animate-spin { animation: spin 1s linear infinite; }
+        * { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        @keyframes reconnecting {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
+        .animate-pulse-live { animation: pulse-live 2s ease-in-out infinite; }
+        .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
+        .animate-reconnecting { animation: reconnecting 1s ease-in-out infinite; }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        
         .scrollbar-thin::-webkit-scrollbar { width: 4px; }
         .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
-        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); }
-        .chat-bubble { animation: slideUp 0.2s ease-out; }
-        .connection-connected { border-color: #22c55e !important; }
-        .connection-connecting { border-color: #eab308 !important; }
-        .connection-failed { border-color: #ef4444 !important; }
-        .video-glow-connected { box-shadow: 0 0 30px rgba(34, 197, 94, 0.15); }
-        .video-glow-connecting { box-shadow: 0 0 30px rgba(234, 179, 8, 0.15); }
-        .video-glow-failed { box-shadow: 0 0 30px rgba(239, 68, 68, 0.15); }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+        
+        .chat-bubble {
+            animation: slideIn 0.2s ease-out;
+        }
+        
+        .connection-indicator {
+            transition: all 0.3s ease;
+        }
+        
+        .video-container {
+            transition: border-color 0.3s ease;
+        }
+        
+        .video-container.connected { border-color: #10b981; }
+        .video-container.connecting { border-color: #f59e0b; }
+        .video-container.disconnected { border-color: #ef4444; }
+        
+        #remoteVideo {
+            background: #0f172a;
+        }
+        
+        .server-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .server-btn.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .tab-btn.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        
+        .member-card {
+            transition: all 0.2s ease;
+        }
+        
+        .member-card:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .right-panel { position: fixed; bottom: 0; left: 0; right: 0; height: 50vh; z-index: 30; }
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-darkNavy min-h-screen text-white">
     <!-- Mobile Header -->
-    <header class="lg:hidden fixed top-0 left-0 right-0 glass z-50 border-b border-gray-100">
+    <header class="lg:hidden fixed top-0 left-0 right-0 z-40 glass-dark border-b border-white/10">
         <div class="flex items-center justify-between px-4 py-3">
-            <button onclick="exitRoom()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-colors">
-                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="exitRoom()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
             </button>
             <div class="flex items-center gap-2">
-                <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 bg-white rounded-full pulse-live"></span>
-                    LIVE
-                </span>
-                <div class="flex items-center gap-1.5 bg-gray-100 px-2.5 py-1 rounded-lg">
-                    <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
-                    </svg>
-                    <span id="mobileViewerCount" class="text-sm font-semibold text-gray-700">0</span>
-                </div>
+                <span id="mobileConnectionStatus" class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="text-sm font-medium">Live Room</span>
             </div>
-            <button onclick="toggleMobilePanel()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-xl transition-colors">
-                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="toggleMobilePanel()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
             </button>
         </div>
     </header>
 
-    <!-- Main Layout -->
-    <div class="lg:flex min-h-screen">
-        <!-- Sidebar Desktop -->
-        <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-40">
-            <div class="p-5 border-b border-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar - Desktop -->
+        <aside class="sidebar hidden lg:flex flex-col w-60 bg-slate-900 border-r border-white/10 fixed h-full z-30">
+            <div class="p-6">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200/50">
-                        <span class="text-white font-extrabold">48</span>
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center">
+                        <span class="font-bold text-white">48</span>
                     </div>
                     <div>
-                        <h1 class="font-bold text-gray-800">ikazz - 48</h1>
-                        <p class="text-xs text-gray-400">Live Stage</p>
+                        <h1 class="font-semibold">Ikazz - 48</h1>
+                        <p class="text-xs text-slate-400">Live Streaming</p>
                     </div>
                 </div>
             </div>
 
-            <nav class="flex-1 p-4 space-y-1">
-                <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
-                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <nav class="flex-1 px-4">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-colors mb-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
-                    <span class="font-medium">Home</span>
+                    <span>Home</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
-                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="jadwal.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-colors mb-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span class="font-medium">Jadwal</span>
+                    <span>Jadwal Show</span>
                 </a>
-                <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border border-emerald-100">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-500/20 text-emerald-400 mb-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
-                    <span class="font-semibold">Live Stage</span>
-                </div>
-                <a href="#" onclick="showLineupSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 transition-all group">
-                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    <span class="font-medium">Lineup</span>
+                    <span>Live Stage</span>
                 </a>
             </nav>
 
-            <!-- Connection Status -->
-            <div class="p-4 border-t border-gray-100">
-                <div class="bg-gray-50 rounded-xl p-3 mb-3">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div id="connectionDot" class="w-2.5 h-2.5 bg-gray-400 rounded-full"></div>
-                        <span id="connectionText" class="text-sm text-gray-500 font-medium">Menghubungkan...</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="bg-white rounded-lg p-2 text-center">
-                            <p class="text-gray-400">Latency</p>
-                            <p id="latencyText" class="font-mono font-semibold text-gray-700">--ms</p>
-                        </div>
-                        <div class="bg-white rounded-lg p-2 text-center">
-                            <p class="text-gray-400">Quality</p>
-                            <p id="qualityText" class="font-mono font-semibold text-gray-700">--p</p>
-                        </div>
-                    </div>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex items-center gap-2 mb-4">
+                    <div id="connectionStatusDot" class="w-2 h-2 rounded-full bg-yellow-500 connection-indicator"></div>
+                    <span id="connectionStatusText" class="text-xs text-slate-400">Connecting...</span>
                 </div>
-                <button onclick="exitRoom()" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 border border-red-100 rounded-xl text-red-600 font-semibold transition-colors">
+                <button onclick="exitRoom()" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                     </svg>
-                    Keluar
+                    <span>Keluar</span>
                 </button>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 lg:ml-64 lg:mr-96 pt-16 lg:pt-0">
+        <main class="main-content flex-1 lg:ml-60 lg:mr-80 pt-16 lg:pt-0">
             <div class="p-4 lg:p-6">
                 <!-- Video Container -->
-                <div id="videoContainer" class="relative bg-gray-900 rounded-2xl lg:rounded-3xl overflow-hidden border-4 border-gray-200 transition-all duration-500 aspect-video video-glow-connecting">
-                    <video id="remoteVideo" autoplay playsinline class="w-full h-full object-contain bg-black"></video>
+                <div id="videoContainer" class="video-container connecting relative aspect-video bg-slate-900 rounded-2xl overflow-hidden border-2 mb-4 shadow-2xl">
+                    <video id="remoteVideo" autoplay playsinline class="w-full h-full object-contain"></video>
                     
-                    <!-- Loading Overlay -->
-                    <div id="loadingOverlay" class="absolute inset-0 bg-gray-900/95 flex flex-col items-center justify-center">
-                        <div class="relative mb-6">
-                            <div class="w-20 h-20 border-4 border-emerald-500/20 rounded-full"></div>
-                            <div class="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-emerald-500 rounded-full animate-spin"></div>
-                        </div>
-                        <p class="text-white font-semibold text-lg mb-1">Menghubungkan ke Stream</p>
-                        <p class="text-gray-400 text-sm" id="loadingStatus">Menyiapkan koneksi...</p>
-                    </div>
-
-                    <!-- Reconnect Overlay -->
-                    <div id="reconnectOverlay" class="absolute inset-0 bg-gray-900/95 hidden flex-col items-center justify-center">
-                        <div class="text-center max-w-sm mx-auto px-6">
-                            <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-white text-xl font-bold mb-2">Koneksi Terputus</h3>
-                            <p class="text-gray-400 mb-6">Mencoba menghubungkan kembali dalam</p>
-                            <p class="text-emerald-400 font-mono text-4xl font-bold mb-6" id="reconnectCountdown">5</p>
-                            <button onclick="manualReconnect()" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
-                                Hubungkan Sekarang
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Video Overlay Controls -->
-                    <div class="absolute top-4 left-4 flex items-center gap-2">
-                        <span class="px-3 py-1.5 bg-red-500 text-white text-sm font-bold rounded-lg flex items-center gap-2 shadow-lg">
-                            <span class="w-2 h-2 bg-white rounded-full pulse-live"></span>
-                            LIVE
-                        </span>
-                        <span id="streamDurationBadge" class="px-3 py-1.5 bg-black/60 text-white text-sm font-mono rounded-lg">00:00:00</span>
-                    </div>
-
-                    <div class="absolute top-4 right-4 flex items-center gap-2">
-                        <div class="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-lg">
-                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
-                            </svg>
-                            <span id="viewerCount" class="text-white font-semibold">0</span>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Controls -->
-                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pt-12">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <button onclick="toggleMute()" id="muteBtn" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                                    <svg id="volumeIcon" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                                    </svg>
-                                </button>
-                                <div class="hidden md:flex items-center gap-2 text-white/80 text-sm">
-                                    <span id="bitrateValue" class="font-mono">-- kbps</span>
-                                    <span class="text-white/40">•</span>
-                                    <span id="fpsValue" class="font-mono">-- fps</span>
+                    <!-- Video Overlay -->
+                    <div class="absolute inset-0 pointer-events-none">
+                        <!-- Top Overlay -->
+                        <div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="flex items-center gap-1.5 bg-red-500 px-3 py-1 rounded-full text-sm font-medium">
+                                        <span class="w-2 h-2 bg-white rounded-full animate-pulse-live"></span>
+                                        LIVE
+                                    </span>
+                                    <span id="viewerCount" class="flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-full text-sm">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span>0</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span id="latencyIndicator" class="bg-black/40 px-2 py-1 rounded-full text-xs">-- ms</span>
+                                    <span id="bitrateIndicator" class="bg-black/40 px-2 py-1 rounded-full text-xs">-- kbps</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="togglePiP()" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </div>
+
+                        <!-- Bottom Overlay -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                            <div class="flex items-center justify-between pointer-events-auto">
+                                <button id="muteBtn" onclick="toggleMute()" class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/60 transition-colors">
+                                    <svg id="muteIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
                                     </svg>
                                 </button>
-                                <button onclick="toggleFullscreen()" class="w-11 h-11 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button onclick="toggleFullscreen()" class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/60 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                                     </svg>
                                 </button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Loading/Reconnecting Overlay -->
+                    <div id="loadingOverlay" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center">
+                        <div class="w-16 h-16 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+                        <p id="loadingText" class="text-lg font-medium mb-2">Menghubungkan...</p>
+                        <p id="loadingSubtext" class="text-slate-400 text-sm">Mohon tunggu sebentar</p>
+                        <button id="manualReconnectBtn" onclick="manualReconnect()" class="hidden mt-4 px-6 py-2 bg-emerald-500 rounded-xl hover:bg-emerald-600 transition-colors">
+                            Coba Lagi
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Server Switch -->
-                <div class="mt-4 flex items-center justify-center gap-3">
-                    <span class="text-sm text-gray-500 font-medium">Server:</span>
-                    <div class="flex bg-gray-100 rounded-full p-1">
-                        <button onclick="switchServer(1)" id="server1Btn" class="px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all">
-                            Server 1
-                        </button>
-                        <button onclick="switchServer(2)" id="server2Btn" class="px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all">
-                            Server 2
-                        </button>
-                    </div>
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <button id="server1Btn" onclick="switchServer(1)" class="server-btn active px-6 py-2 rounded-full bg-slate-800 text-sm font-medium">
+                        Server 1 (Utama)
+                    </button>
+                    <button id="server2Btn" onclick="switchServer(2)" class="server-btn px-6 py-2 rounded-full bg-slate-800 text-sm font-medium">
+                        Server 2 (Backup)
+                    </button>
                 </div>
 
                 <!-- Stream Info Card -->
-                <div class="mt-4 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                <div class="bg-slate-800/50 rounded-2xl p-4 border border-white/10">
                     <div class="flex items-start gap-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200/50 flex-shrink-0">
-                            <span class="text-white font-extrabold text-2xl">48</span>
+                        <div id="streamThumbnail" class="w-16 h-16 rounded-xl bg-slate-700 flex-shrink-0 overflow-hidden">
+                            <img src="" alt="" class="w-full h-full object-cover hidden">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                <h2 id="streamTitle" class="font-bold text-gray-800 text-xl">Loading...</h2>
-                                <span class="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded">LIVE</span>
-                            </div>
-                            <p id="streamSubtitle" class="text-gray-500 mb-3">-</p>
-                            <div class="flex items-center gap-4 text-sm text-gray-400 flex-wrap">
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/>
-                                    </svg>
-                                    <span id="viewerCount2">0 penonton</span>
-                                </div>
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <span id="streamDuration">00:00:00</span>
-                                </div>
+                            <h2 id="streamTitle" class="font-semibold text-lg truncate">Loading...</h2>
+                            <p id="streamDescription" class="text-slate-400 text-sm truncate mb-2">Loading description...</p>
+                            <div class="flex items-center gap-2">
+                                <span class="flex items-center gap-1 text-xs text-emerald-400">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                    Live
+                                </span>
                             </div>
                         </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <p id="streamDescription" class="text-gray-600 text-sm leading-relaxed">Loading...</p>
                     </div>
                 </div>
 
-                <!-- Connection Stats (Collapsible) -->
+                <!-- Stats Panel (Collapsible) -->
                 <div class="mt-4">
-                    <button onclick="toggleStats()" class="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
-                        <span class="text-sm font-semibold text-gray-600 flex items-center gap-2">
-                            <span>📊</span>
-                            Connection Stats
-                        </span>
-                        <svg id="statsArrow" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="toggleStatsPanel()" class="flex items-center gap-2 text-slate-400 text-sm hover:text-white transition-colors">
+                        <svg id="statsArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
+                        <span>Statistik Koneksi</span>
                     </button>
-                    <div id="statsPanel" class="hidden mt-2 bg-white rounded-xl p-4 border border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div class="bg-gray-50 rounded-xl p-3 text-center">
-                            <p class="text-xs text-gray-400 mb-1">Connection</p>
-                            <p id="statConnection" class="font-mono text-sm font-semibold text-gray-700">-</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-xl p-3 text-center">
-                            <p class="text-xs text-gray-400 mb-1">ICE State</p>
-                            <p id="statIce" class="font-mono text-sm font-semibold text-gray-700">-</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-xl p-3 text-center">
-                            <p class="text-xs text-gray-400 mb-1">Bitrate</p>
-                            <p id="statBitrate" class="font-mono text-sm font-semibold text-gray-700">-</p>
-                        </div>
-                        <div class="bg-gray-50 rounded-xl p-3 text-center">
-                            <p class="text-xs text-gray-400 mb-1">Packet Loss</p>
-                            <p id="statPacketLoss" class="font-mono text-sm font-semibold text-gray-700">-</p>
+                    <div id="statsPanel" class="hidden mt-3 bg-slate-800/50 rounded-xl p-4 border border-white/10">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Connection</p>
+                                <p id="statConnection" class="text-sm font-medium text-yellow-400">Connecting</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">ICE State</p>
+                                <p id="statIce" class="text-sm font-medium">--</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Bitrate</p>
+                                <p id="statBitrate" class="text-sm font-medium">-- kbps</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">FPS</p>
+                                <p id="statFps" class="text-sm font-medium">--</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Resolution</p>
+                                <p id="statResolution" class="text-sm font-medium">--</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Packet Loss</p>
+                                <p id="statPacketLoss" class="text-sm font-medium">--%</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Jitter</p>
+                                <p id="statJitter" class="text-sm font-medium">-- ms</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs mb-1">Round Trip</p>
+                                <p id="statRtt" class="text-sm font-medium">-- ms</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Right Panel Desktop -->
-        <aside id="rightPanel" class="fixed right-0 top-0 bottom-0 w-96 bg-white border-l border-gray-100 hidden lg:flex flex-col z-30">
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-100">
-                <button onclick="switchRightTab('chat')" id="chatTab" class="flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2">
-                    💬 Live Chat
+        <!-- Right Panel - Chat & Lineup -->
+        <aside id="rightPanel" class="right-panel hidden lg:flex flex-col w-80 bg-slate-900 border-l border-white/10 fixed right-0 top-0 h-full z-30">
+            <!-- Tab Buttons -->
+            <div class="flex border-b border-white/10">
+                <button onclick="switchTab('chat')" id="chatTabBtn" class="tab-btn active flex-1 py-4 text-sm font-medium text-center transition-colors">
+                    Live Chat
                 </button>
-                <button onclick="switchRightTab('lineup')" id="lineupTab" class="flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2">
-                    👥 Lineup
+                <button onclick="switchTab('lineup')" id="lineupTabBtn" class="tab-btn flex-1 py-4 text-sm font-medium text-center text-slate-400 transition-colors">
+                    Lineup
                 </button>
             </div>
 
-            <!-- Chat Panel -->
-            <div id="chatPanel" class="flex-1 flex flex-col">
+            <!-- Chat Tab -->
+            <div id="chatTab" class="flex-1 flex flex-col">
+                <!-- Chat Messages -->
                 <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
-                    <div class="text-center py-8">
-                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-2xl">💬</span>
-                        </div>
-                        <p class="text-gray-400 text-sm">Mulai percakapan!</p>
-                    </div>
+                    <!-- Messages will be inserted here -->
                 </div>
-                
+
+                <!-- Slow Mode Indicator -->
+                <div id="slowModeIndicator" class="hidden px-4 py-2 bg-yellow-500/20 text-yellow-400 text-xs text-center">
+                    <span>⏱️ Slow Mode aktif: 10 detik</span>
+                </div>
+
                 <!-- Chat Input -->
-                <div class="p-4 border-t border-gray-100 bg-gray-50">
-                    <div id="slowModeIndicator" class="hidden mb-3 px-4 py-2 bg-amber-50 text-amber-700 text-sm rounded-xl flex items-center gap-2">
-                        <span>⏱</span>
-                        <span>Slow mode aktif</span>
-                    </div>
+                <div class="p-4 border-t border-white/10">
                     <div class="flex items-center gap-2">
-                        <button onclick="toggleEmoji()" class="w-11 h-11 flex items-center justify-center hover:bg-gray-200 rounded-xl transition-colors">
-                            <span class="text-xl">😊</span>
-                        </button>
-                        <input type="text" id="chatInput" placeholder="Tulis pesan..." 
-                            class="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all"
-                            onkeypress="if(event.key==='Enter')sendMessage()">
-                        <button onclick="sendMessage()" class="w-11 h-11 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl flex items-center justify-center hover:shadow-lg hover:shadow-emerald-200/50 transition-all hover:scale-105">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        <div class="flex-1 relative">
+                            <input type="text" id="chatInput" placeholder="Tulis pesan..." class="w-full px-4 py-3 bg-slate-800 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <button onclick="sendMessage()" class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center hover:bg-emerald-600 transition-colors flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                             </svg>
                         </button>
                     </div>
-                    <!-- Emoji Picker -->
-                    <div id="emojiPicker" class="hidden mt-3 p-3 bg-white border border-gray-200 rounded-xl grid grid-cols-8 gap-1">
-                        <button onclick="addEmoji('😊')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">😊</button>
-                        <button onclick="addEmoji('❤️')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">❤️</button>
-                        <button onclick="addEmoji('🔥')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🔥</button>
-                        <button onclick="addEmoji('👏')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">👏</button>
-                        <button onclick="addEmoji('💯')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💯</button>
-                        <button onclick="addEmoji('🎉')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🎉</button>
-                        <button onclick="addEmoji('😂')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">😂</button>
-                        <button onclick="addEmoji('🥰')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🥰</button>
-                        <button onclick="addEmoji('✨')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">✨</button>
-                        <button onclick="addEmoji('💕')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💕</button>
-                        <button onclick="addEmoji('👍')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">👍</button>
-                        <button onclick="addEmoji('🙏')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🙏</button>
-                        <button onclick="addEmoji('💪')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💪</button>
-                        <button onclick="addEmoji('🌟')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🌟</button>
-                        <button onclick="addEmoji('💖')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">💖</button>
-                        <button onclick="addEmoji('🤩')" class="text-xl hover:bg-gray-100 rounded-lg p-1.5 transition-colors">🤩</button>
-                    </div>
                 </div>
             </div>
 
-            <!-- Lineup Panel -->
-            <div id="lineupPanel" class="hidden flex-1 overflow-y-auto p-4 scrollbar-thin">
+            <!-- Lineup Tab -->
+            <div id="lineupTab" class="hidden flex-1 overflow-y-auto p-4">
                 <div id="lineupGrid" class="grid grid-cols-2 gap-3">
-                    <!-- Members loaded here -->
+                    <!-- Members will be inserted here -->
                 </div>
             </div>
         </aside>
+    </div>
 
-        <!-- Mobile Panel -->
-        <div id="mobilePanel" class="fixed inset-0 bg-black/50 z-50 hidden lg:hidden" onclick="closeMobilePanel(event)">
-            <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[75vh] flex flex-col slide-up" onclick="event.stopPropagation()">
-                <div class="flex items-center justify-center py-3">
-                    <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+    <!-- Mobile Panel Toggle -->
+    <div id="mobilePanelContainer" class="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-white/10 z-40 transform translate-y-full transition-transform duration-300">
+        <div class="h-[50vh] flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b border-white/10">
+                <div class="flex gap-4">
+                    <button onclick="switchMobileTab('chat')" id="mobileChatBtn" class="text-sm font-medium text-emerald-400">Chat</button>
+                    <button onclick="switchMobileTab('lineup')" id="mobileLineupBtn" class="text-sm font-medium text-slate-400">Lineup</button>
                 </div>
-                <div class="flex border-b border-gray-100">
-                    <button onclick="switchMobileTab('chat')" id="mChatTab" class="flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500">💬 Chat</button>
-                    <button onclick="switchMobileTab('lineup')" id="mLineupTab" class="flex-1 py-3 text-sm font-semibold text-gray-400">👥 Lineup</button>
-                </div>
-                
-                <div id="mChatContent" class="flex-1 flex flex-col overflow-hidden">
-                    <div id="mobileChatMessages" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
-                    <div class="p-4 border-t border-gray-100 bg-gray-50">
-                        <div class="flex items-center gap-2">
-                            <input type="text" id="mobileChatInput" placeholder="Tulis pesan..." 
-                                class="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
-                                onkeypress="if(event.key==='Enter')sendMessage()">
-                            <button onclick="sendMessage()" class="w-11 h-11 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                                </svg>
-                            </button>
-                        </div>
+                <button onclick="toggleMobilePanel()" class="w-8 h-8 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="mobileChatContent" class="flex-1 flex flex-col">
+                <div id="mobileChatMessages" class="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin"></div>
+                <div class="p-4 border-t border-white/10">
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="mobileChatInput" placeholder="Tulis pesan..." class="flex-1 px-4 py-3 bg-slate-800 rounded-xl text-white placeholder:text-slate-500 focus:outline-none">
+                        <button onclick="sendMessage()" class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                
-                <div id="mLineupContent" class="hidden flex-1 overflow-y-auto p-4">
-                    <div id="mobileLineupGrid" class="grid grid-cols-3 gap-3"></div>
-                </div>
+            </div>
+            
+            <div id="mobileLineupContent" class="hidden flex-1 overflow-y-auto p-4">
+                <div id="mobileLineupGrid" class="grid grid-cols-3 gap-3"></div>
             </div>
         </div>
     </div>
 
     <!-- Member Modal -->
-    <div id="memberModal" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center p-4" onclick="closeMemberModal()">
-        <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden scale-in" onclick="event.stopPropagation()">
-            <div class="h-24 bg-gradient-to-br from-emerald-400 to-teal-500 relative">
-                <button onclick="closeMemberModal()" class="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="px-6 pb-6 -mt-12 text-center">
-                <img id="modalMemberPhoto" src="" alt="" class="w-24 h-24 rounded-full object-cover mx-auto border-4 border-white shadow-xl mb-3">
-                <div class="flex items-center justify-center gap-2 mb-1">
-                    <h3 id="modalMemberName" class="text-xl font-bold text-gray-800"></h3>
-                    <span id="modalMemberStatus" class="w-3 h-3 rounded-full"></span>
-                </div>
-                <p id="modalMemberInfo" class="text-gray-500 text-sm mb-4"></p>
-                <button onclick="closeMemberModal()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold">❤️ Follow</button>
-            </div>
+    <div id="memberModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeMemberModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 bg-slate-800 rounded-2xl p-6 text-center">
+            <img id="modalMemberPhoto" src="" alt="" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+            <h3 id="modalMemberName" class="text-xl font-semibold mb-1">Member Name</h3>
+            <p id="modalMemberStatus" class="text-emerald-400 text-sm mb-4">Online</p>
+            <p id="modalMemberDesc" class="text-slate-400 text-sm mb-6">Member description</p>
+            <button class="w-full py-3 bg-emerald-500 rounded-xl font-medium hover:bg-emerald-600 transition-colors">
+                Follow
+            </button>
         </div>
     </div>
 
     <!-- Toast -->
-    <div id="toast" class="fixed top-20 lg:top-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-3 z-[70] transform -translate-y-full opacity-0 transition-all duration-300">
-        <div id="toastIcon" class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"></div>
-        <div class="flex-1 min-w-0">
-            <p id="toastTitle" class="font-bold text-gray-800"></p>
-            <p id="toastMessage" class="text-sm text-gray-500"></p>
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 opacity-0 transform -translate-y-4 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-800 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 border border-white/10">
+            <span id="toastIcon"></span>
+            <span id="toastMessage" class="text-sm font-medium"></span>
         </div>
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Configuration
+        // Firebase Config - Live Streaming
         const firebaseConfig = {
             apiKey: "AIzaSyDMQ961-vifb3R-Gurla3LbLM_489aHkHs-g",
             authDomain: "live2ke2.firebaseapp.com",
@@ -458,160 +457,107 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // WebRTC Config
-        const servers = {
-            iceServers: [
+        // State
+        let roomId = new URLSearchParams(window.location.search).get('id');
+        let pc = null;
+        let viewerId = null;
+        let currentServer = 1;
+        let reconnectAttempts = 0;
+        let maxReconnectAttempts = 5;
+        let statsInterval = null;
+        let lastBytesReceived = 0;
+        let lastTimestamp = 0;
+        let isMuted = false;
+        let currentUser = null;
+        let unsubscribers = [];
+
+        // ICE Servers
+        const iceServers = {
+            1: [
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' }
+                { urls: 'stun:stun2.l.google.com:19302' }
             ],
-            iceCandidatePoolSize: 10
+            2: [
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' },
+                { urls: 'stun:stun.stunprotocol.org:3478' }
+            ]
         };
-
-        // State
-        let pc = null;
-        let roomId = null;
-        let viewerId = null;
-        let reconnectAttempts = 0;
-        let reconnectInterval = null;
-        let statsInterval = null;
-        let durationInterval = null;
-        let streamStartTime = null;
-        let currentServer = 1;
-        let isMuted = false;
-        let lastBytesReceived = 0;
-        let unsubscribers = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            roomId = urlParams.get('id');
-
             if (!roomId) {
-                showToast('error', 'Error', 'Room tidak ditemukan');
+                showToast('Room tidak ditemukan', 'error');
                 setTimeout(() => window.location.href = 'index.html', 2000);
                 return;
             }
 
-            viewerId = getDeviceId();
+            // Get user info
+            const loginToken = localStorage.getItem('loginToken');
+            if (loginToken) {
+                currentUser = { token: loginToken };
+            }
+
+            viewerId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
             await loadRoomInfo();
-            await initializeViewer();
-            loadMembers();
+            await startViewing();
             loadChat();
-            startDurationCounter();
+            loadLineup();
+            startStatsMonitoring();
+
+            // Handle page unload
+            window.addEventListener('beforeunload', cleanup);
         });
 
-        function getDeviceId() {
-            let deviceId = localStorage.getItem('deviceId');
-            if (!deviceId) {
-                deviceId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('deviceId', deviceId);
-            }
-            return deviceId;
-        }
-
-        // Room Info
+        // Load Room Info
         async function loadRoomInfo() {
-            const unsub = db.collection('rooms').doc(roomId).onSnapshot(doc => {
-                if (doc.exists) {
-                    const room = doc.data();
-                    document.getElementById('streamTitle').textContent = room.title || 'Live Stream';
-                    document.getElementById('streamSubtitle').textContent = room.subtitle || '';
-                    document.getElementById('streamDescription').textContent = room.description || 'Tidak ada deskripsi';
-                    
-                    const count = room.viewerCount || 0;
-                    document.getElementById('viewerCount').textContent = count;
-                    document.getElementById('viewerCount2').textContent = count + ' penonton';
-                    document.getElementById('mobileViewerCount').textContent = count;
-
-                    streamStartTime = room.startedAt?.toDate() || new Date();
-
-                    if (!room.isLive) {
-                        showReconnectOverlay();
-                        document.getElementById('reconnectCountdown').textContent = 'Offline';
-                    }
-                }
-            });
-            unsubscribers.push(unsub);
-        }
-
-        // WebRTC Viewer
-        async function initializeViewer() {
             try {
-                updateConnectionUI('connecting');
-                updateLoadingStatus('Membuat koneksi peer...');
-
-                pc = new RTCPeerConnection(servers);
-
-                pc.ontrack = (event) => {
-                    const video = document.getElementById('remoteVideo');
-                    if (event.streams && event.streams[0]) {
-                        video.srcObject = event.streams[0];
-                    }
-                };
-
-                pc.onconnectionstatechange = () => {
-                    updateConnectionUI(pc.connectionState);
-                    if (pc.connectionState === 'connected') {
-                        hideLoadingOverlay();
-                        startStatsMonitoring();
-                        incrementViewerCount();
-                        showToast('success', 'Terhubung', 'Stream berhasil dimuat');
-                    } else if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
-                        showReconnectOverlay();
-                        startReconnect();
-                    }
-                };
-
-                pc.oniceconnectionstatechange = () => {
-                    document.getElementById('statIce').textContent = pc.iceConnectionState;
-                };
-
-                updateLoadingStatus('Mengambil stream...');
-                const roomDoc = await db.collection('rooms').doc(roomId).get();
-                
-                if (!roomDoc.exists) {
-                    showToast('error', 'Error', 'Room tidak ditemukan');
+                const doc = await db.collection('rooms').doc(roomId).get();
+                if (!doc.exists) {
+                    showToast('Room tidak ditemukan', 'error');
                     return;
                 }
 
-                const roomData = roomDoc.data();
+                const room = doc.data();
+                document.getElementById('streamTitle').textContent = room.title || 'Live Streaming';
+                document.getElementById('streamDescription').textContent = room.description || '';
                 
-                if (!roomData.offer) {
-                    updateLoadingStatus('Menunggu broadcaster...');
-                    const unsub = db.collection('rooms').doc(roomId).onSnapshot(async (snapshot) => {
+                if (room.thumbnail) {
+                    const img = document.querySelector('#streamThumbnail img');
+                    img.src = room.thumbnail;
+                    img.classList.remove('hidden');
+                }
+
+                // Listen for viewer count
+                db.collection('rooms').doc(roomId).onSnapshot((snapshot) => {
+                    if (snapshot.exists) {
                         const data = snapshot.data();
-                        if (data?.offer && pc.signalingState === 'stable') {
-                            await processOffer(data.offer);
-                            unsub();
-                        }
-                    });
-                    unsubscribers.push(unsub);
-                    return;
-                }
-
-                await processOffer(roomData.offer);
+                        document.getElementById('viewerCount').innerHTML = `
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>${data.viewerCount || 0}</span>
+                        `;
+                    }
+                });
             } catch (error) {
-                console.error('Viewer initialization error:', error);
-                showToast('error', 'Error', 'Gagal menghubungkan ke stream');
+                console.error('Error loading room:', error);
             }
         }
 
-        async function processOffer(offer) {
+        // Start Viewing
+        async function startViewing() {
             try {
-                updateLoadingStatus('Memproses koneksi...');
-                await pc.setRemoteDescription(new RTCSessionDescription(offer));
+                updateConnectionStatus('connecting');
+                showLoading('Menghubungkan ke stream...');
 
-                const answer = await pc.createAnswer();
-                await pc.setLocalDescription(answer);
+                // Create peer connection
+                pc = new RTCPeerConnection({ iceServers: iceServers[currentServer] });
 
-                const viewerRef = db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId);
-                await viewerRef.set({
-                    answer: { type: answer.type, sdp: answer.sdp },
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
+                // Handle ICE candidates
                 pc.onicecandidate = async (event) => {
                     if (event.candidate) {
                         await db.collection('rooms').doc(roomId)
@@ -620,426 +566,488 @@
                     }
                 };
 
-                const unsub = db.collection('rooms').doc(roomId)
+                // Handle connection state
+                pc.onconnectionstatechange = () => {
+                    console.log('Connection state:', pc.connectionState);
+                    updateConnectionStatus(pc.connectionState);
+                    
+                    if (pc.connectionState === 'connected') {
+                        hideLoading();
+                        reconnectAttempts = 0;
+                        incrementViewerCount();
+                    } else if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+                        handleDisconnect();
+                    }
+                };
+
+                pc.oniceconnectionstatechange = () => {
+                    document.getElementById('statIce').textContent = pc.iceConnectionState;
+                };
+
+                // Handle incoming track
+                pc.ontrack = (event) => {
+                    console.log('Received track:', event.track.kind);
+                    const video = document.getElementById('remoteVideo');
+                    if (event.streams && event.streams[0]) {
+                        video.srcObject = event.streams[0];
+                    }
+                };
+
+                // Add transceiver for receiving
+                pc.addTransceiver('video', { direction: 'recvonly' });
+                pc.addTransceiver('audio', { direction: 'recvonly' });
+
+                // Create and send offer
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                // Save viewer offer to Firestore
+                await db.collection('rooms').doc(roomId)
+                    .collection('viewers').doc(viewerId).set({
+                        type: 'offer',
+                        sdp: offer.sdp,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                // Listen for answer from broadcaster
+                const unsubAnswer = db.collection('rooms').doc(roomId)
+                    .collection('viewers').doc(viewerId).onSnapshot(async (snapshot) => {
+                        const data = snapshot.data();
+                        if (data && data.type === 'answer' && pc.signalingState !== 'stable') {
+                            try {
+                                await pc.setRemoteDescription(new RTCSessionDescription({
+                                    type: 'answer',
+                                    sdp: data.sdp
+                                }));
+                            } catch (e) {
+                                console.error('Error setting remote description:', e);
+                            }
+                        }
+                    });
+                unsubscribers.push(unsubAnswer);
+
+                // Listen for ICE candidates from broadcaster
+                const unsubCandidates = db.collection('rooms').doc(roomId)
                     .collection('broadcasterCandidates').doc(viewerId)
-                    .collection('candidates').onSnapshot(snapshot => {
-                        snapshot.docChanges().forEach(async change => {
+                    .collection('candidates').onSnapshot((snapshot) => {
+                        snapshot.docChanges().forEach(async (change) => {
                             if (change.type === 'added') {
                                 try {
                                     await pc.addIceCandidate(new RTCIceCandidate(change.doc.data()));
-                                } catch (e) {}
+                                } catch (e) {
+                                    console.error('Error adding ICE candidate:', e);
+                                }
                             }
                         });
                     });
-                unsubscribers.push(unsub);
+                unsubscribers.push(unsubCandidates);
+
             } catch (error) {
-                throw error;
+                console.error('Error starting viewing:', error);
+                showToast('Gagal menghubungkan', 'error');
+                handleDisconnect();
             }
         }
 
-        // Connection UI
-        function updateConnectionUI(state) {
+        // Update Connection Status
+        function updateConnectionStatus(state) {
+            const dot = document.getElementById('connectionStatusDot');
+            const text = document.getElementById('connectionStatusText');
+            const mobileDot = document.getElementById('mobileConnectionStatus');
             const container = document.getElementById('videoContainer');
-            const dot = document.getElementById('connectionDot');
-            const text = document.getElementById('connectionText');
-            document.getElementById('statConnection').textContent = state;
+            const statConn = document.getElementById('statConnection');
 
-            container.classList.remove('connection-connected', 'connection-connecting', 'connection-failed', 'video-glow-connected', 'video-glow-connecting', 'video-glow-failed');
+            let color, statusText;
+            container.classList.remove('connected', 'connecting', 'disconnected');
 
             switch(state) {
                 case 'connected':
-                    container.classList.add('connection-connected', 'video-glow-connected');
-                    dot.className = 'w-2.5 h-2.5 bg-emerald-500 rounded-full';
-                    text.textContent = 'Terhubung';
-                    text.className = 'text-sm text-emerald-600 font-medium';
+                    color = 'bg-emerald-500';
+                    statusText = 'Connected';
+                    container.classList.add('connected');
+                    statConn.className = 'text-sm font-medium text-emerald-400';
                     break;
                 case 'connecting':
                 case 'new':
-                    container.classList.add('connection-connecting', 'video-glow-connecting');
-                    dot.className = 'w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse';
-                    text.textContent = 'Menghubungkan...';
-                    text.className = 'text-sm text-yellow-600 font-medium';
+                    color = 'bg-yellow-500';
+                    statusText = 'Connecting...';
+                    container.classList.add('connecting');
+                    statConn.className = 'text-sm font-medium text-yellow-400';
+                    break;
+                case 'disconnected':
+                case 'failed':
+                    color = 'bg-red-500';
+                    statusText = 'Disconnected';
+                    container.classList.add('disconnected');
+                    statConn.className = 'text-sm font-medium text-red-400';
                     break;
                 default:
-                    container.classList.add('connection-failed', 'video-glow-failed');
-                    dot.className = 'w-2.5 h-2.5 bg-red-500 rounded-full';
-                    text.textContent = 'Terputus';
-                    text.className = 'text-sm text-red-600 font-medium';
+                    color = 'bg-slate-500';
+                    statusText = state;
+            }
+
+            dot.className = `w-2 h-2 rounded-full ${color} connection-indicator`;
+            mobileDot.className = `w-2 h-2 rounded-full ${color}`;
+            text.textContent = statusText;
+            statConn.textContent = statusText;
+        }
+
+        // Handle Disconnect
+        async function handleDisconnect() {
+            if (reconnectAttempts < maxReconnectAttempts) {
+                reconnectAttempts++;
+                showLoading(`Reconnecting... (${reconnectAttempts}/${maxReconnectAttempts})`, 'Mencoba menghubungkan kembali');
+                
+                setTimeout(async () => {
+                    await cleanup(false);
+                    viewerId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    await startViewing();
+                }, 3000);
+            } else {
+                showLoading('Koneksi terputus', 'Klik tombol untuk mencoba lagi');
+                document.getElementById('manualReconnectBtn').classList.remove('hidden');
             }
         }
 
-        function updateLoadingStatus(status) {
-            document.getElementById('loadingStatus').textContent = status;
-        }
-
-        function hideLoadingOverlay() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
-
-        function showReconnectOverlay() {
-            document.getElementById('reconnectOverlay').classList.remove('hidden');
-            document.getElementById('reconnectOverlay').classList.add('flex');
-        }
-
-        function hideReconnectOverlay() {
-            document.getElementById('reconnectOverlay').classList.add('hidden');
-        }
-
-        // Reconnection
-        function startReconnect() {
-            if (reconnectInterval) return;
-            let countdown = 5;
-            document.getElementById('reconnectCountdown').textContent = countdown;
-            reconnectInterval = setInterval(() => {
-                countdown--;
-                document.getElementById('reconnectCountdown').textContent = countdown;
-                if (countdown <= 0) {
-                    clearInterval(reconnectInterval);
-                    reconnectInterval = null;
-                    manualReconnect();
-                }
-            }, 1000);
-        }
-
+        // Manual Reconnect
         async function manualReconnect() {
-            if (reconnectInterval) {
-                clearInterval(reconnectInterval);
-                reconnectInterval = null;
-            }
-            hideReconnectOverlay();
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-            if (pc) { pc.close(); pc = null; }
-            try { await db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId).delete(); } catch (e) {}
-            reconnectAttempts++;
-            if (reconnectAttempts > 5) {
-                showToast('error', 'Error', 'Gagal menghubungkan');
-                return;
-            }
-            await initializeViewer();
+            reconnectAttempts = 0;
+            document.getElementById('manualReconnectBtn').classList.add('hidden');
+            await cleanup(false);
+            viewerId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            await startViewing();
         }
 
-        // Viewer Count
-        async function incrementViewerCount() {
-            try { await db.collection('rooms').doc(roomId).update({ viewerCount: firebase.firestore.FieldValue.increment(1) }); } catch (e) {}
-        }
-
-        async function decrementViewerCount() {
-            try { await db.collection('rooms').doc(roomId).update({ viewerCount: firebase.firestore.FieldValue.increment(-1) }); } catch (e) {}
+        // Switch Server
+        async function switchServer(server) {
+            if (currentServer === server) return;
+            
+            currentServer = server;
+            
+            document.getElementById('server1Btn').classList.toggle('active', server === 1);
+            document.getElementById('server2Btn').classList.toggle('active', server === 2);
+            
+            showToast(`Beralih ke Server ${server}`, 'info');
+            
+            await cleanup(false);
+            viewerId = 'viewer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            await startViewing();
         }
 
         // Stats Monitoring
         function startStatsMonitoring() {
-            if (statsInterval) clearInterval(statsInterval);
             statsInterval = setInterval(async () => {
-                if (!pc) return;
+                if (!pc || pc.connectionState !== 'connected') return;
+
                 try {
                     const stats = await pc.getStats();
                     stats.forEach(report => {
                         if (report.type === 'inbound-rtp' && report.kind === 'video') {
+                            // Bitrate calculation
+                            const now = report.timestamp;
                             const bytes = report.bytesReceived;
-                            const bitrate = Math.round((bytes - lastBytesReceived) * 8 / 1000);
+                            if (lastTimestamp > 0) {
+                                const bitrate = Math.round(8 * (bytes - lastBytesReceived) / (now - lastTimestamp));
+                                document.getElementById('bitrateIndicator').textContent = `${bitrate} kbps`;
+                                document.getElementById('statBitrate').textContent = `${bitrate} kbps`;
+                            }
                             lastBytesReceived = bytes;
-                            document.getElementById('bitrateValue').textContent = bitrate + ' kbps';
-                            document.getElementById('statBitrate').textContent = bitrate + ' kbps';
+                            lastTimestamp = now;
+
+                            // FPS
                             if (report.framesPerSecond) {
-                                document.getElementById('fpsValue').textContent = Math.round(report.framesPerSecond) + ' fps';
+                                document.getElementById('statFps').textContent = Math.round(report.framesPerSecond);
                             }
-                            if (report.frameHeight) {
-                                document.getElementById('qualityText').textContent = report.frameHeight + 'p';
+
+                            // Resolution
+                            if (report.frameWidth && report.frameHeight) {
+                                document.getElementById('statResolution').textContent = `${report.frameWidth}x${report.frameHeight}`;
                             }
+
+                            // Packet loss
                             if (report.packetsLost !== undefined && report.packetsReceived) {
-                                const lossPercent = ((report.packetsLost / (report.packetsLost + report.packetsReceived)) * 100).toFixed(2);
-                                document.getElementById('statPacketLoss').textContent = lossPercent + '%';
+                                const lossRate = (report.packetsLost / (report.packetsLost + report.packetsReceived) * 100).toFixed(1);
+                                document.getElementById('statPacketLoss').textContent = `${lossRate}%`;
+                            }
+
+                            // Jitter
+                            if (report.jitter) {
+                                document.getElementById('statJitter').textContent = `${(report.jitter * 1000).toFixed(1)} ms`;
                             }
                         }
+
                         if (report.type === 'candidate-pair' && report.state === 'succeeded') {
                             if (report.currentRoundTripTime) {
-                                const latency = Math.round(report.currentRoundTripTime * 1000);
-                                document.getElementById('latencyText').textContent = latency + 'ms';
+                                const rtt = Math.round(report.currentRoundTripTime * 1000);
+                                document.getElementById('latencyIndicator').textContent = `${rtt} ms`;
+                                document.getElementById('statRtt').textContent = `${rtt} ms`;
                             }
                         }
                     });
-                } catch (e) {}
+                } catch (e) {
+                    console.error('Stats error:', e);
+                }
             }, 1000);
         }
 
-        // Duration Counter
-        function startDurationCounter() {
-            if (durationInterval) clearInterval(durationInterval);
-            durationInterval = setInterval(() => {
-                if (!streamStartTime) return;
-                const elapsed = Math.floor((Date.now() - streamStartTime.getTime()) / 1000);
-                const h = Math.floor(elapsed / 3600);
-                const m = Math.floor((elapsed % 3600) / 60);
-                const s = elapsed % 60;
-                const str = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                document.getElementById('streamDuration').textContent = str;
-                document.getElementById('streamDurationBadge').textContent = str;
-            }, 1000);
-        }
-
-        // Video Controls
-        function toggleMute() {
-            const video = document.getElementById('remoteVideo');
-            isMuted = !isMuted;
-            video.muted = isMuted;
-            const icon = document.getElementById('volumeIcon');
-            icon.innerHTML = isMuted 
-                ? '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>'
-                : '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-        }
-
-        function toggleFullscreen() {
-            const container = document.getElementById('videoContainer');
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else {
-                container.requestFullscreen();
+        // Viewer Count
+        async function incrementViewerCount() {
+            try {
+                await db.collection('rooms').doc(roomId).update({
+                    viewerCount: firebase.firestore.FieldValue.increment(1)
+                });
+            } catch (e) {
+                console.error('Error incrementing viewer count:', e);
             }
         }
 
-        function togglePiP() {
-            const video = document.getElementById('remoteVideo');
-            if (document.pictureInPictureElement) {
-                document.exitPictureInPicture();
-            } else if (video.requestPictureInPicture) {
-                video.requestPictureInPicture();
+        async function decrementViewerCount() {
+            try {
+                await db.collection('rooms').doc(roomId).update({
+                    viewerCount: firebase.firestore.FieldValue.increment(-1)
+                });
+            } catch (e) {
+                console.error('Error decrementing viewer count:', e);
             }
         }
 
-        // Server Switch
-        function switchServer(server) {
-            if (server === currentServer) return;
-            currentServer = server;
-            document.getElementById('server1Btn').className = server === 1 
-                ? 'px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all'
-                : 'px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all';
-            document.getElementById('server2Btn').className = server === 2
-                ? 'px-5 py-2 rounded-full text-sm font-semibold bg-emerald-500 text-white transition-all'
-                : 'px-5 py-2 rounded-full text-sm font-semibold text-gray-600 hover:text-gray-800 transition-all';
-            showToast('info', 'Server', 'Berpindah ke Server ' + server);
-            manualReconnect();
-        }
-
-        // Stats Toggle
-        function toggleStats() {
-            const panel = document.getElementById('statsPanel');
-            const arrow = document.getElementById('statsArrow');
-            panel.classList.toggle('hidden');
-            arrow.classList.toggle('rotate-180');
-        }
-
-        // Chat
+        // Chat Functions
         function loadChat() {
-            const unsub = db.collection('rooms').doc(roomId).collection('messages')
-                .orderBy('timestamp', 'asc').limitToLast(100)
-                .onSnapshot(snapshot => {
-                    const chatContainer = document.getElementById('chatMessages');
-                    const mobileChatContainer = document.getElementById('mobileChatMessages');
-                    snapshot.docChanges().forEach(change => {
+            const messagesContainer = document.getElementById('chatMessages');
+            const mobileMessagesContainer = document.getElementById('mobileChatMessages');
+
+            db.collection('rooms').doc(roomId)
+                .collection('messages')
+                .orderBy('createdAt', 'asc')
+                .limitToLast(100)
+                .onSnapshot((snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
                         if (change.type === 'added') {
                             const msg = change.doc.data();
                             const bubble = createChatBubble(msg);
-                            chatContainer.appendChild(bubble.cloneNode(true));
-                            mobileChatContainer.appendChild(bubble);
-                            chatContainer.scrollTop = chatContainer.scrollHeight;
-                            mobileChatContainer.scrollTop = mobileChatContainer.scrollHeight;
+                            messagesContainer.appendChild(bubble.cloneNode(true));
+                            mobileMessagesContainer.appendChild(bubble);
                         }
                     });
-                    if (snapshot.size > 0) {
-                        const empty = chatContainer.querySelector('.text-center');
-                        if (empty) empty.remove();
-                    }
+                    
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    mobileMessagesContainer.scrollTop = mobileMessagesContainer.scrollHeight;
                 });
-            unsubscribers.push(unsub);
         }
 
         function createChatBubble(msg) {
             const div = document.createElement('div');
-            div.className = 'chat-bubble';
-            const isAdmin = msg.isAdmin;
-            const time = msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
+            div.className = `chat-bubble p-3 rounded-xl ${msg.isAdmin ? 'bg-emerald-500/20 border border-emerald-500/30' : 'bg-slate-800'}`;
+            
+            const time = msg.createdAt ? new Date(msg.createdAt.toDate()).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
+            
             div.innerHTML = `
-                <div class="flex items-start gap-2.5 ${isAdmin ? 'bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-xl border border-emerald-100' : ''}">
-                    <div class="w-8 h-8 rounded-full ${isAdmin ? 'bg-gradient-to-br from-emerald-500 to-teal-500' : 'bg-gray-200'} flex items-center justify-center flex-shrink-0">
-                        <span class="text-xs ${isAdmin ? 'text-white' : 'text-gray-500'} font-bold">${(msg.sender || 'A')[0].toUpperCase()}</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="font-semibold text-sm ${isAdmin ? 'text-emerald-700' : 'text-gray-700'}">${msg.sender || 'Anonymous'}</span>
-                            ${isAdmin ? '<span class="px-1.5 py-0.5 bg-emerald-500 text-white text-xs rounded font-medium">Admin</span>' : ''}
-                            <span class="text-xs text-gray-400">${time}</span>
-                        </div>
-                        <p class="text-sm text-gray-600 break-words mt-0.5">${escapeHtml(msg.text)}</p>
-                    </div>
+                <div class="flex items-baseline gap-2 mb-1">
+                    <span class="font-medium text-sm ${msg.isAdmin ? 'text-emerald-400' : 'text-white'}">${msg.userName || 'Anonymous'}</span>
+                    ${msg.isAdmin ? '<span class="text-xs bg-emerald-500 text-white px-1.5 py-0.5 rounded">Admin</span>' : ''}
+                    <span class="text-xs text-slate-500">${time}</span>
                 </div>
+                <p class="text-sm text-slate-300">${msg.text}</p>
             `;
+            
             return div;
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
 
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const mobileInput = document.getElementById('mobileChatInput');
             const text = (input.value || mobileInput.value).trim();
+            
             if (!text) return;
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            input.value = '';
+            mobileInput.value = '';
+
             try {
-                await db.collection('rooms').doc(roomId).collection('messages').add({
-                    text,
-                    sender: currentUser.name || 'Anonymous',
-                    isAdmin: false,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                input.value = '';
-                mobileInput.value = '';
-            } catch (error) {
-                showToast('error', 'Error', 'Gagal mengirim pesan');
+                await db.collection('rooms').doc(roomId)
+                    .collection('messages').add({
+                        text: text,
+                        userName: currentUser?.name || 'Guest',
+                        userId: viewerId,
+                        isAdmin: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+            } catch (e) {
+                console.error('Error sending message:', e);
+                showToast('Gagal mengirim pesan', 'error');
             }
         }
 
-        function toggleEmoji() {
-            document.getElementById('emojiPicker').classList.toggle('hidden');
-        }
+        // Enter key to send
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        document.getElementById('mobileChatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
 
-        function addEmoji(emoji) {
-            const input = document.getElementById('chatInput');
-            input.value += emoji;
-            input.focus();
-        }
-
-        // Tabs
-        function switchRightTab(tab) {
-            const chatTab = document.getElementById('chatTab');
-            const lineupTab = document.getElementById('lineupTab');
-            const chatPanel = document.getElementById('chatPanel');
-            const lineupPanel = document.getElementById('lineupPanel');
-            if (tab === 'chat') {
-                chatTab.className = 'flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2';
-                lineupTab.className = 'flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2';
-                chatPanel.classList.remove('hidden');
-                lineupPanel.classList.add('hidden');
-            } else {
-                lineupTab.className = 'flex-1 py-4 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500 transition-colors flex items-center justify-center gap-2';
-                chatTab.className = 'flex-1 py-4 text-sm font-semibold text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center gap-2';
-                lineupPanel.classList.remove('hidden');
-                chatPanel.classList.add('hidden');
-            }
-        }
-
-        // Members
-        function loadMembers() {
-            const unsub = db.collection('members').orderBy('order', 'asc').onSnapshot(snapshot => {
+        // Lineup Functions
+        function loadLineup() {
+            db.collection('rooms').doc(roomId).onSnapshot((snapshot) => {
+                if (!snapshot.exists) return;
+                
+                const room = snapshot.data();
+                const lineup = room.lineup || [];
+                
                 const grid = document.getElementById('lineupGrid');
                 const mobileGrid = document.getElementById('mobileLineupGrid');
+                
                 grid.innerHTML = '';
                 mobileGrid.innerHTML = '';
-                snapshot.forEach((doc, index) => {
-                    const member = { id: doc.id, ...doc.data() };
-                    const card = createMemberCard(member, index);
+                
+                lineup.forEach((member) => {
+                    const card = createMemberCard(member);
                     grid.appendChild(card.cloneNode(true));
                     mobileGrid.appendChild(card);
                 });
             });
-            unsubscribers.push(unsub);
         }
 
-        function createMemberCard(member, index) {
+        function createMemberCard(member) {
             const div = document.createElement('div');
-            div.className = 'bg-gray-50 rounded-xl p-3 text-center cursor-pointer hover:bg-gray-100 transition-all hover:scale-105 slide-up';
-            div.style.animationDelay = `${index * 0.05}s`;
+            div.className = 'member-card bg-slate-800 rounded-xl p-3 text-center cursor-pointer';
             div.onclick = () => openMemberModal(member);
+            
             div.innerHTML = `
-                <div class="relative inline-block mb-2">
-                    <img src="${member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=10b981&color=fff'}" 
-                        alt="${member.name}" class="w-14 h-14 rounded-full object-cover mx-auto border-2 border-white shadow">
-                    <span class="absolute bottom-0 right-0 w-3.5 h-3.5 ${member.isOnline ? 'bg-emerald-500' : 'bg-gray-400'} rounded-full border-2 border-white"></span>
+                <div class="relative w-16 h-16 mx-auto mb-2">
+                    <div class="w-full h-full rounded-full bg-gradient-to-br from-sage to-peach flex items-center justify-center text-xl font-medium text-emerald-700 overflow-hidden">
+                        ${member.photo ? `<img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">` : member.name?.[0] || 'M'}
+                    </div>
+                    ${member.isOnline ? '<span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-800"></span>' : ''}
                 </div>
-                <p class="text-sm font-medium text-gray-700 truncate">${member.name}</p>
+                <p class="text-sm font-medium truncate">${member.name}</p>
             `;
+            
             return div;
         }
 
         function openMemberModal(member) {
-            document.getElementById('modalMemberPhoto').src = member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=10b981&color=fff&size=200';
+            document.getElementById('modalMemberPhoto').src = member.photo || '';
             document.getElementById('modalMemberName').textContent = member.name;
-            document.getElementById('modalMemberStatus').className = `w-3 h-3 rounded-full ${member.isOnline ? 'bg-emerald-500' : 'bg-gray-400'}`;
-            document.getElementById('modalMemberInfo').textContent = member.info || 'Member';
+            document.getElementById('modalMemberStatus').textContent = member.isOnline ? 'Online' : 'Offline';
+            document.getElementById('modalMemberStatus').className = member.isOnline ? 'text-emerald-400 text-sm mb-4' : 'text-slate-400 text-sm mb-4';
+            document.getElementById('modalMemberDesc').textContent = member.description || '';
             document.getElementById('memberModal').classList.remove('hidden');
-            document.getElementById('memberModal').classList.add('flex');
         }
 
         function closeMemberModal() {
             document.getElementById('memberModal').classList.add('hidden');
         }
 
-        // Mobile Panel
-        function toggleMobilePanel() {
-            document.getElementById('mobilePanel').classList.remove('hidden');
+        // UI Functions
+        function toggleMute() {
+            const video = document.getElementById('remoteVideo');
+            isMuted = !isMuted;
+            video.muted = isMuted;
+            
+            document.getElementById('muteIcon').innerHTML = isMuted
+                ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>'
+                : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>';
         }
 
-        function closeMobilePanel(e) {
-            if (e.target.id === 'mobilePanel') {
-                document.getElementById('mobilePanel').classList.add('hidden');
+        function toggleFullscreen() {
+            const video = document.getElementById('remoteVideo');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                video.requestFullscreen();
             }
+        }
+
+        function toggleStatsPanel() {
+            const panel = document.getElementById('statsPanel');
+            const arrow = document.getElementById('statsArrow');
+            panel.classList.toggle('hidden');
+            arrow.style.transform = panel.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        function switchTab(tab) {
+            document.getElementById('chatTab').classList.toggle('hidden', tab !== 'chat');
+            document.getElementById('lineupTab').classList.toggle('hidden', tab !== 'lineup');
+            document.getElementById('chatTabBtn').classList.toggle('active', tab === 'chat');
+            document.getElementById('lineupTabBtn').classList.toggle('active', tab === 'lineup');
+        }
+
+        function toggleMobilePanel() {
+            const panel = document.getElementById('mobilePanelContainer');
+            panel.classList.toggle('translate-y-full');
         }
 
         function switchMobileTab(tab) {
-            const chatTab = document.getElementById('mChatTab');
-            const lineupTab = document.getElementById('mLineupTab');
-            const chatContent = document.getElementById('mChatContent');
-            const lineupContent = document.getElementById('mLineupContent');
-            if (tab === 'chat') {
-                chatTab.className = 'flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500';
-                lineupTab.className = 'flex-1 py-3 text-sm font-semibold text-gray-400';
-                chatContent.classList.remove('hidden');
-                lineupContent.classList.add('hidden');
-            } else {
-                lineupTab.className = 'flex-1 py-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-500';
-                chatTab.className = 'flex-1 py-3 text-sm font-semibold text-gray-400';
-                lineupContent.classList.remove('hidden');
-                chatContent.classList.add('hidden');
-            }
+            document.getElementById('mobileChatContent').classList.toggle('hidden', tab !== 'chat');
+            document.getElementById('mobileLineupContent').classList.toggle('hidden', tab !== 'lineup');
+            document.getElementById('mobileChatBtn').classList.toggle('text-emerald-400', tab === 'chat');
+            document.getElementById('mobileChatBtn').classList.toggle('text-slate-400', tab !== 'chat');
+            document.getElementById('mobileLineupBtn').classList.toggle('text-emerald-400', tab === 'lineup');
+            document.getElementById('mobileLineupBtn').classList.toggle('text-slate-400', tab !== 'lineup');
         }
 
-        // Exit
-        async function exitRoom() {
-            if (statsInterval) clearInterval(statsInterval);
-            if (durationInterval) clearInterval(durationInterval);
-            if (reconnectInterval) clearInterval(reconnectInterval);
-            unsubscribers.forEach(u => u());
-            if (pc) {
-                pc.close();
-                await decrementViewerCount();
-                try { await db.collection('rooms').doc(roomId).collection('viewers').doc(viewerId).delete(); } catch (e) {}
-            }
+        function showLoading(text, subtext = 'Mohon tunggu sebentar') {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingSubtext').textContent = subtext;
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+            
+            msg.textContent = message;
+            
+            const icons = {
+                success: '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>',
+                error: '<svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>',
+                info: '<svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+            };
+            
+            icon.innerHTML = icons[type] || icons.info;
+            
+            toast.classList.remove('opacity-0', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', '-translate-y-4');
+            }, 3000);
+        }
+
+        function exitRoom() {
+            cleanup();
             window.location.href = 'index.html';
         }
 
-        // Toast
-        function showToast(type, title, message) {
-            const toast = document.getElementById('toast');
-            const toastIcon = document.getElementById('toastIcon');
-            const icons = {
-                success: { bg: 'bg-emerald-100', emoji: '✅' },
-                error: { bg: 'bg-red-100', emoji: '❌' },
-                info: { bg: 'bg-blue-100', emoji: 'ℹ️' }
-            };
-            const icon = icons[type] || icons.info;
-            toastIcon.className = `w-12 h-12 rounded-xl flex items-center justify-center ${icon.bg}`;
-            toastIcon.innerHTML = `<span class="text-2xl">${icon.emoji}</span>`;
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMessage').textContent = message;
-            toast.classList.remove('-translate-y-full', 'opacity-0');
-            setTimeout(() => toast.classList.add('-translate-y-full', 'opacity-0'), 4000);
+        // Cleanup
+        async function cleanup(redirect = true) {
+            if (statsInterval) clearInterval(statsInterval);
+            
+            unsubscribers.forEach(unsub => unsub());
+            unsubscribers = [];
+            
+            if (pc) {
+                pc.close();
+                pc = null;
+            }
+            
+            await decrementViewerCount();
+            
+            // Clean up Firestore
+            try {
+                await db.collection('rooms').doc(roomId)
+                    .collection('viewers').doc(viewerId).delete();
+            } catch (e) {
+                console.error('Cleanup error:', e);
+            }
         }
-
-        window.addEventListener('beforeunload', async () => { if (pc) await decrementViewerCount(); });
     </script>
 </body>
 </html>

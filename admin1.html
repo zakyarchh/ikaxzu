@@ -8,60 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
         .animate-pulse-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
-        
-        .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
-            border-left: 3px solid #10b981;
-        }
-        
-        .sidebar-item:hover {
-            background: rgba(255,255,255,0.08);
-        }
-        
-        .card {
-            transition: all 0.3s;
-            background: white;
-            border-radius: 16px;
-        }
-        
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15);
-        }
-        
+        .sidebar-item.active { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); }
+        .card { transition: all 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         .scrollbar-thin::-webkit-scrollbar { width: 4px; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        
-        .badge {
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .badge-pending { background: #FEF3C7; color: #92400E; }
-        .badge-success { background: #D1FAE5; color: #065F46; }
-        .badge-rejected { background: #FEE2E2; color: #991B1B; }
-        
-        .filter-btn.active {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
-        }
-        
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); position: fixed; z-index: 50; }
             .sidebar.open { transform: translateX(0); }
@@ -70,7 +26,7 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-900 to-gray-800">
         <div class="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl animate-fadeIn">
             <div class="text-center mb-8">
@@ -96,7 +52,7 @@
             <button onclick="toggleSidebar()" class="p-2 rounded-lg bg-gray-100">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <span class="font-semibold">Admin Dashboard</span>
+            <span class="font-semibold">Admin</span>
             <button onclick="logout()" class="text-red-500 text-sm font-medium">Logout</button>
         </header>
 
@@ -126,13 +82,25 @@
                     Transaksi
                     <span id="transBadge" class="hidden absolute right-3 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
                 </button>
+                <button onclick="switchTab('rooms')" data-tab="rooms" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left">
+                    <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Live Rooms
+                </button>
                 <button onclick="switchTab('products')" data-tab="products" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left">
                     <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4"/></svg>
                     Produk
                 </button>
+                <button onclick="switchTab('tokens')" data-tab="tokens" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+                    Token
+                </button>
                 <button onclick="switchTab('users')" data-tab="users" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left">
                     <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1z"/></svg>
                     Users
+                </button>
+                <button onclick="switchTab('jadwal')" data-tab="jadwal" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left">
+                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Jadwal
                 </button>
             </nav>
             <div class="p-4 border-t border-gray-800">
@@ -145,9 +113,9 @@
         <div id="overlay" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
 
         <!-- Main Content -->
-        <main class="main-content lg:ml-64 min-h-screen pt-14 lg:pt-0 p-6">
+        <main class="main-content lg:ml-64 min-h-screen pt-14 lg:pt-0">
             <!-- HOME TAB -->
-            <div id="homeTab" class="tab-content">
+            <div id="homeTab" class="tab-content p-6">
                 <h1 class="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-5 text-white">
@@ -180,7 +148,7 @@
             </div>
 
             <!-- TOPUPS TAB -->
-            <div id="topupsTab" class="tab-content hidden">
+            <div id="topupsTab" class="tab-content hidden p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Top Up Saldo</h1>
                     <button onclick="loadTopups()" class="px-4 py-2 bg-gray-100 rounded-xl text-sm font-medium hover:bg-gray-200">Refresh</button>
@@ -194,7 +162,7 @@
             </div>
 
             <!-- TRANSACTIONS TAB -->
-            <div id="transactionsTab" class="tab-content hidden">
+            <div id="transactionsTab" class="tab-content hidden p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Transaksi</h1>
                     <button onclick="loadTransactions()" class="px-4 py-2 bg-gray-100 rounded-xl text-sm font-medium hover:bg-gray-200">Refresh</button>
@@ -207,8 +175,17 @@
                 <div id="transList" class="space-y-4"></div>
             </div>
 
+            <!-- ROOMS TAB -->
+            <div id="roomsTab" class="tab-content hidden p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Live Rooms</h1>
+                    <button onclick="showModal('roomModal')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600">+ Buat Room</button>
+                </div>
+                <div id="roomsList" class="space-y-4"></div>
+            </div>
+
             <!-- PRODUCTS TAB -->
-            <div id="productsTab" class="tab-content hidden">
+            <div id="productsTab" class="tab-content hidden p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Produk</h1>
                     <button onclick="showModal('productModal')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600">+ Tambah Produk</button>
@@ -216,19 +193,63 @@
                 <div id="productsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
 
+            <!-- TOKENS TAB -->
+            <div id="tokensTab" class="tab-content hidden p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Token Management</h1>
+                    <button onclick="showModal('tokenModal')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600">+ Generate Token</button>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl border p-5">
+                        <h3 class="font-semibold mb-4">Login Tokens</h3>
+                        <div id="loginTokens" class="space-y-2 max-h-96 overflow-y-auto scrollbar-thin"></div>
+                    </div>
+                    <div class="bg-white rounded-2xl border p-5">
+                        <h3 class="font-semibold mb-4">Watch Tokens</h3>
+                        <div id="watchTokens" class="space-y-2 max-h-96 overflow-y-auto scrollbar-thin"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- USERS TAB -->
-            <div id="usersTab" class="tab-content hidden">
+            <div id="usersTab" class="tab-content hidden p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Users</h1>
                     <button onclick="loadUsers()" class="px-4 py-2 bg-gray-100 rounded-xl text-sm font-medium hover:bg-gray-200">Refresh</button>
                 </div>
                 <div id="usersList" class="space-y-4"></div>
             </div>
+
+            <!-- JADWAL TAB -->
+            <div id="jadwalTab" class="tab-content hidden p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Jadwal Show</h1>
+                    <button onclick="showModal('jadwalModal')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-medium hover:bg-emerald-600">+ Tambah Jadwal</button>
+                </div>
+                <div id="jadwalList" class="space-y-4"></div>
+            </div>
         </main>
     </div>
 
     <!-- MODALS -->
-    
+    <!-- Room Modal -->
+    <div id="roomModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="hideModal('roomModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6 m-4">
+            <h3 class="text-lg font-bold mb-4">Buat Room</h3>
+            <form onsubmit="createRoom(event)" class="space-y-4">
+                <input type="text" id="roomTitle" placeholder="Judul Room" class="w-full px-4 py-3 bg-gray-50 rounded-xl border" required>
+                <textarea id="roomDesc" placeholder="Deskripsi" class="w-full px-4 py-3 bg-gray-50 rounded-xl border resize-none" rows="2"></textarea>
+                <input type="url" id="roomThumb" placeholder="Thumbnail URL" class="w-full px-4 py-3 bg-gray-50 rounded-xl border">
+                <input type="text" id="roomLineup" placeholder="Lineup (pisah koma)" class="w-full px-4 py-3 bg-gray-50 rounded-xl border">
+                <div class="flex gap-3">
+                    <button type="button" onclick="hideModal('roomModal')" class="flex-1 py-3 bg-gray-100 rounded-xl font-medium">Batal</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-medium">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Product Modal -->
     <div id="productModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-black/50" onclick="hideModal('productModal')"></div>
@@ -246,6 +267,51 @@
                 <textarea id="prodDesc" placeholder="Deskripsi" class="w-full px-4 py-3 bg-gray-50 rounded-xl border resize-none" rows="2"></textarea>
                 <div class="flex gap-3">
                     <button type="button" onclick="hideModal('productModal')" class="flex-1 py-3 bg-gray-100 rounded-xl font-medium">Batal</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-medium">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Token Modal -->
+    <div id="tokenModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="hideModal('tokenModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6 m-4">
+            <h3 class="text-lg font-bold mb-4">Generate Token</h3>
+            <form onsubmit="generateTokens(event)" class="space-y-4">
+                <select id="genTokenType" class="w-full px-4 py-3 bg-gray-50 rounded-xl border" onchange="toggleGenFields()">
+                    <option value="watch">Token Nonton</option>
+                    <option value="login">Token Login</option>
+                    <option value="membership">Token Membership</option>
+                </select>
+                <input type="number" id="genDuration" placeholder="Durasi (Bulan)" value="1" class="w-full px-4 py-3 bg-gray-50 rounded-xl border hidden">
+                <input type="number" id="genCount" placeholder="Jumlah" value="1" min="1" max="100" class="w-full px-4 py-3 bg-gray-50 rounded-xl border" required>
+                <div class="flex gap-3">
+                    <button type="button" onclick="hideModal('tokenModal')" class="flex-1 py-3 bg-gray-100 rounded-xl font-medium">Batal</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-medium">Generate</button>
+                </div>
+            </form>
+            <div id="genResult" class="hidden mt-4 p-4 bg-gray-50 rounded-xl">
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium text-sm">Tokens:</span>
+                    <button onclick="copyGenTokens()" class="text-emerald-600 text-sm">Copy All</button>
+                </div>
+                <div id="genTokensList" class="font-mono text-sm space-y-1 max-h-40 overflow-y-auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jadwal Modal -->
+    <div id="jadwalModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="hideModal('jadwalModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6 m-4">
+            <h3 class="text-lg font-bold mb-4">Tambah Jadwal</h3>
+            <form onsubmit="createJadwal(event)" class="space-y-4">
+                <input type="text" id="jadwalTitle" placeholder="Judul Show" class="w-full px-4 py-3 bg-gray-50 rounded-xl border" required>
+                <input type="datetime-local" id="jadwalDate" class="w-full px-4 py-3 bg-gray-50 rounded-xl border" required>
+                <input type="text" id="jadwalLineup" placeholder="Lineup (pisah koma)" class="w-full px-4 py-3 bg-gray-50 rounded-xl border">
+                <div class="flex gap-3">
+                    <button type="button" onclick="hideModal('jadwalModal')" class="flex-1 py-3 bg-gray-100 rounded-xl font-medium">Batal</button>
                     <button type="submit" class="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-medium">Simpan</button>
                 </div>
             </form>
@@ -277,26 +343,41 @@
         </div>
     </div>
 
-    <!-- Generated Tokens Modal -->
-    <div id="generatedTokensModal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50" onclick="hideModal('generatedTokensModal')"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6 m-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold" id="generatedProductName"></h3>
-                <button onclick="hideModal('generatedTokensModal')" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
+    <!-- Broadcast Modal -->
+    <div id="broadcastModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-2xl p-6 m-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between mb-4">
+                <div>
+                    <h3 class="text-lg font-bold">Live Broadcasting</h3>
+                    <p id="bcRoomName" class="text-gray-500 text-sm"></p>
+                </div>
+                <button onclick="stopBroadcast()" class="px-4 py-2 bg-red-500 text-white rounded-xl text-sm font-medium">Stop</button>
             </div>
-            <div class="bg-emerald-50 rounded-xl p-4 mb-4">
-                <p id="generatedTokenCount" class="text-emerald-700 font-medium"></p>
-                <p class="text-emerald-600 text-sm mt-1">Token akan otomatis diberikan ke user saat membeli</p>
+            <div class="grid lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <video id="localVideo" autoplay muted playsinline class="w-full aspect-video bg-gray-900 rounded-xl mb-4"></video>
+                    <div class="flex gap-3">
+                        <button onclick="shareScreen()" class="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium">Share Screen</button>
+                        <button onclick="shareCamera()" class="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-medium">Camera</button>
+                    </div>
+                    <label class="flex items-center gap-2 mt-3"><input type="checkbox" id="shareAudio" checked class="rounded"> Include Audio</label>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-gray-500 text-sm">Viewers</p>
+                        <p id="bcViewers" class="text-3xl font-bold">0</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-gray-500 text-sm">Duration</p>
+                        <p id="bcDuration" class="text-xl font-bold">00:00</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4 max-h-48 overflow-y-auto">
+                        <p class="text-gray-500 text-sm mb-2">Connected</p>
+                        <div id="bcViewersList" class="space-y-1 text-sm"></div>
+                    </div>
+                </div>
             </div>
-            <div id="generatedTokensList" class="space-y-2 max-h-60 overflow-y-auto"></div>
-            <button onclick="hideModal('generatedTokensModal')" class="w-full mt-4 py-3 bg-emerald-500 text-white rounded-xl font-medium hover:bg-emerald-600">
-                Tutup
-            </button>
         </div>
     </div>
 
@@ -311,32 +392,28 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
     <script>
-        // ==================== FIREBASE CONFIG ====================
+        // Firebase
         const shopApp = firebase.initializeApp({
             apiKey: "AIzaSyA9auv4Fb4qZgQmVt501XvgEL_hgHmFsjg",
             authDomain: "liveee-c493c.firebaseapp.com",
-            projectId: "liveee-c493c",
-            storageBucket: "liveee-c493c.firebasestorage.app",
-            messagingSenderId: "359936219000",
-            appId: "1:359936219000:web:ccd25480e9e7336b535a8d"
+            projectId: "liveee-c493c"
         }, 'shop');
-        
         const liveApp = firebase.initializeApp({
             apiKey: "AIzaSyDMQ961-vifb3R-Gurla3LbLM_489aHkHs-g",
             authDomain: "live2ke2.firebaseapp.com",
             projectId: "live2ke2"
         }, 'live');
-        
         const dbShop = shopApp.firestore();
         const dbLive = liveApp.firestore();
 
-        // ==================== STATE ====================
-        let topupFilter = 'pending';
-        let transFilter = 'pending';
+        // State
+        let topupFilter = 'pending', transFilter = 'pending';
+        let localStream = null, pcs = {}, bcRoom = null, bcTimer = null, bcStart = null;
+        let genTokens = [];
+        const ice = [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }];
 
-        // ==================== AUTH ====================
+        // Auth
         function login(e) {
             e.preventDefault();
             if (document.getElementById('email').value === 'ikaxzu@kaz.id' && document.getElementById('password').value === 'ikaxzu') {
@@ -347,28 +424,19 @@
                 document.getElementById('loginError').classList.remove('hidden');
             }
         }
-        
-        function logout() {
-            localStorage.removeItem('admin');
-            location.reload();
-        }
-        
+        function logout() { localStorage.removeItem('admin'); location.reload(); }
         function showDashboard() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             loadDashboard();
         }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('admin')) showDashboard();
-        });
+        document.addEventListener('DOMContentLoaded', () => { if (localStorage.getItem('admin')) showDashboard(); });
 
-        // ==================== NAVIGATION ====================
+        // Navigation
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('hidden');
         }
-        
         function switchTab(tab) {
             document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
             document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
@@ -376,23 +444,19 @@
             document.getElementById(tab + 'Tab').classList.remove('hidden');
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('overlay').classList.add('hidden');
-            
             if (tab === 'home') loadDashboard();
             else if (tab === 'topups') loadTopups();
             else if (tab === 'transactions') loadTransactions();
+            else if (tab === 'rooms') loadRooms();
             else if (tab === 'products') loadProducts();
+            else if (tab === 'tokens') loadTokens();
             else if (tab === 'users') loadUsers();
+            else if (tab === 'jadwal') loadJadwal();
         }
 
-        // ==================== MODALS ====================
-        function showModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-        
-        function hideModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-        
+        // Modals
+        function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
         function toast(msg, type = 'success') {
             const t = document.getElementById('toast');
             document.getElementById('toastMsg').textContent = msg;
@@ -403,35 +467,34 @@
             setTimeout(() => t.classList.add('hidden'), 3000);
         }
 
-        // ==================== DASHBOARD ====================
+        // Dashboard
         async function loadDashboard() {
-            const [topups, trans, users] = await Promise.all([
+            const [topups, trans, users, rooms] = await Promise.all([
                 dbShop.collection('topupRequests').where('status', '==', 'pending').get(),
                 dbShop.collection('transactions').where('status', '==', 'pending').get(),
-                dbShop.collection('users').get()
+                dbShop.collection('users').get(),
+                dbLive.collection('rooms').where('isLive', '==', true).get()
             ]);
-            
             document.getElementById('statPending').textContent = topups.size + trans.size;
             document.getElementById('statUsers').textContent = users.size;
+            document.getElementById('statLive').textContent = rooms.size;
             
+            // Badges
             document.getElementById('topupBadge').classList.toggle('hidden', !topups.size);
             document.getElementById('topupBadge').textContent = topups.size;
             document.getElementById('transBadge').classList.toggle('hidden', !trans.size);
             document.getElementById('transBadge').textContent = trans.size;
 
-            // Revenue
+            // Revenue (simplified)
             let rev = 0;
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            
+            const today = new Date(); today.setHours(0,0,0,0);
             const cTrans = await dbShop.collection('transactions').where('status', '==', 'confirmed').get();
             cTrans.forEach(d => { if (d.data().confirmedAt?.toDate() >= today) rev += d.data().amount || 0; });
-            
             const cTop = await dbShop.collection('topupRequests').where('status', '==', 'confirmed').get();
             cTop.forEach(d => { if (d.data().confirmedAt?.toDate() >= today) rev += d.data().amount || 0; });
-            
             document.getElementById('statRevenue').textContent = 'Rp ' + rev.toLocaleString('id-ID');
 
+            // Recent
             loadRecentTopups();
             loadRecentTrans();
         }
@@ -458,17 +521,14 @@
             });
         }
 
-        // ==================== TOP UPS ====================
+        // Topups
         async function loadTopups() {
             const c = document.getElementById('topupsList');
             c.innerHTML = '<div class="animate-pulse bg-gray-200 h-24 rounded-xl"></div>';
-            
             let q = dbShop.collection('topupRequests').orderBy('createdAt', 'desc');
             if (topupFilter !== 'all') q = q.where('status', '==', topupFilter);
-            
             const snap = await q.limit(50).get();
             c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8">Tidak ada data</p>' : '';
-            
             snap.forEach(d => {
                 const t = { id: d.id, ...d.data() };
                 const date = t.createdAt?.toDate?.().toLocaleString('id-ID') || '-';
@@ -494,46 +554,34 @@
                     </div>`;
             });
         }
-        
         function filterTopups(f) {
             topupFilter = f;
             document.querySelectorAll('.filter-btn').forEach(b => { b.classList.toggle('active', b.dataset.filter === f); b.classList.toggle('text-gray-500', b.dataset.filter !== f); });
             loadTopups();
         }
-        
         async function confirmTopup(id, amount, userId) {
             if (!confirm('Konfirmasi top up ini?')) return;
             await dbShop.collection('topupRequests').doc(id).update({ status: 'confirmed', confirmedAt: firebase.firestore.FieldValue.serverTimestamp() });
             if (userId) await dbShop.collection('users').doc(userId).update({ saldo: firebase.firestore.FieldValue.increment(amount) });
             toast('Top up dikonfirmasi!');
-            loadTopups();
-            loadDashboard();
+            loadTopups(); loadDashboard();
         }
-        
         async function rejectTopup(id) {
             if (!confirm('Tolak top up ini?')) return;
             await dbShop.collection('topupRequests').doc(id).update({ status: 'rejected', rejectedAt: firebase.firestore.FieldValue.serverTimestamp() });
             toast('Top up ditolak');
-            loadTopups();
-            loadDashboard();
+            loadTopups(); loadDashboard();
         }
-        
-        function showProof(url) {
-            document.getElementById('proofImg').src = url;
-            showModal('proofModal');
-        }
+        function showProof(url) { document.getElementById('proofImg').src = url; showModal('proofModal'); }
 
-        // ==================== TRANSACTIONS ====================
+        // Transactions
         async function loadTransactions() {
             const c = document.getElementById('transList');
             c.innerHTML = '<div class="animate-pulse bg-gray-200 h-24 rounded-xl"></div>';
-            
             let q = dbShop.collection('transactions').orderBy('createdAt', 'desc');
             if (transFilter !== 'all') q = q.where('status', '==', transFilter);
-            
             const snap = await q.limit(50).get();
             c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8">Tidak ada data</p>' : '';
-            
             snap.forEach(d => {
                 const t = { id: d.id, ...d.data() };
                 const date = t.createdAt?.toDate?.().toLocaleString('id-ID') || '-';
@@ -551,285 +599,271 @@
                             </div>
                             ${t.status === 'pending' ? `
                                 <div class="flex gap-2">
-                                    <button onclick="confirmTransaction('${t.id}','${t.productType}',${t.tokenCount||0},${t.monthCount||0},'${t.userId||''}')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm">Konfirmasi</button>
-                                    <button onclick="rejectTransaction('${t.id}')" class="px-4 py-2 bg-red-100 text-red-600 rounded-xl text-sm">Tolak</button>
+                                    <button onclick="confirmTrans('${t.id}','${t.productType}',${t.tokenCount||0},${t.monthCount||0},'${t.userId||''}')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm">Konfirmasi</button>
+                                    <button onclick="rejectTrans('${t.id}')" class="px-4 py-2 bg-red-100 text-red-600 rounded-xl text-sm">Tolak</button>
                                 </div>
                             ` : `<span class="px-3 py-1 rounded-full text-sm ${t.status==='confirmed'?'bg-emerald-100 text-emerald-700':'bg-red-100 text-red-700'}">${t.status}</span>`}
                         </div>
-                        ${t.tokens && t.tokens.length > 0 ? `
-                            <div class="mt-4 pt-4 border-t">
-                                <p class="text-sm font-medium mb-2">Token:</p>
-                                <div class="flex flex-wrap gap-2">
-                                    ${t.tokens.map(token => `
-                                        <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-mono">${token}</div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
                     </div>`;
             });
         }
-        
         function filterTrans(f) {
             transFilter = f;
             document.querySelectorAll('.filter-trans-btn').forEach(b => { b.classList.toggle('active', b.dataset.filter === f); b.classList.toggle('text-gray-500', b.dataset.filter !== f); });
             loadTransactions();
         }
-
-        // ==================== KONFIRMASI TRANSAKSI (DENGAN TOKEN) ====================
-        async function confirmTransaction(id, type, tokenCount, monthCount, userId) {
+        async function confirmTrans(id, type, tokenCount, monthCount, userId) {
             if (!confirm('Konfirmasi transaksi ini?')) return;
-            
             try {
-                // Ambil data transaksi
-                const transDoc = await dbShop.collection('transactions').doc(id).get();
-                const transData = transDoc.data();
-                
-                // Ambil produk yang dibeli
-                const productDoc = await dbShop.collection('products').doc(transData.productId).get();
-                const product = productDoc.data();
-                
-                let assignedTokens = [];
-                
                 if (type === 'token') {
-                    // Ambil token dari produk yang tersedia
-                    const availableTokens = product.availableTokens || [];
-                    
-                    if (availableTokens.length < tokenCount) {
-                        toast('Stok token tidak cukup!', 'error');
-                        return;
+                    const tokens = [];
+                    for (let i = 0; i < tokenCount; i++) {
+                        const tk = 'WT' + Date.now() + Math.random().toString(36).substr(2,6).toUpperCase();
+                        await dbLive.collection('watchTokens').doc(tk).set({ isUsed: false, transactionId: id, userId, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                        tokens.push(tk);
                     }
-                    
-                    // Ambil token sesuai jumlah yang dibeli
-                    assignedTokens = availableTokens.slice(0, tokenCount);
-                    const remainingTokens = availableTokens.slice(tokenCount);
-                    
-                    // Update produk: pindahkan token dari available ke sold
-                    await dbShop.collection('products').doc(transData.productId).update({
-                        availableTokens: remainingTokens,
-                        soldTokens: firebase.firestore.FieldValue.arrayUnion(...assignedTokens)
-                    });
-                    
-                    // Simpan token ke koleksi watchTokens (untuk validasi saat dipakai)
-                    const batch = dbLive.batch();
-                    assignedTokens.forEach(token => {
-                        const tokenRef = dbLive.collection('watchTokens').doc(token);
-                        batch.set(tokenRef, {
-                            token: token,
-                            userId: userId,
-                            transactionId: id,
-                            productId: transData.productId,
-                            isUsed: false,
-                            assignedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            expiresAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)) // 7 hari
-                        });
-                    });
-                    await batch.commit();
-                    
-                } else if (type === 'membership') {
-                    // Generate token membership
-                    const token = 'MB' + Date.now() + Math.random().toString(36).substr(2, 8).toUpperCase();
-                    const expiresAt = new Date();
-                    expiresAt.setMonth(expiresAt.getMonth() + monthCount);
-                    
-                    await dbShop.collection('loginTokens').doc(token).set({
-                        token: token,
-                        type: 'membership',
-                        userId: userId,
-                        transactionId: id,
-                        expiresAt: expiresAt,
-                        isUsed: false,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    assignedTokens = [token];
+                    await dbShop.collection('transactions').doc(id).update({ status: 'confirmed', tokens, confirmedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                } else {
+                    const tk = 'MB' + Date.now() + Math.random().toString(36).substr(2,6).toUpperCase();
+                    const exp = new Date(); exp.setMonth(exp.getMonth() + monthCount);
+                    await dbShop.collection('loginTokens').doc(tk).set({ type: 'membership', userId, expiresAt: exp, isUsed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                    await dbShop.collection('transactions').doc(id).update({ status: 'confirmed', loginToken: tk, confirmedAt: firebase.firestore.FieldValue.serverTimestamp() });
                 }
-                
-                // Update status transaksi
-                await dbShop.collection('transactions').doc(id).update({
-                    status: 'confirmed',
-                    tokens: assignedTokens,
-                    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                toast(`✅ Transaksi dikonfirmasi! ${assignedTokens.length} token diberikan ke user`);
-                
-                // Refresh data
-                loadTransactions();
-                loadDashboard();
-                loadProducts(); // Refresh stok token
-                
-            } catch (e) {
-                console.error('Error confirming transaction:', e);
-                toast('Gagal mengkonfirmasi transaksi', 'error');
-            }
+                toast('Transaksi dikonfirmasi!');
+                loadTransactions(); loadDashboard();
+            } catch(e) { toast('Gagal: ' + e.message, 'error'); }
         }
-        
-        async function rejectTransaction(id) {
+        async function rejectTrans(id) {
             if (!confirm('Tolak transaksi ini?')) return;
             await dbShop.collection('transactions').doc(id).update({ status: 'rejected', rejectedAt: firebase.firestore.FieldValue.serverTimestamp() });
             toast('Transaksi ditolak');
-            loadTransactions();
-            loadDashboard();
+            loadTransactions(); loadDashboard();
         }
 
-        // ==================== PRODUK (DENGAN AUTO GENERATE TOKEN) ====================
-        function toggleProdFields() {
-            const type = document.getElementById('prodType').value;
-            document.getElementById('prodTokenCount').classList.toggle('hidden', type !== 'token');
-            document.getElementById('prodMonthCount').classList.toggle('hidden', type !== 'membership');
+        // Rooms
+        async function loadRooms() {
+            const c = document.getElementById('roomsList');
+            const snap = await dbLive.collection('rooms').orderBy('createdAt', 'desc').get();
+            c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8">Belum ada room</p>' : '';
+            snap.forEach(d => {
+                const r = { id: d.id, ...d.data() };
+                c.innerHTML += `
+                    <div class="card bg-white rounded-2xl p-5 border flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="flex gap-4">
+                            <div class="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden">${r.thumbnail ? `<img src="${r.thumbnail}" class="w-full h-full object-cover">` : ''}</div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-semibold">${r.title}</p>
+                                    ${r.isLive ? '<span class="text-xs text-red-500 flex items-center gap-1"><span class="w-2 h-2 bg-red-500 rounded-full animate-pulse-dot"></span>LIVE</span>' : '<span class="text-xs text-gray-400">Offline</span>'}
+                                </div>
+                                <p class="text-gray-500 text-sm">${r.description||'-'}</p>
+                                <p class="text-xs text-gray-400">${r.viewerCount||0} viewers</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            ${r.isLive ? `<button onclick="stopRoom('${r.id}')" class="px-4 py-2 bg-red-100 text-red-600 rounded-xl text-sm">Stop</button>` : `<button onclick="startBroadcast('${r.id}','${r.title}')" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm">Go Live</button>`}
+                            <button onclick="deleteRoom('${r.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                        </div>
+                    </div>`;
+            });
         }
-
-        async function createProduct(e) {
+        async function createRoom(e) {
             e.preventDefault();
-            
-            const type = document.getElementById('prodType').value;
-            const productName = document.getElementById('prodName').value;
-            const productPrice = parseInt(document.getElementById('prodPrice').value);
-            const productDesc = document.getElementById('prodDesc').value;
-            
-            let tokenCount = 0;
-            let monthCount = 0;
-            let generatedTokens = [];
-            
+            const lineup = document.getElementById('roomLineup').value.split(',').map(n => ({ name: n.trim(), isOnline: true })).filter(m => m.name);
+            await dbLive.collection('rooms').add({
+                title: document.getElementById('roomTitle').value,
+                description: document.getElementById('roomDesc').value,
+                thumbnail: document.getElementById('roomThumb').value,
+                lineup, isLive: false, viewerCount: 0,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            hideModal('roomModal');
+            toast('Room dibuat!');
+            loadRooms();
+            e.target.reset();
+        }
+        async function deleteRoom(id) {
+            if (!confirm('Hapus room ini?')) return;
+            await dbLive.collection('rooms').doc(id).delete();
+            toast('Room dihapus');
+            loadRooms();
+        }
+        async function stopRoom(id) {
+            await dbLive.collection('rooms').doc(id).update({ isLive: false, viewerCount: 0 });
+            toast('Broadcast dihentikan');
+            loadRooms(); loadDashboard();
+        }
+
+        // Broadcast
+        async function startBroadcast(id, title) {
+            bcRoom = id;
+            document.getElementById('bcRoomName').textContent = title;
+            showModal('broadcastModal');
+            await dbLive.collection('rooms').doc(id).update({ isLive: true, viewerCount: 0 });
+            loadRooms();
+            bcStart = Date.now();
+            bcTimer = setInterval(() => {
+                const s = Math.floor((Date.now() - bcStart) / 1000);
+                document.getElementById('bcDuration').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+            }, 1000);
+            listenViewers(id);
+        }
+        async function shareScreen() {
             try {
-                if (type === 'token') {
-                    tokenCount = parseInt(document.getElementById('prodTokenCount').value);
-                    
-                    // Generate token sesuai jumlah
-                    for (let i = 0; i < tokenCount; i++) {
-                        const token = 'WT' + Date.now() + Math.random().toString(36).substr(2, 8).toUpperCase();
-                        generatedTokens.push(token);
-                    }
-                } else {
-                    monthCount = parseInt(document.getElementById('prodMonthCount').value);
-                }
-                
-                // Simpan produk ke database DENGAN TOKEN SUDAH TERGENERATE
-                const productRef = await dbShop.collection('products').add({
-                    name: productName,
-                    type: type,
-                    price: productPrice,
-                    tokenCount: tokenCount,
-                    monthCount: monthCount,
-                    description: productDesc,
-                    tokens: generatedTokens, // Semua token
-                    availableTokens: generatedTokens, // Token yang tersedia
-                    soldTokens: [], // Token yang sudah terjual
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                localStream = await navigator.mediaDevices.getDisplayMedia({ video: { width: 1920, height: 1080, frameRate: 30 }, audio: document.getElementById('shareAudio').checked });
+                document.getElementById('localVideo').srcObject = localStream;
+                localStream.getVideoTracks()[0].onended = () => stopBroadcast();
+                toast('Screen sharing dimulai');
+            } catch(e) { toast('Gagal share screen', 'error'); }
+        }
+        async function shareCamera() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('localVideo').srcObject = localStream;
+                toast('Camera dimulai');
+            } catch(e) { toast('Gagal akses kamera', 'error'); }
+        }
+        function listenViewers(roomId) {
+            dbLive.collection('rooms').doc(roomId).collection('viewers').onSnapshot(async snap => {
+                document.getElementById('bcViewers').textContent = snap.size;
+                document.getElementById('bcViewersList').innerHTML = snap.empty ? '<p class="text-gray-400">No viewers</p>' : '';
+                snap.docChanges().forEach(async ch => {
+                    const vid = ch.doc.id, data = ch.doc.data();
+                    if (ch.type === 'added' && data.type === 'offer' && localStream) {
+                        document.getElementById('bcViewersList').innerHTML += `<div class="text-gray-600">${vid.substr(0,10)}...</div>`;
+                        await handleOffer(roomId, vid, data);
+                    } else if (ch.type === 'removed' && pcs[vid]) { pcs[vid].close(); delete pcs[vid]; }
                 });
-                
-                // Simpan token ke koleksi watchTokens (sebagai stok)
-                if (type === 'token' && generatedTokens.length > 0) {
-                    const batch = dbLive.batch();
-                    generatedTokens.forEach(token => {
-                        const tokenRef = dbLive.collection('watchTokens').doc(token);
-                        batch.set(tokenRef, {
-                            token: token,
-                            productId: productRef.id,
-                            isUsed: false,
-                            available: true,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    });
-                    await batch.commit();
-                    console.log(`✅ ${generatedTokens.length} token disimpan ke watchTokens`);
-                }
-                
-                hideModal('productModal');
-                e.target.reset();
-                
-                toast(`✅ Produk ditambahkan! ${generatedTokens.length > 0 ? generatedTokens.length + ' token siap pakai' : ''}`);
-                
-                // Tampilkan token yang digenerate
-                if (generatedTokens.length > 0) {
-                    showGeneratedTokens(productName, generatedTokens);
-                }
-                
-                loadProducts();
-                
-            } catch (e) {
-                console.error('Error creating product:', e);
-                toast('Gagal menambahkan produk', 'error');
-            }
+            });
+        }
+        async function handleOffer(roomId, vid, offer) {
+            const pc = new RTCPeerConnection({ iceServers: ice });
+            pcs[vid] = pc;
+            localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+            pc.onicecandidate = e => { if (e.candidate) dbLive.collection('rooms').doc(roomId).collection('broadcasterCandidates').doc(vid).collection('candidates').add(e.candidate.toJSON()); };
+            dbLive.collection('rooms').doc(roomId).collection('viewerCandidates').doc(vid).collection('candidates').onSnapshot(s => {
+                s.docChanges().forEach(async ch => { if (ch.type === 'added') try { await pc.addIceCandidate(new RTCIceCandidate(ch.doc.data())); } catch(e) {} });
+            });
+            await pc.setRemoteDescription(new RTCSessionDescription({ type: 'offer', sdp: offer.sdp }));
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            await dbLive.collection('rooms').doc(roomId).collection('viewers').doc(vid).update({ type: 'answer', sdp: answer.sdp });
+        }
+        async function stopBroadcast() {
+            if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+            Object.values(pcs).forEach(pc => pc.close()); pcs = {};
+            if (bcRoom) await dbLive.collection('rooms').doc(bcRoom).update({ isLive: false, viewerCount: 0 });
+            if (bcTimer) clearInterval(bcTimer);
+            document.getElementById('localVideo').srcObject = null;
+            hideModal('broadcastModal');
+            bcRoom = null;
+            loadRooms(); loadDashboard();
+            toast('Broadcast dihentikan');
         }
 
-        function showGeneratedTokens(productName, tokens) {
-            document.getElementById('generatedProductName').textContent = `✨ Token untuk ${productName}`;
-            document.getElementById('generatedTokenCount').textContent = `${tokens.length} Token berhasil digenerate`;
-            
-            const listContainer = document.getElementById('generatedTokensList');
-            listContainer.innerHTML = tokens.slice(0, 15).map(token => `
-                <div class="bg-gray-50 p-3 rounded-xl font-mono text-sm text-emerald-600 border">
-                    ${token}
-                </div>
-            `).join('');
-            
-            if (tokens.length > 15) {
-                listContainer.innerHTML += `<p class="text-center text-gray-400 text-sm mt-2">dan ${tokens.length - 15} token lainnya...</p>`;
-            }
-            
-            showModal('generatedTokensModal');
-        }
-
+        // Products
         async function loadProducts() {
             const c = document.getElementById('productsList');
             const snap = await dbShop.collection('products').orderBy('createdAt', 'desc').get();
-            
             c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8 col-span-full">Belum ada produk</p>' : '';
-            
             snap.forEach(d => {
                 const p = { id: d.id, ...d.data() };
-                const availableTokens = p.availableTokens?.length || 0;
-                const soldTokens = p.soldTokens?.length || 0;
-                const totalTokens = p.tokens?.length || 0;
-                
                 c.innerHTML += `
                     <div class="card bg-white rounded-2xl p-5 border ${p.type==='membership'?'ring-2 ring-emerald-500':''}">
                         <div class="flex justify-between mb-3">
-                            <span class="px-2 py-1 rounded-full text-xs ${p.type==='membership'?'bg-emerald-100 text-emerald-700':'bg-pink-100 text-pink-700'}">
-                                ${p.type==='membership'?'Membership':'Token'}
-                            </span>
-                            <button onclick="deleteProduct('${p.id}')" class="text-gray-400 hover:text-red-500">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
+                            <span class="px-2 py-1 rounded-full text-xs ${p.type==='membership'?'bg-emerald-100 text-emerald-700':'bg-pink-100 text-pink-700'}">${p.type==='membership'?'Membership':'Token'}</span>
+                            <button onclick="deleteProd('${p.id}')" class="text-gray-400 hover:text-red-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
                         </div>
                         <p class="font-semibold text-lg">${p.name}</p>
                         <p class="text-gray-500 text-sm mb-3">${p.description||'-'}</p>
                         <p class="text-2xl font-bold">Rp ${(p.price||0).toLocaleString('id-ID')}</p>
                         <p class="text-gray-400 text-sm">${p.type==='membership'?p.monthCount+' Bulan':p.tokenCount+' Token'}</p>
-                        
-                        ${p.type === 'token' ? `
-                            <div class="mt-3 pt-3 border-t">
-                                <div class="flex justify-between text-sm">
-                                    <span>Tersedia: <span class="font-bold text-emerald-600">${availableTokens}</span></span>
-                                    <span>Terjual: <span class="font-bold text-blue-600">${soldTokens}</span></span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                                    <div class="bg-emerald-500 h-2 rounded-full" style="width: ${totalTokens ? (soldTokens/totalTokens*100) : 0}%"></div>
-                                </div>
-                            </div>
-                        ` : ''}
                     </div>`;
             });
         }
-
-        async function deleteProduct(id) {
+        function toggleProdFields() {
+            const t = document.getElementById('prodType').value;
+            document.getElementById('prodTokenCount').classList.toggle('hidden', t !== 'token');
+            document.getElementById('prodMonthCount').classList.toggle('hidden', t !== 'membership');
+        }
+        async function createProduct(e) {
+            e.preventDefault();
+            const t = document.getElementById('prodType').value;
+            await dbShop.collection('products').add({
+                name: document.getElementById('prodName').value,
+                type: t,
+                price: parseInt(document.getElementById('prodPrice').value),
+                tokenCount: t === 'token' ? parseInt(document.getElementById('prodTokenCount').value) : 0,
+                monthCount: t === 'membership' ? parseInt(document.getElementById('prodMonthCount').value) : 0,
+                description: document.getElementById('prodDesc').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            hideModal('productModal');
+            toast('Produk ditambahkan!');
+            loadProducts();
+            e.target.reset();
+        }
+        async function deleteProd(id) {
             if (!confirm('Hapus produk?')) return;
             await dbShop.collection('products').doc(id).delete();
             toast('Produk dihapus');
             loadProducts();
         }
 
-        // ==================== USERS ====================
+        // Tokens
+        async function loadTokens() {
+            // Login
+            const lc = document.getElementById('loginTokens');
+            const ls = await dbShop.collection('loginTokens').orderBy('createdAt', 'desc').limit(50).get();
+            lc.innerHTML = ls.empty ? '<p class="text-gray-500 text-sm text-center py-4">Belum ada</p>' : '';
+            ls.forEach(d => {
+                const t = d.data();
+                lc.innerHTML += `<div class="flex justify-between items-center p-3 ${t.isUsed?'bg-gray-100':'bg-gray-50'} rounded-xl"><div><p class="font-mono text-sm truncate">${d.id}</p><p class="text-xs ${t.isUsed?'text-gray-500':'text-emerald-600'}">${t.type==='membership'?'Member':'Regular'} • ${t.isUsed?'Used':'Available'}</p></div><button onclick="copyTxt('${d.id}')" class="text-emerald-600 text-sm">Copy</button></div>`;
+            });
+            // Watch
+            const wc = document.getElementById('watchTokens');
+            const ws = await dbLive.collection('watchTokens').orderBy('createdAt', 'desc').limit(50).get();
+            wc.innerHTML = ws.empty ? '<p class="text-gray-500 text-sm text-center py-4">Belum ada</p>' : '';
+            ws.forEach(d => {
+                const t = d.data();
+                wc.innerHTML += `<div class="flex justify-between items-center p-3 ${t.isUsed?'bg-gray-100':'bg-gray-50'} rounded-xl"><div><p class="font-mono text-sm truncate">${d.id}</p><p class="text-xs ${t.isUsed?'text-gray-500':'text-emerald-600'}">${t.isUsed?'Used':'Available'}</p></div><button onclick="copyTxt('${d.id}')" class="text-emerald-600 text-sm">Copy</button></div>`;
+            });
+        }
+        function toggleGenFields() { document.getElementById('genDuration').classList.toggle('hidden', document.getElementById('genTokenType').value !== 'membership'); }
+        async function generateTokens(e) {
+            e.preventDefault();
+            const type = document.getElementById('genTokenType').value;
+            const count = parseInt(document.getElementById('genCount').value);
+            const duration = parseInt(document.getElementById('genDuration').value) || 1;
+            genTokens = [];
+            for (let i = 0; i < count; i++) {
+                let tk;
+                if (type === 'watch') {
+                    tk = 'WT' + Date.now() + Math.random().toString(36).substr(2,6).toUpperCase();
+                    await dbLive.collection('watchTokens').doc(tk).set({ isUsed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                } else if (type === 'login') {
+                    tk = 'LT' + Date.now() + Math.random().toString(36).substr(2,6).toUpperCase();
+                    await dbShop.collection('loginTokens').doc(tk).set({ type: 'regular', isUsed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                } else {
+                    tk = 'MB' + Date.now() + Math.random().toString(36).substr(2,6).toUpperCase();
+                    const exp = new Date(); exp.setMonth(exp.getMonth() + duration);
+                    await dbShop.collection('loginTokens').doc(tk).set({ type: 'membership', expiresAt: exp, isUsed: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                }
+                genTokens.push(tk);
+            }
+            document.getElementById('genTokensList').innerHTML = genTokens.map(t => `<div class="text-emerald-700">${t}</div>`).join('');
+            document.getElementById('genResult').classList.remove('hidden');
+            toast(`${count} token digenerate!`);
+            loadTokens();
+        }
+        function copyGenTokens() { navigator.clipboard.writeText(genTokens.join('\n')); toast('Copied!'); }
+        function copyTxt(t) { navigator.clipboard.writeText(t); toast('Copied!'); }
+
+        // Users
         async function loadUsers() {
             const c = document.getElementById('usersList');
             const snap = await dbShop.collection('users').orderBy('createdAt', 'desc').get();
-            
             c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8">Belum ada user</p>' : '';
-            
             snap.forEach(d => {
                 const u = { id: d.id, ...d.data() };
                 c.innerHTML += `
@@ -847,11 +881,11 @@
                                 <p class="text-xl font-bold text-emerald-600">Rp ${(u.saldo||0).toLocaleString('id-ID')}</p>
                             </div>
                             <button onclick="editSaldo('${u.id}','${u.name||'User'}',${u.saldo||0})" class="px-4 py-2 bg-gray-100 rounded-xl text-sm font-medium hover:bg-gray-200">Edit Saldo</button>
+                            <button onclick="deleteUser('${u.id}')" class="text-red-500 hover:bg-red-50 p-2 rounded-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                         </div>
                     </div>`;
             });
         }
-
         function editSaldo(id, name, current) {
             document.getElementById('saldoUserId').value = id;
             document.getElementById('saldoUserName').textContent = name;
@@ -859,7 +893,6 @@
             document.getElementById('saldoNew').value = current;
             showModal('saldoModal');
         }
-
         async function saveSaldo() {
             const id = document.getElementById('saldoUserId').value;
             const saldo = parseInt(document.getElementById('saldoNew').value) || 0;
@@ -868,5 +901,57 @@
             toast('Saldo diupdate!');
             loadUsers();
         }
+        async function deleteUser(id) {
+            if (!confirm('Hapus user ini?')) return;
+            await dbShop.collection('users').doc(id).delete();
+            toast('User dihapus');
+            loadUsers();
+        }
+
+        // Jadwal
+        async function loadJadwal() {
+            const c = document.getElementById('jadwalList');
+            const snap = await dbShop.collection('jadwal').orderBy('datetime', 'asc').get();
+            c.innerHTML = snap.empty ? '<p class="text-gray-500 text-center py-8">Belum ada jadwal</p>' : '';
+            snap.forEach(d => {
+                const j = { id: d.id, ...d.data() };
+                const dt = j.datetime?.toDate?.() || new Date(j.datetime);
+                c.innerHTML += `
+                    <div class="card bg-white rounded-2xl p-5 border flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="flex gap-4">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-xl flex flex-col items-center justify-center">
+                                <span class="text-xs text-indigo-600">${dt.toLocaleDateString('id-ID',{weekday:'short'})}</span>
+                                <span class="text-lg font-bold text-indigo-700">${dt.getDate()}</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold">${j.title}</p>
+                                <p class="text-gray-500 text-sm">${dt.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB</p>
+                                <p class="text-emerald-600 text-sm">${j.lineup||'-'}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteJadwal('${j.id}')" class="text-red-500 hover:bg-red-50 p-2 rounded-xl"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                    </div>`;
+            });
+        }
+        async function createJadwal(e) {
+            e.preventDefault();
+            await dbShop.collection('jadwal').add({
+                title: document.getElementById('jadwalTitle').value,
+                datetime: new Date(document.getElementById('jadwalDate').value),
+                lineup: document.getElementById('jadwalLineup').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            hideModal('jadwalModal');
+            toast('Jadwal ditambahkan!');
+            loadJadwal();
+            e.target.reset();
+        }
+        async function deleteJadwal(id) {
+            if (!confirm('Hapus jadwal?')) return;
+            await dbShop.collection('jadwal').doc(id).delete();
+            toast('Jadwal dihapus');
+            loadJadwal();
+        }
     </script>
 </body>
+</html>
